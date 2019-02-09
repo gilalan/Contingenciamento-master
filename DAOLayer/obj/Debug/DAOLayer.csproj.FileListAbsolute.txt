@@ -1,0 +1,2 @@
+D:\Contingenciamento .net\Contingenciamento\DAOLayer\obj\Debug\DAOLayer.csprojResolveAssemblyReference.cache
+D:\Contingenciamento .net\Contingenciamento\DAOLayer\obj\Debug\DAOLayer.csproj.CoreCompileInputs.cache

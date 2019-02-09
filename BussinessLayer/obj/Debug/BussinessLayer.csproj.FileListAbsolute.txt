@@ -1,0 +1,1 @@
+D:\Contingenciamento .net\Contingenciamento\BussinessLayer\obj\Debug\BussinessLayer.csproj.CoreCompileInputs.cache

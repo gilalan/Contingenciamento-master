@@ -1,0 +1,6 @@
+D:\Contingenciamento .net\Contingenciamento\Entidades\bin\Debug\Entidades.dll
+D:\Contingenciamento .net\Contingenciamento\Entidades\bin\Debug\Entidades.pdb
+D:\Contingenciamento .net\Contingenciamento\Entidades\obj\Debug\Entidades.csprojResolveAssemblyReference.cache
+D:\Contingenciamento .net\Contingenciamento\Entidades\obj\Debug\Entidades.csproj.CoreCompileInputs.cache
+D:\Contingenciamento .net\Contingenciamento\Entidades\obj\Debug\Entidades.dll
+D:\Contingenciamento .net\Contingenciamento\Entidades\obj\Debug\Entidades.pdb
