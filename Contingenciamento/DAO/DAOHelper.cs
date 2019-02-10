@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using Npgsql;
+using System.Windows.Forms;
 
 namespace Contingenciamento.DAO
 {
@@ -42,9 +43,34 @@ namespace Contingenciamento.DAO
 
         public void OpenConnection()
         {
-            if (this.conexaoBD.State == System.Data.ConnectionState.Closed)
+            try
             {
-                this.conexaoBD.Open();
+                if (this.conexaoBD.State == System.Data.ConnectionState.Closed)
+                {
+                    this.conexaoBD.Open();
+                }
+            }
+            catch (PostgresException pgEx) 
+            {
+                if (pgEx.SqlState == "28P01")//Autenticação de senha falhou
+                {
+                    MessageBox.Show("Não foi possível autenticar-se junto ao banco de dados. Possivel causa: senha incorreta", "Erro de Autenticação",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                    return;
+                }
+
+                else
+                {
+                    MessageBox.Show(pgEx.Message, "Erro de Conexão do Banco de Dados",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Erro de Conexão",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                return;
             }
         }
 

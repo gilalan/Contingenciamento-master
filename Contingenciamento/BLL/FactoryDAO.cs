@@ -39,5 +39,10 @@ namespace Contingenciamento.BLL
             return new ContratoAliquotaDAO();
         }
 
+        public static ContingencyFundDAO CreateContigencyFundDAO()
+        {
+            return new ContingencyFundDAO();
+        }
+
     }
 }

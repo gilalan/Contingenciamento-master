@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\ClienteFacade.cs" />
+    <Compile Include="BLL\ContingencyFundFacade.cs" />
     <Compile Include="BLL\ContratoAliquotaFacade.cs" />
     <Compile Include="BLL\ContratoFacade.cs" />
     <Compile Include="BLL\Facade.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="BLL\UnidadeFacade.cs" />
     <Compile Include="BLL\VerbaFacade.cs" />
     <Compile Include="DAO\ClienteDAO.cs" />
+    <Compile Include="DAO\ContingencyFundDAO.cs" />
     <Compile Include="DAO\ContratoAliquotaDAO.cs" />
     <Compile Include="DAO\ContratoDAO.cs" />
     <Compile Include="DAO\DAOHelper.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="DAO\HistoricoFuncionarioDAO.cs" />
     <Compile Include="DAO\IAcessoDadosHFObject.cs" />
     <Compile Include="DAO\IAcessoDadosObject.cs" />
+    <Compile Include="DAO\IDataAccessObject.cs" />
     <Compile Include="DAO\UnidadeDAO.cs" />
     <Compile Include="DAO\VerbaDAO.cs" />
     <Compile Include="Entidades\AdmissionDemissionHistory.cs" />

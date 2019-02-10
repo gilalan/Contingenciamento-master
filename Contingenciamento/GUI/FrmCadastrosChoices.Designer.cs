@@ -30,6 +30,7 @@
         {
             this.btnCadAliq = new System.Windows.Forms.Button();
             this.btnCadHistFunc = new System.Windows.Forms.Button();
+            this.btnAddContract = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCadAliq
@@ -68,12 +69,23 @@
             this.btnCadHistFunc.UseVisualStyleBackColor = false;
             this.btnCadHistFunc.Click += new System.EventHandler(this.btnCadHistFunc_Click);
             // 
+            // btnAddContract
+            // 
+            this.btnAddContract.Location = new System.Drawing.Point(51, 290);
+            this.btnAddContract.Name = "btnAddContract";
+            this.btnAddContract.Size = new System.Drawing.Size(185, 37);
+            this.btnAddContract.TabIndex = 6;
+            this.btnAddContract.Text = "Cadastrar Contrato";
+            this.btnAddContract.UseVisualStyleBackColor = true;
+            this.btnAddContract.Click += new System.EventHandler(this.btnAddContract_Click);
+            // 
             // FrmCadastrosChoices
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(514, 303);
+            this.ClientSize = new System.Drawing.Size(514, 375);
+            this.Controls.Add(this.btnAddContract);
             this.Controls.Add(this.btnCadAliq);
             this.Controls.Add(this.btnCadHistFunc);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -88,5 +100,6 @@
 
         private System.Windows.Forms.Button btnCadAliq;
         private System.Windows.Forms.Button btnCadHistFunc;
+        private System.Windows.Forms.Button btnAddContract;
     }
 }

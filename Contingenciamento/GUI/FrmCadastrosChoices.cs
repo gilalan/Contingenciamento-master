@@ -28,5 +28,13 @@ namespace Contingenciamento.GUI
             FrmCadastroAliquotas frmCadastrosAliquotas = new FrmCadastroAliquotas();
             frmCadastrosAliquotas.ShowDialog();
         }
+
+        private void btnAddContract_Click(object sender, EventArgs e)
+        {
+            FrmInsertContract frmInsertContract = new FrmInsertContract();
+            frmInsertContract.ShowDialog();  
+
+
+        }
     }
 }
