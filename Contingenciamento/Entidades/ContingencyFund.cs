@@ -19,5 +19,10 @@ namespace Contingenciamento.Entidades
             this.Name = name;
             this.Aliquots = aliquots;
         }
+
+        public ContingencyFund(string name)
+        {
+            this.Name = name;
+        }
     }
 }

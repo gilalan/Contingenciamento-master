@@ -75,10 +75,12 @@
     <Compile Include="BLL\ContingencyFundFacade.cs" />
     <Compile Include="BLL\ContratoAliquotaFacade.cs" />
     <Compile Include="BLL\ContratoFacade.cs" />
+    <Compile Include="BLL\ExtraFundFacade.cs" />
     <Compile Include="BLL\Facade.cs" />
     <Compile Include="BLL\FactoryDAO.cs" />
     <Compile Include="BLL\FuncionarioFacade.cs" />
     <Compile Include="BLL\HistoricoFuncionarioFacade.cs" />
+    <Compile Include="BLL\MonetaryFundFacade.cs" />
     <Compile Include="BLL\UnidadeFacade.cs" />
     <Compile Include="BLL\VerbaFacade.cs" />
     <Compile Include="DAO\ClienteDAO.cs" />
@@ -86,11 +88,13 @@
     <Compile Include="DAO\ContratoAliquotaDAO.cs" />
     <Compile Include="DAO\ContratoDAO.cs" />
     <Compile Include="DAO\DAOHelper.cs" />
+    <Compile Include="DAO\ExtraFundDAO.cs" />
     <Compile Include="DAO\FuncionarioDAO.cs" />
     <Compile Include="DAO\HistoricoFuncionarioDAO.cs" />
     <Compile Include="DAO\IAcessoDadosHFObject.cs" />
     <Compile Include="DAO\IAcessoDadosObject.cs" />
     <Compile Include="DAO\IDataAccessObject.cs" />
+    <Compile Include="DAO\MonetaryFundDAO.cs" />
     <Compile Include="DAO\UnidadeDAO.cs" />
     <Compile Include="DAO\VerbaDAO.cs" />
     <Compile Include="Entidades\AdmissionDemissionHistory.cs" />
@@ -105,6 +109,7 @@
     <Compile Include="Entidades\Employee.cs" />
     <Compile Include="Entidades\ExportFuncionario.cs" />
     <Compile Include="Entidades\ExportVerba.cs" />
+    <Compile Include="Entidades\ExtraFund.cs" />
     <Compile Include="Entidades\Funcionario.cs" />
     <Compile Include="Entidades\HistoricoFuncionario.cs" />
     <Compile Include="Entidades\MonetaryFund.cs" />
@@ -149,11 +154,29 @@
     <Compile Include="GUI\FrmConsultas.Designer.cs">
       <DependentUpon>FrmConsultas.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FrmInsertContingencyFunds.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FrmInsertContingencyFunds.Designer.cs">
+      <DependentUpon>FrmInsertContingencyFunds.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FrmInsertContract.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI\FrmInsertContract.Designer.cs">
       <DependentUpon>FrmInsertContract.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FrmInsertExtraFunds.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FrmInsertExtraFunds.Designer.cs">
+      <DependentUpon>FrmInsertExtraFunds.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FrmInsertMonetaryFunds.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FrmInsertMonetaryFunds.Designer.cs">
+      <DependentUpon>FrmInsertMonetaryFunds.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\FrmRelatorioCliente.cs">
       <SubType>Form</SubType>
@@ -213,8 +236,17 @@
     <EmbeddedResource Include="GUI\FrmConsultas.resx">
       <DependentUpon>FrmConsultas.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FrmInsertContingencyFunds.resx">
+      <DependentUpon>FrmInsertContingencyFunds.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmInsertContract.resx">
       <DependentUpon>FrmInsertContract.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FrmInsertExtraFunds.resx">
+      <DependentUpon>FrmInsertExtraFunds.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FrmInsertMonetaryFunds.resx">
+      <DependentUpon>FrmInsertMonetaryFunds.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmRelatorioCliente.resx">
       <DependentUpon>FrmRelatorioCliente.cs</DependentUpon>

@@ -36,5 +36,23 @@ namespace Contingenciamento.GUI
 
 
         }
+
+        private void btnContingencyFunds_Click(object sender, EventArgs e)
+        {
+            FrmInsertContingencyFunds frmInsertContingencyFunds = new FrmInsertContingencyFunds();
+            frmInsertContingencyFunds.ShowDialog();
+        }
+
+        private void btnMonetaryFunds_Click(object sender, EventArgs e)
+        {
+            FrmInsertMonetaryFunds frmInsertMonetaryFunds = new FrmInsertMonetaryFunds();
+            frmInsertMonetaryFunds.ShowDialog();
+        }
+
+        private void btnAddExtraFunds_Click(object sender, EventArgs e)
+        {
+            FrmInsertExtraFunds frmInsertExtraFunds = new FrmInsertExtraFunds();
+            frmInsertExtraFunds.ShowDialog();
+        }
     }
 }

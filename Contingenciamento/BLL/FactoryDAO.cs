@@ -44,5 +44,15 @@ namespace Contingenciamento.BLL
             return new ContingencyFundDAO();
         }
 
+        public static MonetaryFundDAO CreateMonetaryFundDAO()
+        {
+            return new MonetaryFundDAO();
+        }
+
+        public static ExtraFundDAO CreateExtraFundDAO()
+        {
+            return new ExtraFundDAO();
+        }
+
     }
 }

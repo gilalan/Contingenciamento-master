@@ -51,15 +51,17 @@ namespace Contingenciamento.GUI
             {
                 t1 = new TextBox();
                 t1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-                //t1.Font = new System.Drawing.Font("Microsoft Himalaya", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                t1.Font = new System.Drawing.Font("Microsoft Himalaya", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                 t1.ForeColor = System.Drawing.Color.Maroon;
                 t1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
                 t1.Size = new System.Drawing.Size(100, 20);
                 t1.Text = i.ToString();
-                t1.Visible = false;
-                //this.panelAliquots.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
-                this.panelAliquots.RowStyles.Add(new System.Windows.Forms.RowStyle());
-                panelAliquots.Controls.Add(t1, 0, i);
+                t1.Enabled = false;
+                if (i>0)
+                    this.panelAliquots.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+                //this.panelAliquots.RowStyles.Add(new System.Windows.Forms.RowStyle());
+                //this.panelAliquots.Controls.Add(t1, 0, contingencyFunds.Count-1-i);
+                this.panelAliquots.Controls.Add(t1, 0, i);
                 contingencyFundsAliquots.Add(t1);
             }
             
@@ -73,11 +75,11 @@ namespace Contingenciamento.GUI
                 int selIndex = this.cbContigencyFunds.SelectedIndex;
                 if (cbContigencyFunds.GetItemChecked(selIndex))
                 {
-                    this.contingencyFundsAliquots[selIndex].Visible = true;
+                    this.contingencyFundsAliquots[selIndex].Enabled = true;
                 }
                 else
                 {
-                    this.contingencyFundsAliquots[selIndex].Visible = false;
+                    this.contingencyFundsAliquots[selIndex].Enabled = false;
                 }
             }
         }

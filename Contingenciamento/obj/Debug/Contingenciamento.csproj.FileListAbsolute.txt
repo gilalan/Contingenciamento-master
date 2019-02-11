@@ -111,3 +111,7 @@ D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contin
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.csproj.CopyComplete
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.exe
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.pdb
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertContract.resources
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertContingencyFunds.resources
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertExtraFunds.resources
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertMonetaryFunds.resources

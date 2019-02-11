@@ -5,7 +5,7 @@ namespace Contingenciamento.BLL
 {
     public partial class Facade
     {
-        public void InserirContigencyFund(ContingencyFund contingencyFund)
+        public void InsertContigencyFund(ContingencyFund contingencyFund)
         {
             this._contingencyFundDAO.Insert(contingencyFund);
         }
@@ -30,9 +30,9 @@ namespace Contingenciamento.BLL
             this._contingencyFundDAO.Delete<int>(id);
         }
 
-        public void InserirContigencyFundList(HashSet<ContingencyFund> funcList)
+        public void InsertContigencyFundList(HashSet<ContingencyFund> contFundList)
         {
-            this._contingencyFundDAO.BulkInsert(funcList);
+            this._contingencyFundDAO.BulkInsert(contFundList);
         }
     }
 }
