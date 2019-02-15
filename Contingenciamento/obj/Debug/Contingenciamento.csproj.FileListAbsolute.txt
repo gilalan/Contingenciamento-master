@@ -115,3 +115,6 @@ F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciame
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertContingencyFunds.resources
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertExtraFunds.resources
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertMonetaryFunds.resources
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertContingencyFunds.resources
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertExtraFunds.resources
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertMonetaryFunds.resources

@@ -21,14 +21,11 @@ namespace Contingenciamento
             InitializeComponent();
             this.btnSave.BackColor = Color.FromArgb(0, 149, 255);
         }
-
+        //Import worksheet
         private void button1_Click(object sender, EventArgs e)
         {
             try
-            {
-                //DateTime dt = new DateTime(2018, 5, 20);
-                //Funcionario func = new Funcionario(5505, "Bianca Maria", "1022", dt);
-                //_funcionarioFacade.InserirFuncionario(func);
+            {                
                 using (OpenFileDialog ofd = new OpenFileDialog() { Filter = "Excel Workbook 97-2003|*.xls|Excel Workbook|*.xlsx", ValidateNames = true })
                 {
                     if (ofd.ShowDialog() == DialogResult.OK)
