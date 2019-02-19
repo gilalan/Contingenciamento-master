@@ -8,13 +8,13 @@ namespace Contingenciamento.Entidades
 {
     public class AdmissionDemissionHistory
     {
-        public DateTime DataAdmissao { get; set; }
-        public DateTime DataRescisao { get; set; }
+        public DateTime AdmissionDate { get; set; }
+        public DateTime DemissionDate { get; set; }
 
-        public AdmissionDemissionHistory(DateTime dataAdmissao, DateTime dataRescisao)
+        public AdmissionDemissionHistory(DateTime adDate, DateTime demDate)
         {
-            DataAdmissao = dataAdmissao;
-            DataRescisao = dataRescisao;
+            AdmissionDate = adDate;
+            DemissionDate = demDate;
         }
     }
 }

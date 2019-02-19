@@ -83,7 +83,6 @@ D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contin
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\System.Threading.Tasks.Extensions.dll
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\System.ValueTuple.dll
-D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\DropDownControls.xml
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\ExcelDataReader.xml
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\ExcelDataReader.DataSet.xml
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\Npgsql.pdb

@@ -184,5 +184,34 @@ namespace Contingenciamento.DAO
                     throw pEx;
             }            
         }
+
+        public object ExecuteScalar(NpgsqlCommand cmd)
+        {
+            object objReturned = null;
+            try
+            {
+                if (this.conexaoBD.State == System.Data.ConnectionState.Closed)
+                {
+                    this.conexaoBD.Open();
+                }
+                cmd.Connection = this.conexaoBD;
+                objReturned = cmd.ExecuteScalar();
+                return objReturned;
+            }
+            catch (PostgresException pEx)
+            {
+                if (pEx.SqlState == "23505")//item duplicado
+                {
+                    if (pEx.TableName.Equals("contrato_aliquotas"))
+                    {
+                        pEx.MessageText = "Item já existente na tabela, favor modificar os atributos de Cliente, Contrato, Verba ou Ano.";
+                        throw pEx;
+                    }
+                    return objReturned;
+                }
+                else
+                    throw pEx;
+            }
+        }
     }
 }

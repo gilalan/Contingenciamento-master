@@ -54,5 +54,20 @@ namespace Contingenciamento.BLL
             return new ExtraFundDAO();
         }
 
+        public static EmployeeDAO CreateEmployeeDAO()
+        {
+            return new EmployeeDAO();
+        }
+
+        public static RoleDAO CreateRoleDAO()
+        {
+            return new RoleDAO();
+        }
+
+        public static BankDAO CreateBankDAO()
+        {
+            return new BankDAO();
+        }
+
     }
 }

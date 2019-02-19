@@ -163,6 +163,16 @@ namespace Contingenciamento.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap loading {
+            get {
+                object obj = ResourceManager.GetObject("loading", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap logo_excel_128 {
             get {
                 object obj = ResourceManager.GetObject("logo_excel_128", resourceCulture);
@@ -225,7 +235,27 @@ namespace Contingenciamento.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap soll_logotipo {
             get {
-                object obj = ResourceManager.GetObject("soll-logotipo", resourceCulture);
+                object obj = ResourceManager.GetObject("soll_logotipo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Spinner {
+            get {
+                object obj = ResourceManager.GetObject("Spinner", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Spinner_1s_42px {
+            get {
+                object obj = ResourceManager.GetObject("Spinner_1s_42px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

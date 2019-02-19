@@ -142,7 +142,7 @@
   <data name="reports_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\reports_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="soll-logotipo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="soll_logotipo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\soll-logotipo.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="employee_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -174,5 +174,14 @@
   </data>
   <data name="percent_1281" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\percent_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Spinner" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Spinner.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="loading" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\loading.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Spinner_1s_42px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Spinner-1s-42px.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
