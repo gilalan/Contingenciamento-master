@@ -33,6 +33,12 @@ namespace Contingenciamento
         {
             allRoles = _facade.GetTopRole();
             allEmployees = _facade.GetTopEmployee();
+            if (allRoles.Count == 0)
+            {
+                MessageBox.Show("Atenção: a base de dados não possui registros de cargos dos funcionários. O primeiro passo " +
+                    "para o cadastro das entidades relacionadas ao Funcionário é o cadastro dos Cargos/Funções que eles ocupam.", 
+                    "Tabela de Cargos dos Funcionários", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         //Import worksheet
@@ -154,123 +160,132 @@ namespace Contingenciamento
         {
             if (this.result.Tables.Count > 0)
             {
-                this.employees = new HashSet<Employee>(new EmployeeComparer());
-                this.roles = new HashSet<Role>(new RoleComparer());
-                Employee employee;
-                DataTable worksheet = this.result.Tables[cboSheet.SelectedIndex];
-                int lines = worksheet.Rows.Count;
-                this.pbProcess.Maximum = lines;
-
-                if (rbRoles.Checked)
+                if (cboSheet.SelectedIndex == -1)
                 {
-                    for (var i = 0; i < lines; i++)
-                    {
-                        if (!(worksheet.Rows[i][0] is DBNull))
-                        {
-                            if (!String.IsNullOrEmpty(worksheet.Rows[i][0].ToString()))
-                                roles.Add(new Role(worksheet.Rows[i][0].ToString()));
-                        }
-                        this.pbProcess.Increment(1);
-                    }
-                    StringBuilder strBuilder = new StringBuilder();
-                    strBuilder.AppendLine("Dados de informação dos cargos processados com sucesso!");
-                    strBuilder.Append("Quantidade de Cargos novos carregados: ");
-                    strBuilder.AppendLine("" + roles.Count);
-                    strBuilder.AppendLine("Clique no botão Salvar para inserir na base de dados...");
-                    this.txtOutput.Text = strBuilder.ToString();
+                    MessageBox.Show("Antes de processar, escolha uma planliha na caixa de seleção de planilhas.", "Selecione uma Planilha", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-
-                else if (rbEmployeeInfo.Checked)
+                else
                 {
-                    Bank bank;
-                    for (var i = 0; i < lines; i++)
+                    this.employees = new HashSet<Employee>(new EmployeeComparer());
+                    this.roles = new HashSet<Role>(new RoleComparer());
+                    Employee employee;
+                    DataTable worksheet = this.result.Tables[cboSheet.SelectedIndex];
+                    int lines = worksheet.Rows.Count;
+                    this.pbProcess.Maximum = lines;
+
+                    if (rbRoles.Checked)
                     {
-                        bank = new Bank();
-                        employee = new Employee();
-
-                        if (!(worksheet.Rows[i][0] is DBNull))
+                        for (var i = 0; i < lines; i++)
                         {
-                            employee.Matriculation = worksheet.Rows[i][0].ToString();
+                            if (!(worksheet.Rows[i][0] is DBNull))
+                            {
+                                if (!String.IsNullOrEmpty(worksheet.Rows[i][0].ToString()))
+                                    roles.Add(new Role(worksheet.Rows[i][0].ToString()));
+                            }
+                            this.pbProcess.Increment(1);
                         }
-
-                        if (!(worksheet.Rows[i][1] is DBNull))
-                        {
-                            employee.Name = worksheet.Rows[i][1].ToString();
-                        }
-
-                        if (!(worksheet.Rows[i][5] is DBNull))
-                        {
-                            employee.CurrentAdmissionDate = (DateTime)worksheet.Rows[i][5];
-                        }
-
-                        if (!(worksheet.Rows[i][7] is DBNull))
-                        {
-                            employee.Birthday = (DateTime)worksheet.Rows[i][7];
-                        }
-
-                        if (!(worksheet.Rows[i][8] is DBNull))
-                        {
-                            employee.PIS = worksheet.Rows[i][8].ToString();
-                        }
-
-                        if (!(worksheet.Rows[i][9] is DBNull))
-                        {
-                            employee.CPF = worksheet.Rows[i][9].ToString();
-                        }
-
-                        if (!(worksheet.Rows[i][2] is DBNull))
-                        {
-                            employee.Role = new Role(worksheet.Rows[i][2].ToString());
-                        }
-
-                        if (!(worksheet.Rows[i][10] is DBNull))
-                        {
-                            bank.Name = worksheet.Rows[i][10].ToString();
-                        }
-
-                        if (!(worksheet.Rows[i][11] is DBNull))
-                        {
-                            bank.Code = worksheet.Rows[i][11].ToString();
-                        }
-
-                        if (!(worksheet.Rows[i][12] is DBNull))
-                        {
-                            bank.Agency = worksheet.Rows[i][12].ToString();
-                        }
-
-                        if (!(worksheet.Rows[i][13] is DBNull))
-                        {
-                            bank.Account = worksheet.Rows[i][13].ToString();
-                        }
-
-                        if (!(worksheet.Rows[i][14] is DBNull))
-                        {
-                            bank.DV = worksheet.Rows[i][14].ToString();
-                        }
-
-                        employee.BankData = bank;
-                        _UpdateRoleForEmployee(employee);
-                        //Caso não adicione, é repetido, aí vamos atualizar os dados de acordo com a data de admissão mais recente
-                        if (!employees.Add(employee))
-                        {
-                            _UpdateEmployee(employee);
-                        }
-
-                        this.pbProcess.Increment(1);
+                        StringBuilder strBuilder = new StringBuilder();
+                        strBuilder.AppendLine("Dados de informação dos cargos processados com sucesso!");
+                        strBuilder.Append("Quantidade de Cargos novos carregados: ");
+                        strBuilder.AppendLine("" + roles.Count);
+                        strBuilder.AppendLine("Clique no botão Salvar para inserir na base de dados...");
+                        this.txtOutput.Text = strBuilder.ToString();
                     }
 
-                    StringBuilder strBuilder = new StringBuilder();
-                    strBuilder.AppendLine("Dados de informação pessoal dos funcionários processados com sucesso!");
-                    strBuilder.Append("Quantidade de Registros de Funcionários novos carregados: ");
-                    strBuilder.AppendLine(""+employees.Count);
-                    strBuilder.AppendLine("Funcionários repetidos na planilha: " + count);
+                    else if (rbEmployeeInfo.Checked)
+                    {
+                        Bank bank;
+                        for (var i = 0; i < lines; i++)
+                        {
+                            bank = new Bank();
+                            employee = new Employee();
 
-                    txtOutput.Text = strBuilder.ToString();
-                }
-                else if (rbEmployeeHistory.Checked)
-                {
+                            if (!(worksheet.Rows[i][0] is DBNull))
+                            {
+                                employee.Matriculation = worksheet.Rows[i][0].ToString();
+                            }
 
-                }
+                            if (!(worksheet.Rows[i][1] is DBNull))
+                            {
+                                employee.Name = worksheet.Rows[i][1].ToString();
+                            }
+
+                            if (!(worksheet.Rows[i][5] is DBNull))
+                            {
+                                employee.CurrentAdmissionDate = (DateTime)worksheet.Rows[i][5];
+                            }
+
+                            if (!(worksheet.Rows[i][7] is DBNull))
+                            {
+                                employee.Birthday = (DateTime)worksheet.Rows[i][7];
+                            }
+
+                            if (!(worksheet.Rows[i][8] is DBNull))
+                            {
+                                employee.PIS = worksheet.Rows[i][8].ToString();
+                            }
+
+                            if (!(worksheet.Rows[i][9] is DBNull))
+                            {
+                                employee.CPF = worksheet.Rows[i][9].ToString();
+                            }
+
+                            if (!(worksheet.Rows[i][2] is DBNull))
+                            {
+                                employee.Role = new Role(worksheet.Rows[i][2].ToString());
+                            }
+
+                            if (!(worksheet.Rows[i][10] is DBNull))
+                            {
+                                bank.Name = worksheet.Rows[i][10].ToString();
+                            }
+
+                            if (!(worksheet.Rows[i][11] is DBNull))
+                            {
+                                bank.Code = worksheet.Rows[i][11].ToString();
+                            }
+
+                            if (!(worksheet.Rows[i][12] is DBNull))
+                            {
+                                bank.Agency = worksheet.Rows[i][12].ToString();
+                            }
+
+                            if (!(worksheet.Rows[i][13] is DBNull))
+                            {
+                                bank.Account = worksheet.Rows[i][13].ToString();
+                            }
+
+                            if (!(worksheet.Rows[i][14] is DBNull))
+                            {
+                                bank.DV = worksheet.Rows[i][14].ToString();
+                            }
+
+                            employee.BankData = bank;
+                            employee.AdmissionDemissionHistories.Add(new AdmissionDemissionHistory(employee.CurrentAdmissionDate, 
+                                employee.Matriculation));
+                            _UpdateRoleForEmployee(employee);
+                            //Caso não adicione, é repetido, aí vamos atualizar os dados de acordo com a data de admissão mais recente
+                            if (!employees.Add(employee))
+                            {
+                                _UpdateEmployee(employee);
+                            }
+
+                            this.pbProcess.Increment(1);
+                        }
+
+                        StringBuilder strBuilder = new StringBuilder();
+                        strBuilder.AppendLine("Dados de informação pessoal dos funcionários processados com sucesso!");
+                        strBuilder.Append("Quantidade de Registros de Funcionários novos carregados: ");
+                        strBuilder.AppendLine("" + employees.Count);
+                        strBuilder.AppendLine("Funcionários repetidos na planilha: " + count);
+
+                        txtOutput.Text = strBuilder.ToString();
+                    }
+                    else if (rbEmployeeHistory.Checked)
+                    {
+
+                    }
+                }                
             } 
             else
             {
@@ -278,6 +293,10 @@ namespace Contingenciamento
             }
         }
 
+        /**
+         * Adiciona ao Employee o Role que veio da base de dados já com o ID (FK na tabela do Employee)
+         * Dessa forma quando for salvar o Employee, já está carregado nele o ID para a coluna role_id
+         */
         private void _UpdateRoleForEmployee(Employee employee)
         {
             foreach (var role in allRoles)
@@ -285,11 +304,19 @@ namespace Contingenciamento
                 if (role.Name.Equals(employee.Role.Name))
                 {
                     employee.Role.Id = role.Id;
+                    if (employee.AdmissionDemissionHistories.Count > 0)
+                    {
+                        employee.AdmissionDemissionHistories[0].Role = role;
+                    }
                     break;
                 }
             }
         }
 
+        /**
+         * Só entra nesse método quando o employee já existe na list (verifica por CPF) e tem outro registro com o mesmo CPF
+         * Normalmente as linhas se repetem quando o funcionário tem outra data de admissão (e o cargo pode ser diferente tb)
+         */ 
         private void _UpdateEmployee(Employee employee)
         {
             count++;
@@ -297,9 +324,19 @@ namespace Contingenciamento
             {
                 if (emp.Equals(employee))
                 {
-                    //A data no List é menor que a data do employee passado por parâmetro, então atualiza
-                    if ((emp.CurrentAdmissionDate - employee.CurrentAdmissionDate).TotalHours < 0)
+                    //A data no List é maior que a data do employee passado por parâmetro, então atualiza apenas o histórico
+                    if ((emp.CurrentAdmissionDate - employee.CurrentAdmissionDate).TotalHours > 0)
                     {
+                        if (employee.AdmissionDemissionHistories.Count > 0)
+                            emp.AdmissionDemissionHistories.Add(employee.AdmissionDemissionHistories[0]);
+                        break;
+                    }
+                    else //a data é menor, temos que substituir pelo employee que está chegando com a data mais recente de admissão
+                    {
+                        foreach (var adDemHist in emp.AdmissionDemissionHistories)
+                        {
+                            employee.AdmissionDemissionHistories.Add(adDemHist);
+                        }
                         employees.Remove(emp);
                         employees.Add(employee);
                         break;

@@ -9,6 +9,7 @@ namespace Contingenciamento.DAO
     {
         private DAOHelper dal = new DAOHelper();
         private BankDAO bankDao = new BankDAO();
+        private AdmDemHistoryDAO admDemHistDAO = new AdmDemHistoryDAO();
 
         public Employee Get<K>(K id)
         {
@@ -175,18 +176,26 @@ namespace Contingenciamento.DAO
                 else
                     cmd.Parameters[6].Value = oEmployee.CPF;
 
-                if (oEmployee.Role.Id <= 0)
+                if (oEmployee.Role == null)
                     cmd.Parameters[7].Value = DBNull.Value;
                 else
-                    cmd.Parameters[7].Value = oEmployee.Role.Id;
+                {
+                    if(oEmployee.Role.Id <= 0)
+                        cmd.Parameters[7].Value = DBNull.Value;
+                    else
+                        cmd.Parameters[7].Value = oEmployee.Role.Id;
+                }
 
                 dal.OpenConnection();
                 obj = dal.ExecuteScalar(cmd);
-                if (obj != null)
+                if (obj != null) //salvar em tabelas extras outras informações do usuário
                 {
                     idReturned = (int) obj;
+                    //Informações bancárias
                     oEmployee.BankData.EmployeeId = idReturned;
                     bankDao.Insert(oEmployee.BankData);
+                    //Histórico de admissão/demissão/cargo
+                    admDemHistDAO.InsertAll(oEmployee.AdmissionDemissionHistories, idReturned);
                 }
             }
             finally
@@ -256,10 +265,15 @@ namespace Contingenciamento.DAO
                     else
                         cmd.Parameters[6].Value = oEmployee.CPF;
 
-                    if (oEmployee.Role.Id <= 0)
+                    if (oEmployee.Role == null)
                         cmd.Parameters[7].Value = DBNull.Value;
                     else
-                        cmd.Parameters[7].Value = oEmployee.Role.Id;
+                    {
+                        if (oEmployee.Role.Id <= 0)
+                            cmd.Parameters[7].Value = DBNull.Value;
+                        else
+                            cmd.Parameters[7].Value = oEmployee.Role.Id;
+                    }
 
                     //usando o ID para salvar na tabela de banks
                     obj = dal.ExecuteScalar(cmd);
@@ -268,6 +282,8 @@ namespace Contingenciamento.DAO
                         idReturned = (int)obj;
                         oEmployee.BankData.EmployeeId = idReturned;
                         bankDao.Insert(oEmployee.BankData);
+                        //Histórico de admissão/demissão/cargo
+                        admDemHistDAO.InsertAll(oEmployee.AdmissionDemissionHistories, idReturned);
                     }
                 }
             }

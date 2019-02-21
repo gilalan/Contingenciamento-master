@@ -86,6 +86,7 @@
     <Compile Include="BLL\RoleFacacde.cs" />
     <Compile Include="BLL\UnidadeFacade.cs" />
     <Compile Include="BLL\VerbaFacade.cs" />
+    <Compile Include="DAO\AdmDemHistoryDAO.cs" />
     <Compile Include="DAO\BankDAO.cs" />
     <Compile Include="DAO\ClienteDAO.cs" />
     <Compile Include="DAO\ContingencyFundDAO.cs" />

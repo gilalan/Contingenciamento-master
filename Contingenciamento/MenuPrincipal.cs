@@ -66,6 +66,14 @@ namespace Contingenciamento
             //emp.CurrentAdmissionDate = new DateTime(2013, 3, 18);
             //Bank bank = new Bank("BB", "001", "3249", "015700", "7");
             //emp.BankData = bank;
+            //AdmissionDemissionHistory adh1 = new AdmissionDemissionHistory();
+            //adh1.AdmissionDate = new DateTime(1996, 12, 1);
+            //adh1.Role = new Role(1, "", "AUX SERV GERAIS");
+            //AdmissionDemissionHistory adh2 = new AdmissionDemissionHistory();
+            //adh2.AdmissionDate = new DateTime(2018, 9, 9);
+            //adh2.Role = new Role(1, "", "AUX SERV GERAIS");
+            //emp.AdmissionDemissionHistories.Add(adh1);
+            //emp.AdmissionDemissionHistories.Add(adh2);
             //int idReturned = fac.InsertEmployee(emp);
 
             //Facade fac = new Facade();

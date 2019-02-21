@@ -49,11 +49,12 @@ namespace Contingenciamento.Entidades
             BankData = bankData;
             Birthday = birthday;
             CurrentAdmissionDate = currentAdmissionDate;
+            AdmissionDemissionHistories = new List<AdmissionDemissionHistory>();
         }
 
         public Employee()
         {
-
+            AdmissionDemissionHistories = new List<AdmissionDemissionHistory>();
         }
 
         public override bool Equals(Object obj)
