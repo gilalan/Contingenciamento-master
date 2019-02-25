@@ -76,6 +76,7 @@
     <Compile Include="BLL\ContingencyFundFacade.cs" />
     <Compile Include="BLL\ContratoAliquotaFacade.cs" />
     <Compile Include="BLL\ContratoFacade.cs" />
+    <Compile Include="BLL\DepartmentFacade.cs" />
     <Compile Include="BLL\EmployeeFacade.cs" />
     <Compile Include="BLL\ExtraFundFacade.cs" />
     <Compile Include="BLL\Facade.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="DAO\ContratoAliquotaDAO.cs" />
     <Compile Include="DAO\ContratoDAO.cs" />
     <Compile Include="DAO\DAOHelper.cs" />
+    <Compile Include="DAO\DepartmentDAO.cs" />
     <Compile Include="DAO\EmployeeDAO.cs" />
     <Compile Include="DAO\ExtraFundDAO.cs" />
     <Compile Include="DAO\FuncionarioDAO.cs" />
@@ -126,11 +128,24 @@
     <Compile Include="Entidades\Unidade.cs" />
     <Compile Include="Entidades\Vacation.cs" />
     <Compile Include="Entidades\Verba.cs" />
+    <Compile Include="Exceptions\ItemAlreadyExists.cs" />
     <Compile Include="GUI\DlgTextoEmail.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI\DlgTextoEmail.Designer.cs">
       <DependentUpon>DlgTextoEmail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FrmAddDepartment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FrmAddDepartment.Designer.cs">
+      <DependentUpon>FrmAddDepartment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FrmAllFunds.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FrmAllFunds.Designer.cs">
+      <DependentUpon>FrmAllFunds.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\FrmCadastroAliquotas.cs">
       <SubType>Form</SubType>
@@ -173,6 +188,12 @@
     </Compile>
     <Compile Include="GUI\FrmInsertContract.Designer.cs">
       <DependentUpon>FrmInsertContract.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FrmInsertEntities.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FrmInsertEntities.Designer.cs">
+      <DependentUpon>FrmInsertEntities.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\FrmInsertExtraFunds.cs">
       <SubType>Form</SubType>
@@ -229,6 +250,12 @@
     <EmbeddedResource Include="GUI\DlgTextoEmail.resx">
       <DependentUpon>DlgTextoEmail.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FrmAddDepartment.resx">
+      <DependentUpon>FrmAddDepartment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FrmAllFunds.resx">
+      <DependentUpon>FrmAllFunds.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmCadastroAliquotas.resx">
       <DependentUpon>FrmCadastroAliquotas.cs</DependentUpon>
     </EmbeddedResource>
@@ -249,6 +276,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmInsertContract.resx">
       <DependentUpon>FrmInsertContract.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FrmInsertEntities.resx">
+      <DependentUpon>FrmInsertEntities.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmInsertExtraFunds.resx">
       <DependentUpon>FrmInsertExtraFunds.cs</DependentUpon>
@@ -361,6 +391,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="images\Spinner-1s-42px.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\business_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\building_128.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -90,7 +90,6 @@ D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contin
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\System.Threading.Tasks.Extensions.xml
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\System.ValueTuple.xml
-D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.csprojResolveAssemblyReference.cache
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.DlgTextoEmail.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmCadastroAliquotas.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.FrmCadastros.resources
@@ -117,3 +116,7 @@ F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciame
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertContingencyFunds.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertExtraFunds.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertMonetaryFunds.resources
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmAllFunds.resources
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertEntities.resources
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmAddDepartment.resources
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.csprojResolveAssemblyReference.cache

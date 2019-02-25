@@ -2,13 +2,10 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Contingenciamento.DAO
 {
-    public class ExtraFundDAO : IDataAccessObject<ExtraFund>
+    public class ExtraFundDAO //: IDataAccessObject<ExtraFund>
     {
         private DAOHelper dal = new DAOHelper();
 
@@ -48,15 +45,19 @@ namespace Contingenciamento.DAO
             NpgsqlDataReader reader = null;
             try
             {
-                string query = "select * from extra_funds";
+                string query = "SELECT ef.id as ef_id, ef.name as ef_name, mf.id as mf_id, mf.name as mf_name " +
+                    "FROM (extra_funds ef INNER JOIN monetary_funds mf ON (ef.monetary_funds_id = mf.id)) " +
+                    "ORDER BY ef.id";
                 dal.OpenConnection();
                 reader = dal.ExecuteDataReader(query);
 
                 while (reader.Read())
                 {
                     ExtraFund extraFund = new ExtraFund();
-                    extraFund.Id = Convert.ToInt32(reader["id"]);
-                    extraFund.Name = reader["name"].ToString();
+                    extraFund.Id = Convert.ToInt32(reader["ef_id"]);
+                    extraFund.Name = reader["ef_name"].ToString();
+                    extraFund.MonetaryFund = new MonetaryFund(Convert.ToInt32(reader["mf_id"]),
+                        reader["mf_name"].ToString(), true);
 
                     extraFunds.Add(extraFund);
                 }
@@ -73,12 +74,14 @@ namespace Contingenciamento.DAO
             return extraFunds;
         }
 
-        public void Insert(ExtraFund extraFund)
+        public int Insert(ExtraFund extraFund)
         {
-            int rowsAffected = -1;
+            //int rowsAffected = -1;
+            object obj = null;
+            int returnedId = -1;
             try
             {
-                string cmdInsert = "INSERT INTO extra_funds(name, monetary_funds_id) VALUES (:name, :monetaryFundId)";
+                string cmdInsert = "INSERT INTO extra_funds(name, monetary_funds_id) VALUES (:name, :monetaryFundId) RETURNING id";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(cmdInsert);
 
@@ -86,15 +89,24 @@ namespace Contingenciamento.DAO
                 cmd.Parameters.Add(new NpgsqlParameter("monetaryFundId", NpgsqlTypes.NpgsqlDbType.Integer));
 
                 cmd.Parameters[0].Value = extraFund.Name;
-                cmd.Parameters[1].Value = extraFund.MonetaryFund.Id;
+
+                if (extraFund.MonetaryFund == null)
+                    cmd.Parameters[1].Value = DBNull.Value;
+                else
+                    cmd.Parameters[1].Value = extraFund.MonetaryFund.Id;
 
                 dal.OpenConnection();
-                rowsAffected = dal.ExecuteNonQuery(cmd);
+                obj = dal.ExecuteScalar(cmd);
+                if (obj != null)
+                {
+                    returnedId = (int)obj;
+                }
             }
             finally
             {
                 this.dal.CloseConection();
             }
+            return returnedId;
         }
 
         public void BulkInsert(HashSet<ExtraFund> extraFundList)

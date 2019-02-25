@@ -5,9 +5,9 @@ namespace Contingenciamento.BLL
 {
     public partial class Facade
     {
-        public void InsertMonetaryFund(MonetaryFund monetaryFund)
+        public int InsertMonetaryFund(MonetaryFund monetaryFund)
         {
-            this._monetaryFundDAO.Insert(monetaryFund);
+            return this._monetaryFundDAO.Insert(monetaryFund);
         }
 
         public void UpdateMonetaryFund(int id, MonetaryFund monetaryFund)

@@ -11,15 +11,11 @@ namespace Contingenciamento.GUI
         Facade _facade = new Facade();
         List<ContingencyFund> contingencyFunds;
         List<TextBox> contingencyFundsAliquots = new List<TextBox>();
+        HashSet<Department> allDeptCodes = new HashSet<Department>(new DepartmentComparer());
 
         public FrmInsertContract()
         {
             InitializeComponent();
-        }
-
-        private void btnAddDepts_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-
         }
 
         private void FrmInsertContract_Load(object sender, EventArgs e)
@@ -32,6 +28,16 @@ namespace Contingenciamento.GUI
             contingencyFundsAliquots = new List<TextBox>(contingencyFunds.Count);
             this.panelAliquots.RowCount = contingencyFunds.Count;
             formatTxtBoxAliquot();
+
+            //#Colunas de Verbas Monetárias
+            ColumnHeader c1 = new ColumnHeader();
+            c1.Text = "Código do Departamento";
+            this.listDepts.Columns.Add(c1);
+            ColumnHeader c2 = new ColumnHeader();
+            c2.Text = "Nome do Departamento";
+            this.listDepts.Columns.Add(c2);
+            this.listDepts.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            this.listDepts.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         private void FillCbBox(List<ContingencyFund> contingencyFunds)
@@ -82,6 +88,45 @@ namespace Contingenciamento.GUI
                     this.contingencyFundsAliquots[selIndex].Enabled = false;
                 }
             }
+        }
+
+        private void btnAddDept_Click(object sender, EventArgs e)
+        {
+            string dptCode = this.txtDptCode.Text;
+            Department dept = _facade.GetDepartmentByCode(dptCode);
+            if (dept == null)
+            {
+                if (DialogResult.Yes == MessageBox.Show("Departamento não encontrado na base de dados, deseja adicioná-lo?", "Adicionar Departamento Novo",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
+                {
+                    FrmAddDepartment frmAddDepartment = new FrmAddDepartment(dptCode);                  
+                    frmAddDepartment.FormClosed += new FormClosedEventHandler(_FormAddDeptClosed);
+                    frmAddDepartment.ShowDialog();
+                }
+            }
+            else
+            {
+                _TryAddingDept(dept);
+            }
+        }
+
+        private void _TryAddingDept(Department dept)
+        {
+            if (this.allDeptCodes.Add(dept))
+            {
+                ListViewItem item;
+                item = new ListViewItem();
+                item.Text = dept.Code;
+                item.SubItems.Add(dept.Name);
+                this.listDepts.Items.Add(item);
+                this.txtDptCode.Text = "";
+            }
+        }
+
+        private void _FormAddDeptClosed (object sender, FormClosedEventArgs e)
+        {
+            FrmAddDepartment frmAddDepartment = (FrmAddDepartment)sender;
+            _TryAddingDept(frmAddDepartment.Department);
         }
     }
 }

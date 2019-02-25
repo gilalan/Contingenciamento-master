@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Contingenciamento.DAO
 {
-    public class ContingencyFundDAO : IDataAccessObject<ContingencyFund>
+    public class ContingencyFundDAO //: IDataAccessObject<ContingencyFund>
     {
         private DAOHelper dal = new DAOHelper();
 
@@ -18,7 +18,7 @@ namespace Contingenciamento.DAO
             NpgsqlDataReader reader = null;
             try
             {
-                string cmdSelect = "Select * from contingency_funds Where id = " + id;
+                string cmdSelect = "SELECT * FROM contingency_funds WHERE id = " + id + " ORDER BY id";
                 dal.OpenConnection();
                 reader = dal.ExecuteDataReader(cmdSelect);
 
@@ -48,7 +48,7 @@ namespace Contingenciamento.DAO
             NpgsqlDataReader reader = null;
             try
             {
-                string query = "select * from contingency_funds";
+                string query = "SELECT * FROM contingency_funds ORDER BY id";
                 dal.OpenConnection();
                 reader = dal.ExecuteDataReader(query);
 
@@ -72,12 +72,14 @@ namespace Contingenciamento.DAO
             return contingencyFunds;
         }
 
-        public void Insert(ContingencyFund contingencyFund)
+        public int Insert(ContingencyFund contingencyFund)
         {
-            int rowsAffected = -1;
+            //int rowsAffected = -1;
+            object obj = null;
+            int idReturned = -1;
             try
             {
-                string cmdInsert = "INSERT INTO contingency_funds(name) VALUES (:name)";
+                string cmdInsert = "INSERT INTO contingency_funds(name) VALUES (:name) RETURNING id";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(cmdInsert);
 
@@ -86,12 +88,17 @@ namespace Contingenciamento.DAO
                 cmd.Parameters[0].Value = contingencyFund.Name;
 
                 dal.OpenConnection();
-                rowsAffected = dal.ExecuteNonQuery(cmd);
+                obj = dal.ExecuteScalar(cmd);
+                if (obj != null) 
+                {
+                    idReturned = (int)obj;
+                }
             }
             finally
             {
                 this.dal.CloseConection();
             }
+            return idReturned;
         }
 
         public void BulkInsert(HashSet<ContingencyFund> contingencyFundList)

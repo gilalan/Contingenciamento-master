@@ -27,32 +27,24 @@ namespace Contingenciamento.GUI
         {
             FrmCadastroAliquotas frmCadastrosAliquotas = new FrmCadastroAliquotas();
             frmCadastrosAliquotas.ShowDialog();
+        }              
+
+        private void btnAddManyFunds_Click(object sender, EventArgs e)
+        {
+            FrmAllFunds frmAllFunds = new FrmAllFunds();
+            frmAllFunds.ShowDialog();
         }
 
-        private void btnAddContract_Click(object sender, EventArgs e)
+        private void btnAddContracts_Click(object sender, EventArgs e)
         {
             FrmInsertContract frmInsertContract = new FrmInsertContract();
-            frmInsertContract.ShowDialog();  
-
-
+            frmInsertContract.ShowDialog();
         }
 
-        private void btnContingencyFunds_Click(object sender, EventArgs e)
+        private void btnAddDeptAndRoles_Click(object sender, EventArgs e)
         {
-            FrmInsertContingencyFunds frmInsertContingencyFunds = new FrmInsertContingencyFunds();
-            frmInsertContingencyFunds.ShowDialog();
-        }
-
-        private void btnMonetaryFunds_Click(object sender, EventArgs e)
-        {
-            FrmInsertMonetaryFunds frmInsertMonetaryFunds = new FrmInsertMonetaryFunds();
-            frmInsertMonetaryFunds.ShowDialog();
-        }
-
-        private void btnAddExtraFunds_Click(object sender, EventArgs e)
-        {
-            FrmInsertExtraFunds frmInsertExtraFunds = new FrmInsertExtraFunds();
-            frmInsertExtraFunds.ShowDialog();
+            FrmInsertEntities frmInsertEntities = new FrmInsertEntities();
+            frmInsertEntities.ShowDialog();
         }
     }
 }

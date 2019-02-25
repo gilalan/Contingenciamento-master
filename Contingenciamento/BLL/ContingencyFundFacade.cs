@@ -5,9 +5,9 @@ namespace Contingenciamento.BLL
 {
     public partial class Facade
     {
-        public void InsertContigencyFund(ContingencyFund contingencyFund)
+        public int InsertContigencyFund(ContingencyFund contingencyFund)
         {
-            this._contingencyFundDAO.Insert(contingencyFund);
+            return this._contingencyFundDAO.Insert(contingencyFund);
         }
 
         public void UpdateContigencyFund(int id, ContingencyFund contingencyFund)

@@ -6,9 +6,9 @@ namespace Contingenciamento.BLL
 {
     public partial class Facade
     {
-        public void InsertExtraFund(ExtraFund extraFund)
+        public int InsertExtraFund(ExtraFund extraFund)
         {
-            this._extraFundDAO.Insert(extraFund);
+            return this._extraFundDAO.Insert(extraFund);
         }
 
         public void UpdateExtraFund(int id, ExtraFund extraFund)

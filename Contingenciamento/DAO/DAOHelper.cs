@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data;
 using Npgsql;
 using System.Windows.Forms;
+using Contingenciamento.Exceptions;
 
 namespace Contingenciamento.DAO
 {
@@ -96,6 +93,10 @@ namespace Contingenciamento.DAO
             {
                 if (ngEx.SqlState == "23505")//item duplicado
                 {
+                    if (ngEx.ConstraintName.Equals("unq_code_dept"))
+                    {
+                        throw new ItemAlreadyExists("O código de departamento passado já existe na base de dados.");
+                    }
                     return dr;
                 }
                 else
@@ -120,6 +121,10 @@ namespace Contingenciamento.DAO
             {
                 if (ngEx.SqlState == "23505")//item duplicado
                 {
+                    if (ngEx.ConstraintName.Equals("unq_code_dept"))
+                    {
+                        throw new ItemAlreadyExists("O código de departamento passado já existe na base de dados.");
+                    }
                     return dr;
                 }
                 else
@@ -144,7 +149,10 @@ namespace Contingenciamento.DAO
             {
                 if (ngEx.SqlState == "23505")//item duplicado
                 {
-                    return rowsAffected;
+                    if (ngEx.ConstraintName.Equals("unq_code_dept"))
+                    {
+                        throw new ItemAlreadyExists("O código de departamento passado já existe na base de dados.");
+                    }
                 }
                 if (ngEx.SqlState == "22P02")
                 {
@@ -173,16 +181,15 @@ namespace Contingenciamento.DAO
             {
                 if (pEx.SqlState == "23505")//item duplicado
                 {
-                    if (pEx.TableName.Equals("contrato_aliquotas"))
+                    if (pEx.ConstraintName.Equals("unq_code_dept"))
                     {
-                        pEx.MessageText = "Item já existente na tabela, favor modificar os atributos de Cliente, Contrato, Verba ou Ano.";
-                        throw pEx;
+                        throw new ItemAlreadyExists("O código de departamento passado já existe na base de dados.");
                     }
-                    return rowsAffected;
                 }
                 else
                     throw pEx;
             }            
+            return rowsAffected;
         }
 
         public object ExecuteScalar(NpgsqlCommand cmd)
@@ -201,17 +208,16 @@ namespace Contingenciamento.DAO
             catch (PostgresException pEx)
             {
                 if (pEx.SqlState == "23505")//item duplicado
-                {
-                    if (pEx.TableName.Equals("contrato_aliquotas"))
+                {                  
+                    if (pEx.ConstraintName.Equals("unq_code_dept"))
                     {
-                        pEx.MessageText = "Item já existente na tabela, favor modificar os atributos de Cliente, Contrato, Verba ou Ano.";
-                        throw pEx;
+                        throw new ItemAlreadyExists("O código de departamento passado já existe na base de dados.");
                     }
-                    return objReturned;
                 }
                 else
                     throw pEx;
             }
+            return objReturned;
         }
     }
 }

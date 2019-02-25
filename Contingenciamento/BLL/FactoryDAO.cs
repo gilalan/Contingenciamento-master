@@ -69,5 +69,10 @@ namespace Contingenciamento.BLL
             return new BankDAO();
         }
 
+        public static DepartmentDAO CreateDepartmentDAO()
+        {
+            return new DepartmentDAO();
+        }
+
     }
 }
