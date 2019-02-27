@@ -12,18 +12,45 @@ namespace Contingenciamento.DAO
         public MonetaryFund Get<K>(K id)
         {
             MonetaryFund monetaryFund = new MonetaryFund();
+            HashSet<MonetaryFund> hashMonetaryFunds = new HashSet<MonetaryFund>(new MonetaryFundComparer());
             NpgsqlDataReader reader = null;
             try
             {
-                string cmdSelect = "SELECT * FROM monetary_funds WHERE id = " + id + " ORDER BY id";
+                string cmdSelect = "SELECT mf.id as mf_id, mf.name as mf_name, mf.primal as mf_primal, ef.name as ef_name, ef.id as ef_id " +
+                    "FROM monetary_funds mf LEFT JOIN " +
+                    "extra_funds ef ON mf.id = ef.monetary_funds_id ORDER BY mf.id";
                 dal.OpenConnection();
                 reader = dal.ExecuteDataReader(cmdSelect);
 
-                if (reader.Read())
+                ExtraFund extraFund = new ExtraFund();
+                while (reader.Read())
                 {
-                    monetaryFund.Id = Convert.ToInt32(reader["id"]);
-                    monetaryFund.Name = reader["name"].ToString();
-                    monetaryFund.Primal = Convert.ToBoolean(reader["primal"]);
+                    extraFund = null;
+                    monetaryFund = new MonetaryFund();
+                    monetaryFund.Id = Convert.ToInt32(reader["mf_id"]);
+                    monetaryFund.Name = reader["mf_name"].ToString();
+                    monetaryFund.Primal = Convert.ToBoolean(reader["mf_primal"]);
+
+                    if (reader["ef_id"] != DBNull.Value && reader["ef_name"] != DBNull.Value)
+                    {
+                        extraFund = new ExtraFund();
+                        extraFund.Id = Convert.ToInt32(reader["ef_id"]);
+                        extraFund.Name = reader["ef_name"].ToString();
+                        monetaryFund.ExtraFunds.Add(extraFund);
+                    }
+
+                    if (!hashMonetaryFunds.Add(monetaryFund))
+                    {
+                        foreach (var item in hashMonetaryFunds)
+                        {
+                            if (item.Id == monetaryFund.Id)
+                            {
+                                if (extraFund != null)
+                                    item.ExtraFunds.Add(extraFund);
+                                break;
+                            }
+                        }
+                    }
                 }
                 reader.Close();
             }
@@ -41,23 +68,47 @@ namespace Contingenciamento.DAO
 
         public List<MonetaryFund> GetTop()
         {
-            List<MonetaryFund> monetaryFunds = new List<MonetaryFund>();
+            HashSet<MonetaryFund> hashMonetaryFunds = new HashSet<MonetaryFund>(new MonetaryFundComparer());
+            //List<MonetaryFund> monetaryFunds = hashMonetaryFunds.ToList();
 
             NpgsqlDataReader reader = null;
             try
             {
-                string query = "SELECT * FROM monetary_funds ORDER BY id";
+                string query = "SELECT mf.id as mf_id, mf.name as mf_name, mf.primal as mf_primal, ef.name as ef_name, ef.id as ef_id " +
+                    "FROM monetary_funds mf LEFT JOIN " +
+                    "extra_funds ef ON mf.id = ef.monetary_funds_id ORDER BY mf.id";
                 dal.OpenConnection();
                 reader = dal.ExecuteDataReader(query);
-
+                MonetaryFund monetaryFund;
+                ExtraFund extraFund;
                 while (reader.Read())
                 {
-                    MonetaryFund monetaryFund = new MonetaryFund();
-                    monetaryFund.Id = Convert.ToInt32(reader["id"]);
-                    monetaryFund.Name = reader["name"].ToString();
-                    monetaryFund.Primal = Convert.ToBoolean(reader["primal"]);
+                    extraFund = null;
+                    monetaryFund = new MonetaryFund();
+                    monetaryFund.Id = Convert.ToInt32(reader["mf_id"]);
+                    monetaryFund.Name = reader["mf_name"].ToString();
+                    monetaryFund.Primal = Convert.ToBoolean(reader["mf_primal"]);
+                    
+                    if (reader["ef_id"] != DBNull.Value && reader["ef_name"] != DBNull.Value)
+                    {
+                        extraFund = new ExtraFund();
+                        extraFund.Id = Convert.ToInt32(reader["ef_id"]);
+                        extraFund.Name = reader["ef_name"].ToString();
+                        monetaryFund.ExtraFunds.Add(extraFund);
+                    }
 
-                    monetaryFunds.Add(monetaryFund);
+                    if (!hashMonetaryFunds.Add(monetaryFund))
+                    {
+                        foreach (var item in hashMonetaryFunds)
+                        {
+                            if (item.Id == monetaryFund.Id)
+                            {
+                                if (extraFund != null)
+                                    item.ExtraFunds.Add(extraFund);
+                                break;
+                            }
+                        }
+                    }
                 }
                 reader.Close();
             }
@@ -69,7 +120,7 @@ namespace Contingenciamento.DAO
                 }
                 this.dal.CloseConection();
             }
-            return monetaryFunds;
+            return new List<MonetaryFund>(hashMonetaryFunds);
         }
 
         public int Insert(MonetaryFund monetaryFund)

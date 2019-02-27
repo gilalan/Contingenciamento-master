@@ -92,6 +92,8 @@ namespace Contingenciamento
             //DateTime d1 = new DateTime(1985, 12, 6);
             //DateTime d2 = new DateTime(1985, 12, 6);
             //MessageBox.Show("resultado: " + (d1 - d2).TotalHours);
+
+            //Facade fac = new Facade();
         }
     }
 }

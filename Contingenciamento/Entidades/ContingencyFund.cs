@@ -9,15 +9,13 @@ namespace Contingenciamento.Entidades
     public class ContingencyFund
     {
         public ContingencyFund() { }
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
-        public List<Aliquot> Aliquots { get; set; }
 
-        public ContingencyFund(int id, string name, List<Aliquot> aliquots)
+        public ContingencyFund(long id, string name)
         {
             this.Id = id;
             this.Name = name;
-            this.Aliquots = aliquots;
         }
 
         public ContingencyFund(string name)

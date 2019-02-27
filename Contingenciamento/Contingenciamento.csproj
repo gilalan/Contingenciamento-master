@@ -74,6 +74,7 @@
     <Compile Include="BLL\BankFacade.cs" />
     <Compile Include="BLL\ClienteFacade.cs" />
     <Compile Include="BLL\ContingencyFundFacade.cs" />
+    <Compile Include="BLL\ContractFacade.cs" />
     <Compile Include="BLL\ContratoAliquotaFacade.cs" />
     <Compile Include="BLL\ContratoFacade.cs" />
     <Compile Include="BLL\DepartmentFacade.cs" />
@@ -90,7 +91,10 @@
     <Compile Include="DAO\AdmDemHistoryDAO.cs" />
     <Compile Include="DAO\BankDAO.cs" />
     <Compile Include="DAO\ClienteDAO.cs" />
+    <Compile Include="DAO\ContingencyAliquotDAO.cs" />
     <Compile Include="DAO\ContingencyFundDAO.cs" />
+    <Compile Include="DAO\ContractDAO.cs" />
+    <Compile Include="DAO\ContractMonetaryFundsDAO.cs" />
     <Compile Include="DAO\ContratoAliquotaDAO.cs" />
     <Compile Include="DAO\ContratoDAO.cs" />
     <Compile Include="DAO\DAOHelper.cs" />
@@ -107,9 +111,9 @@
     <Compile Include="DAO\UnidadeDAO.cs" />
     <Compile Include="DAO\VerbaDAO.cs" />
     <Compile Include="Entidades\AdmissionDemissionHistory.cs" />
-    <Compile Include="Entidades\Aliquot.cs" />
     <Compile Include="Entidades\Bank.cs" />
     <Compile Include="Entidades\Cliente.cs" />
+    <Compile Include="Entidades\ContingencyAliquot.cs" />
     <Compile Include="Entidades\ContingencyFund.cs" />
     <Compile Include="Entidades\Contract.cs" />
     <Compile Include="Entidades\Contrato.cs" />

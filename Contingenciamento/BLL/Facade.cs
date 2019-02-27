@@ -18,6 +18,7 @@ namespace Contingenciamento.BLL
         private ContingencyFundDAO _contingencyFundDAO;
         private MonetaryFundDAO _monetaryFundDAO;
         private ExtraFundDAO _extraFundDAO;
+        private ContractDAO _contractDAO;
 
         public Facade()
         {
@@ -35,6 +36,7 @@ namespace Contingenciamento.BLL
             _roleDAO = FactoryDAO.CreateRoleDAO();
             _bankDAO = FactoryDAO.CreateBankDAO();
             _departmentDAO = FactoryDAO.CreateDepartmentDAO();
+            _contractDAO = FactoryDAO.CreateContractDAO();
         }
     }
 }

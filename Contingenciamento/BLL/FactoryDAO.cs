@@ -74,5 +74,10 @@ namespace Contingenciamento.BLL
             return new DepartmentDAO();
         }
 
+        public static ContractDAO CreateContractDAO()
+        {
+            return new ContractDAO();
+        }
+
     }
 }

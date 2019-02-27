@@ -24,7 +24,7 @@ namespace Contingenciamento.DAO
 
                 if (reader.Read())
                 {
-                    contingencyFund.Id = Convert.ToInt32(reader["id"]);
+                    contingencyFund.Id = Convert.ToInt64(reader["id"]);
                     contingencyFund.Name = reader["name"].ToString();
                 }
                 reader.Close();
@@ -55,7 +55,7 @@ namespace Contingenciamento.DAO
                 while (reader.Read())
                 {
                     ContingencyFund contingencyFund = new ContingencyFund();
-                    contingencyFund.Id = Convert.ToInt32(reader["id"]);
+                    contingencyFund.Id = Convert.ToInt64(reader["id"]);
                     contingencyFund.Name = reader["name"].ToString();
                     contingencyFunds.Add(contingencyFund);
                 }
@@ -130,7 +130,7 @@ namespace Contingenciamento.DAO
             int rowsAffected = -1;
             try
             {
-                NpgsqlCommand cmd = new NpgsqlCommand("UPDATE contingency_funds set \"name\" = :name"
+                NpgsqlCommand cmd = new NpgsqlCommand("UPDATE contingency_funds SET \"name\" = :name"
                     + " WHERE \"id\" = '" + id + "' ;");
 
                 cmd.Parameters.Add(new NpgsqlParameter("name", NpgsqlTypes.NpgsqlDbType.Text));
@@ -151,7 +151,7 @@ namespace Contingenciamento.DAO
             int rowsAffected = -1;
             try
             {
-                string cmdDeletar = String.Format("Delete From contingency_funds Where id = '{0}'", id);
+                string cmdDeletar = String.Format("DELETE FROM contingency_funds WHERE id = '{0}'", id);
 
                 dal.OpenConnection();
                 rowsAffected = dal.ExecuteNonQuery(cmdDeletar);
