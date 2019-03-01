@@ -72,66 +72,42 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\BankFacade.cs" />
-    <Compile Include="BLL\ClienteFacade.cs" />
     <Compile Include="BLL\ContingencyFundFacade.cs" />
     <Compile Include="BLL\ContractFacade.cs" />
-    <Compile Include="BLL\ContratoAliquotaFacade.cs" />
-    <Compile Include="BLL\ContratoFacade.cs" />
     <Compile Include="BLL\DepartmentFacade.cs" />
     <Compile Include="BLL\EmployeeFacade.cs" />
+    <Compile Include="BLL\EmployeeHistoryFacade.cs" />
     <Compile Include="BLL\ExtraFundFacade.cs" />
     <Compile Include="BLL\Facade.cs" />
     <Compile Include="BLL\FactoryDAO.cs" />
-    <Compile Include="BLL\FuncionarioFacade.cs" />
-    <Compile Include="BLL\HistoricoFuncionarioFacade.cs" />
     <Compile Include="BLL\MonetaryFundFacade.cs" />
     <Compile Include="BLL\RoleFacacde.cs" />
-    <Compile Include="BLL\UnidadeFacade.cs" />
-    <Compile Include="BLL\VerbaFacade.cs" />
     <Compile Include="DAO\AdmDemHistoryDAO.cs" />
     <Compile Include="DAO\BankDAO.cs" />
-    <Compile Include="DAO\ClienteDAO.cs" />
     <Compile Include="DAO\ContingencyAliquotDAO.cs" />
     <Compile Include="DAO\ContingencyFundDAO.cs" />
     <Compile Include="DAO\ContractDAO.cs" />
     <Compile Include="DAO\ContractMonetaryFundsDAO.cs" />
-    <Compile Include="DAO\ContratoAliquotaDAO.cs" />
-    <Compile Include="DAO\ContratoDAO.cs" />
     <Compile Include="DAO\DAOHelper.cs" />
     <Compile Include="DAO\DepartmentDAO.cs" />
     <Compile Include="DAO\EmployeeDAO.cs" />
+    <Compile Include="DAO\EmployeeHistoryDAO.cs" />
     <Compile Include="DAO\ExtraFundDAO.cs" />
-    <Compile Include="DAO\FuncionarioDAO.cs" />
-    <Compile Include="DAO\HistoricoFuncionarioDAO.cs" />
-    <Compile Include="DAO\IAcessoDadosHFObject.cs" />
-    <Compile Include="DAO\IAcessoDadosObject.cs" />
     <Compile Include="DAO\IDataAccessObject.cs" />
     <Compile Include="DAO\MonetaryFundDAO.cs" />
     <Compile Include="DAO\RoleDAO.cs" />
-    <Compile Include="DAO\UnidadeDAO.cs" />
-    <Compile Include="DAO\VerbaDAO.cs" />
     <Compile Include="Entidades\AdmissionDemissionHistory.cs" />
     <Compile Include="Entidades\Bank.cs" />
-    <Compile Include="Entidades\Cliente.cs" />
     <Compile Include="Entidades\ContingencyAliquot.cs" />
     <Compile Include="Entidades\ContingencyFund.cs" />
     <Compile Include="Entidades\Contract.cs" />
-    <Compile Include="Entidades\Contrato.cs" />
-    <Compile Include="Entidades\ContratoAliquota.cs" />
     <Compile Include="Entidades\Department.cs" />
     <Compile Include="Entidades\Employee.cs" />
-    <Compile Include="Entidades\ExportFuncionario.cs" />
-    <Compile Include="Entidades\ExportVerba.cs" />
+    <Compile Include="Entidades\EmployeeHistory.cs" />
     <Compile Include="Entidades\ExtraFund.cs" />
-    <Compile Include="Entidades\Funcionario.cs" />
-    <Compile Include="Entidades\HistoricoFuncionario.cs" />
     <Compile Include="Entidades\MonetaryFund.cs" />
-    <Compile Include="Entidades\RelatorioCliente.cs" />
-    <Compile Include="Entidades\RelatorioFunc.cs" />
     <Compile Include="Entidades\Role.cs" />
-    <Compile Include="Entidades\Unidade.cs" />
     <Compile Include="Entidades\Vacation.cs" />
-    <Compile Include="Entidades\Verba.cs" />
     <Compile Include="Exceptions\ItemAlreadyExists.cs" />
     <Compile Include="GUI\DlgTextoEmail.cs">
       <SubType>Form</SubType>
@@ -151,12 +127,6 @@
     <Compile Include="GUI\FrmAllFunds.Designer.cs">
       <DependentUpon>FrmAllFunds.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FrmCadastroAliquotas.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\FrmCadastroAliquotas.Designer.cs">
-      <DependentUpon>FrmCadastroAliquotas.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\FrmCadastros.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -175,11 +145,11 @@
     <Compile Include="GUI\FrmConfiguracoes.Designer.cs">
       <DependentUpon>FrmConfiguracoes.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FrmConsultas.cs">
+    <Compile Include="GUI\FrmDoContingency.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\FrmConsultas.Designer.cs">
-      <DependentUpon>FrmConsultas.cs</DependentUpon>
+    <Compile Include="GUI\FrmDoContingency.Designer.cs">
+      <DependentUpon>FrmDoContingency.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\FrmInsertContingencyFunds.cs">
       <SubType>Form</SubType>
@@ -211,35 +181,11 @@
     <Compile Include="GUI\FrmInsertMonetaryFunds.Designer.cs">
       <DependentUpon>FrmInsertMonetaryFunds.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FrmRelatorioCliente.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\FrmRelatorioCliente.Designer.cs">
-      <DependentUpon>FrmRelatorioCliente.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\FrmRelatorioContrato.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\FrmRelatorioContrato.Designer.cs">
-      <DependentUpon>FrmRelatorioContrato.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\FrmRelatorioFuncionario.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\FrmRelatorioFuncionario.Designer.cs">
-      <DependentUpon>FrmRelatorioFuncionario.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\FrmRelatorios.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI\FrmRelatorios.Designer.cs">
       <DependentUpon>FrmRelatorios.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\FrmRelatorioVerba.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\FrmRelatorioVerba.Designer.cs">
-      <DependentUpon>FrmRelatorioVerba.cs</DependentUpon>
     </Compile>
     <Compile Include="MenuPrincipal.cs">
       <SubType>Form</SubType>
@@ -260,9 +206,6 @@
     <EmbeddedResource Include="GUI\FrmAllFunds.resx">
       <DependentUpon>FrmAllFunds.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\FrmCadastroAliquotas.resx">
-      <DependentUpon>FrmCadastroAliquotas.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmCadastros.resx">
       <DependentUpon>FrmCadastros.cs</DependentUpon>
     </EmbeddedResource>
@@ -272,8 +215,8 @@
     <EmbeddedResource Include="GUI\FrmConfiguracoes.resx">
       <DependentUpon>FrmConfiguracoes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\FrmConsultas.resx">
-      <DependentUpon>FrmConsultas.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\FrmDoContingency.resx">
+      <DependentUpon>FrmDoContingency.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmInsertContingencyFunds.resx">
       <DependentUpon>FrmInsertContingencyFunds.cs</DependentUpon>
@@ -290,20 +233,8 @@
     <EmbeddedResource Include="GUI\FrmInsertMonetaryFunds.resx">
       <DependentUpon>FrmInsertMonetaryFunds.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\FrmRelatorioCliente.resx">
-      <DependentUpon>FrmRelatorioCliente.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\FrmRelatorioContrato.resx">
-      <DependentUpon>FrmRelatorioContrato.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\FrmRelatorioFuncionario.resx">
-      <DependentUpon>FrmRelatorioFuncionario.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmRelatorios.resx">
       <DependentUpon>FrmRelatorios.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\FrmRelatorioVerba.resx">
-      <DependentUpon>FrmRelatorioVerba.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MenuPrincipal.resx">
       <DependentUpon>MenuPrincipal.cs</DependentUpon>
@@ -401,6 +332,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="images\building_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\contingency_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\money_128.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

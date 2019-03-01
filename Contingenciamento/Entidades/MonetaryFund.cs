@@ -19,6 +19,13 @@ namespace Contingenciamento.Entidades
             ExtraFunds = new List<ExtraFund>();
         }
 
+        public MonetaryFund(int id, string name)
+        {
+            Id = id;
+            Name = name;
+            ExtraFunds = new List<ExtraFund>();
+        }
+
         public MonetaryFund(int id, string name, bool primal)
         {
             Id = id;

@@ -13,26 +13,26 @@ namespace Contingenciamento
 
         private void bntRelFuncionario_Click(object sender, EventArgs e)
         {
-            FrmRelatorioFuncionario frmRelFunc = new FrmRelatorioFuncionario();
-            frmRelFunc.ShowDialog();
+            //FrmRelatorioFuncionario frmRelFunc = new FrmRelatorioFuncionario();
+            //frmRelFunc.ShowDialog();
         }
 
         private void btnRelClient_Click(object sender, EventArgs e)
         {
-            FrmRelatorioCliente frmRelCliente = new FrmRelatorioCliente();
-            frmRelCliente.ShowDialog();
+            //FrmRelatorioCliente frmRelCliente = new FrmRelatorioCliente();
+            //frmRelCliente.ShowDialog();
         }
 
         private void btnContratos_Click(object sender, EventArgs e)
         {
-            FrmRelatorioContrato frmRelContrato = new FrmRelatorioContrato();
-            frmRelContrato.ShowDialog();
+            //FrmRelatorioContrato frmRelContrato = new FrmRelatorioContrato();
+            //frmRelContrato.ShowDialog();
         }
 
         private void btnUnidade_Click(object sender, EventArgs e)
         {
-            FrmRelatorioVerba frmRelatorioVerba = new FrmRelatorioVerba();
-            frmRelatorioVerba.ShowDialog();
+            //FrmRelatorioVerba frmRelatorioVerba = new FrmRelatorioVerba();
+            //frmRelatorioVerba.ShowDialog();
         }
     }
 }

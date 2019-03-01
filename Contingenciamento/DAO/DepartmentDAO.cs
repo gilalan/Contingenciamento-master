@@ -76,8 +76,9 @@ namespace Contingenciamento.DAO
             NpgsqlDataReader reader = null;
             try
             {
-                string query = "SELECT dep.id as dep_id, dep.name as dep_name, dep.code as dep_code, ct.id as ct_id, ct.name as ct_name " +
-                    "FROM (departments dep INNER JOIN contracts ct ON (dep.contract_id = ct.id)) " +
+                string query = "SELECT dep.id as dep_id, dep.name as dep_name, dep.code as dep_code, dep.contract_id as dep_contract_id, " +
+                    "ct.id as ct_id, ct.name as ct_name " +
+                    "FROM (departments dep LEFT JOIN contracts ct ON (dep.contract_id = ct.id)) " +
                     "ORDER BY dep.id";
                 dal.OpenConnection();
                 reader = dal.ExecuteDataReader(query);
@@ -87,9 +88,12 @@ namespace Contingenciamento.DAO
                     Department department = new Department();
                     department.Id = Convert.ToInt64(reader["dep_id"]);
                     department.Name = reader["dep_name"].ToString();
-                    department.Name = reader["dep_code"].ToString();
-                    department.Contract = new Contract(Convert.ToInt64(reader["ct_id"]),
-                        reader["ct_name"].ToString());
+                    department.Code = reader["dep_code"].ToString();
+                    if (!(reader["dep_contract_id"] is DBNull))
+                    {
+                        department.Contract = new Contract(Convert.ToInt64(reader["ct_id"]),
+                            reader["ct_name"].ToString());
+                    }
 
                     departments.Add(department);
                 }

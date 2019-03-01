@@ -30,12 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuPrincipal));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnSair = new System.Windows.Forms.Button();
-            this.btnConfig = new System.Windows.Forms.Button();
-            this.btnFuncionarios = new System.Windows.Forms.Button();
-            this.btnRelatorios = new System.Windows.Forms.Button();
-            this.btnConsultas = new System.Windows.Forms.Button();
-            this.btnCadastros = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.cadastrosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clientesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,6 +42,12 @@
             this.clientesToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.funcionáriosToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
+            this.btnSair = new System.Windows.Forms.Button();
+            this.btnConfig = new System.Windows.Forms.Button();
+            this.btnFuncionarios = new System.Windows.Forms.Button();
+            this.btnGetFunds = new System.Windows.Forms.Button();
+            this.btnDoContingency = new System.Windows.Forms.Button();
+            this.btnCadastros = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
@@ -59,117 +59,13 @@
             this.panel1.Controls.Add(this.btnSair);
             this.panel1.Controls.Add(this.btnConfig);
             this.panel1.Controls.Add(this.btnFuncionarios);
-            this.panel1.Controls.Add(this.btnRelatorios);
-            this.panel1.Controls.Add(this.btnConsultas);
+            this.panel1.Controls.Add(this.btnGetFunds);
+            this.panel1.Controls.Add(this.btnDoContingency);
             this.panel1.Controls.Add(this.btnCadastros);
             this.panel1.Location = new System.Drawing.Point(12, 73);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1342, 217);
             this.panel1.TabIndex = 1;
-            // 
-            // btnSair
-            // 
-            this.btnSair.BackColor = System.Drawing.Color.Transparent;
-            this.btnSair.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSair.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSair.Font = new System.Drawing.Font("Rockwell", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSair.Image = global::Contingenciamento.Properties.Resources.exit_128_red;
-            this.btnSair.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnSair.Location = new System.Drawing.Point(1120, 18);
-            this.btnSair.Name = "btnSair";
-            this.btnSair.Size = new System.Drawing.Size(185, 185);
-            this.btnSair.TabIndex = 5;
-            this.btnSair.Text = "Sair";
-            this.btnSair.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnSair.UseVisualStyleBackColor = false;
-            this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
-            // 
-            // btnConfig
-            // 
-            this.btnConfig.BackColor = System.Drawing.Color.Transparent;
-            this.btnConfig.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnConfig.Font = new System.Drawing.Font("Rockwell", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConfig.Image = global::Contingenciamento.Properties.Resources.config_128;
-            this.btnConfig.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnConfig.Location = new System.Drawing.Point(905, 18);
-            this.btnConfig.Name = "btnConfig";
-            this.btnConfig.Size = new System.Drawing.Size(185, 185);
-            this.btnConfig.TabIndex = 4;
-            this.btnConfig.Text = "Configurações";
-            this.btnConfig.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnConfig.UseVisualStyleBackColor = false;
-            this.btnConfig.Click += new System.EventHandler(this.btnConfig_Click);
-            // 
-            // btnFuncionarios
-            // 
-            this.btnFuncionarios.BackColor = System.Drawing.Color.Transparent;
-            this.btnFuncionarios.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnFuncionarios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFuncionarios.Font = new System.Drawing.Font("Rockwell", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFuncionarios.Image = global::Contingenciamento.Properties.Resources.employee_128;
-            this.btnFuncionarios.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnFuncionarios.Location = new System.Drawing.Point(690, 18);
-            this.btnFuncionarios.Name = "btnFuncionarios";
-            this.btnFuncionarios.Size = new System.Drawing.Size(185, 185);
-            this.btnFuncionarios.TabIndex = 3;
-            this.btnFuncionarios.Text = "Funcionários";
-            this.btnFuncionarios.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnFuncionarios.UseVisualStyleBackColor = false;
-            // 
-            // btnRelatorios
-            // 
-            this.btnRelatorios.BackColor = System.Drawing.Color.Transparent;
-            this.btnRelatorios.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRelatorios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRelatorios.Font = new System.Drawing.Font("Rockwell", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRelatorios.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.btnRelatorios.Image = global::Contingenciamento.Properties.Resources.reports_128;
-            this.btnRelatorios.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnRelatorios.Location = new System.Drawing.Point(477, 18);
-            this.btnRelatorios.Name = "btnRelatorios";
-            this.btnRelatorios.Size = new System.Drawing.Size(185, 185);
-            this.btnRelatorios.TabIndex = 2;
-            this.btnRelatorios.Text = "Relatórios";
-            this.btnRelatorios.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnRelatorios.UseVisualStyleBackColor = false;
-            this.btnRelatorios.Click += new System.EventHandler(this.btnRelatorios_Click);
-            // 
-            // btnConsultas
-            // 
-            this.btnConsultas.BackColor = System.Drawing.Color.Transparent;
-            this.btnConsultas.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnConsultas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnConsultas.Font = new System.Drawing.Font("Rockwell", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConsultas.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.btnConsultas.Image = global::Contingenciamento.Properties.Resources.search_128;
-            this.btnConsultas.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnConsultas.Location = new System.Drawing.Point(258, 18);
-            this.btnConsultas.Name = "btnConsultas";
-            this.btnConsultas.Size = new System.Drawing.Size(185, 185);
-            this.btnConsultas.TabIndex = 1;
-            this.btnConsultas.Text = "Consultas";
-            this.btnConsultas.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnConsultas.UseVisualStyleBackColor = false;
-            this.btnConsultas.Click += new System.EventHandler(this.btnConsultas_Click);
-            // 
-            // btnCadastros
-            // 
-            this.btnCadastros.BackColor = System.Drawing.Color.Transparent;
-            this.btnCadastros.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCadastros.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCadastros.Font = new System.Drawing.Font("Rockwell", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCadastros.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.btnCadastros.Image = global::Contingenciamento.Properties.Resources.add_128;
-            this.btnCadastros.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnCadastros.Location = new System.Drawing.Point(38, 18);
-            this.btnCadastros.Name = "btnCadastros";
-            this.btnCadastros.Size = new System.Drawing.Size(185, 185);
-            this.btnCadastros.TabIndex = 0;
-            this.btnCadastros.Text = "Cadastros";
-            this.btnCadastros.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnCadastros.UseVisualStyleBackColor = false;
-            this.btnCadastros.Click += new System.EventHandler(this.btnCadastros_Click);
             // 
             // menuStrip1
             // 
@@ -266,6 +162,109 @@
             this.pictureBox7.TabStop = false;
             this.pictureBox7.Click += new System.EventHandler(this.pictureBox7_Click);
             // 
+            // btnSair
+            // 
+            this.btnSair.BackColor = System.Drawing.Color.Transparent;
+            this.btnSair.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSair.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSair.Font = new System.Drawing.Font("Rockwell", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSair.Image = global::Contingenciamento.Properties.Resources.exit_128_red;
+            this.btnSair.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnSair.Location = new System.Drawing.Point(1120, 18);
+            this.btnSair.Name = "btnSair";
+            this.btnSair.Size = new System.Drawing.Size(185, 185);
+            this.btnSair.TabIndex = 5;
+            this.btnSair.Text = "Sair";
+            this.btnSair.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnSair.UseVisualStyleBackColor = false;
+            this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
+            // 
+            // btnConfig
+            // 
+            this.btnConfig.BackColor = System.Drawing.Color.Transparent;
+            this.btnConfig.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConfig.Font = new System.Drawing.Font("Rockwell", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConfig.Image = global::Contingenciamento.Properties.Resources.config_128;
+            this.btnConfig.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnConfig.Location = new System.Drawing.Point(905, 18);
+            this.btnConfig.Name = "btnConfig";
+            this.btnConfig.Size = new System.Drawing.Size(185, 185);
+            this.btnConfig.TabIndex = 4;
+            this.btnConfig.Text = "Configurações";
+            this.btnConfig.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnConfig.UseVisualStyleBackColor = false;
+            this.btnConfig.Click += new System.EventHandler(this.btnConfig_Click);
+            // 
+            // btnFuncionarios
+            // 
+            this.btnFuncionarios.BackColor = System.Drawing.Color.Transparent;
+            this.btnFuncionarios.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnFuncionarios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFuncionarios.Font = new System.Drawing.Font("Rockwell", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFuncionarios.Image = global::Contingenciamento.Properties.Resources.employee_128;
+            this.btnFuncionarios.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnFuncionarios.Location = new System.Drawing.Point(690, 18);
+            this.btnFuncionarios.Name = "btnFuncionarios";
+            this.btnFuncionarios.Size = new System.Drawing.Size(185, 185);
+            this.btnFuncionarios.TabIndex = 3;
+            this.btnFuncionarios.Text = "Funcionários";
+            this.btnFuncionarios.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnFuncionarios.UseVisualStyleBackColor = false;
+            // 
+            // btnGetFunds
+            // 
+            this.btnGetFunds.BackColor = System.Drawing.Color.Transparent;
+            this.btnGetFunds.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnGetFunds.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGetFunds.Font = new System.Drawing.Font("Rockwell", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGetFunds.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.btnGetFunds.Image = global::Contingenciamento.Properties.Resources.money_128;
+            this.btnGetFunds.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnGetFunds.Location = new System.Drawing.Point(477, 18);
+            this.btnGetFunds.Name = "btnGetFunds";
+            this.btnGetFunds.Size = new System.Drawing.Size(185, 185);
+            this.btnGetFunds.TabIndex = 2;
+            this.btnGetFunds.Text = "Solicitar Liberação de Verba";
+            this.btnGetFunds.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnGetFunds.UseVisualStyleBackColor = false;
+            // 
+            // btnDoContingency
+            // 
+            this.btnDoContingency.BackColor = System.Drawing.Color.Transparent;
+            this.btnDoContingency.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDoContingency.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDoContingency.Font = new System.Drawing.Font("Rockwell", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDoContingency.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.btnDoContingency.Image = global::Contingenciamento.Properties.Resources.contingency_128;
+            this.btnDoContingency.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnDoContingency.Location = new System.Drawing.Point(258, 18);
+            this.btnDoContingency.Name = "btnDoContingency";
+            this.btnDoContingency.Size = new System.Drawing.Size(185, 185);
+            this.btnDoContingency.TabIndex = 1;
+            this.btnDoContingency.Text = "Contingenciar";
+            this.btnDoContingency.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnDoContingency.UseVisualStyleBackColor = false;
+            this.btnDoContingency.Click += new System.EventHandler(this.btnDoContingency_Click);
+            // 
+            // btnCadastros
+            // 
+            this.btnCadastros.BackColor = System.Drawing.Color.Transparent;
+            this.btnCadastros.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCadastros.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCadastros.Font = new System.Drawing.Font("Rockwell", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCadastros.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.btnCadastros.Image = global::Contingenciamento.Properties.Resources.add_128;
+            this.btnCadastros.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnCadastros.Location = new System.Drawing.Point(38, 18);
+            this.btnCadastros.Name = "btnCadastros";
+            this.btnCadastros.Size = new System.Drawing.Size(185, 185);
+            this.btnCadastros.TabIndex = 0;
+            this.btnCadastros.Text = "Cadastros";
+            this.btnCadastros.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnCadastros.UseVisualStyleBackColor = false;
+            this.btnCadastros.Click += new System.EventHandler(this.btnCadastros_Click);
+            // 
             // MenuPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -309,9 +308,9 @@
         private System.Windows.Forms.Button btnSair;
         private System.Windows.Forms.Button btnConfig;
         private System.Windows.Forms.Button btnFuncionarios;
-        private System.Windows.Forms.Button btnRelatorios;
-        private System.Windows.Forms.Button btnConsultas;
+        private System.Windows.Forms.Button btnGetFunds;
         private System.Windows.Forms.Button btnCadastros;
+        private System.Windows.Forms.Button btnDoContingency;
     }
 }
 

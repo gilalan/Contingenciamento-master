@@ -31,18 +31,6 @@ namespace Contingenciamento
             frmCadastrosChoices.ShowDialog();
         }
 
-        private void btnConsultas_Click(object sender, EventArgs e)
-        {
-            FrmConsultas frmConsultas = new FrmConsultas();
-            frmConsultas.ShowDialog();
-        }
-
-        private void btnRelatorios_Click(object sender, EventArgs e)
-        {
-            FrmRelatorios frmRelatorios = new FrmRelatorios();
-            frmRelatorios.ShowDialog();
-        }
-
         private void btnSair_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.Application.Exit();
@@ -52,6 +40,12 @@ namespace Contingenciamento
         {
             FrmConfiguracoes frmConfig = new FrmConfiguracoes();
             frmConfig.ShowDialog();
+        }
+
+        private void btnDoContingency_Click(object sender, EventArgs e)
+        {
+            FrmDoContingency frmDoContingency = new FrmDoContingency();
+            frmDoContingency.ShowDialog();
         }
 
         private void pictureBox7_Click(object sender, EventArgs e)
@@ -94,6 +88,6 @@ namespace Contingenciamento
             //MessageBox.Show("resultado: " + (d1 - d2).TotalHours);
 
             //Facade fac = new Facade();
-        }
+        }        
     }
 }

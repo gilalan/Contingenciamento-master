@@ -133,6 +133,16 @@ namespace Contingenciamento.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap contingency_128 {
+            get {
+                object obj = ResourceManager.GetObject("contingency_128", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap contract_128 {
             get {
                 object obj = ResourceManager.GetObject("contract_128", resourceCulture);
@@ -196,6 +206,16 @@ namespace Contingenciamento.Properties {
         internal static System.Drawing.Bitmap logo_excel_128 {
             get {
                 object obj = ResourceManager.GetObject("logo_excel_128", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap money_128 {
+            get {
+                object obj = ResourceManager.GetObject("money_128", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -213,6 +213,10 @@ namespace Contingenciamento.DAO
                     {
                         throw new ItemAlreadyExists("O código de departamento passado já existe na base de dados.");
                     }
+                    if (pEx.ConstraintName.Equals("unq_multiple_emp_epoch_vacation"))
+                    {
+                        return objReturned;
+                    }
                 }
                 else
                     throw pEx;

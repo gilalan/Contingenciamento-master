@@ -21,13 +21,7 @@ namespace Contingenciamento.GUI
         {
             FrmCadastros frmCadastros = new FrmCadastros();
             frmCadastros.ShowDialog();
-        }
-
-        private void btnCadAliq_Click(object sender, EventArgs e)
-        {
-            FrmCadastroAliquotas frmCadastrosAliquotas = new FrmCadastroAliquotas();
-            frmCadastrosAliquotas.ShowDialog();
-        }              
+        }           
 
         private void btnAddManyFunds_Click(object sender, EventArgs e)
         {

@@ -31,8 +31,8 @@
             this.btnAddManyFunds = new System.Windows.Forms.Button();
             this.btnAddDeptAndRoles = new System.Windows.Forms.Button();
             this.btnAddContracts = new System.Windows.Forms.Button();
-            this.btnCadAliq = new System.Windows.Forms.Button();
             this.btnCadHistFunc = new System.Windows.Forms.Button();
+            this.btnConsultas = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnAddManyFunds
@@ -63,7 +63,7 @@
             this.btnAddDeptAndRoles.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.btnAddDeptAndRoles.Image = global::Contingenciamento.Properties.Resources.business_128;
             this.btnAddDeptAndRoles.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnAddDeptAndRoles.Location = new System.Drawing.Point(489, 36);
+            this.btnAddDeptAndRoles.Location = new System.Drawing.Point(261, 36);
             this.btnAddDeptAndRoles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddDeptAndRoles.Name = "btnAddDeptAndRoles";
             this.btnAddDeptAndRoles.Size = new System.Drawing.Size(185, 185);
@@ -82,7 +82,7 @@
             this.btnAddContracts.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.btnAddContracts.Image = global::Contingenciamento.Properties.Resources.contract_128;
             this.btnAddContracts.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnAddContracts.Location = new System.Drawing.Point(262, 36);
+            this.btnAddContracts.Location = new System.Drawing.Point(483, 36);
             this.btnAddContracts.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddContracts.Name = "btnAddContracts";
             this.btnAddContracts.Size = new System.Drawing.Size(185, 185);
@@ -91,25 +91,6 @@
             this.btnAddContracts.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnAddContracts.UseVisualStyleBackColor = false;
             this.btnAddContracts.Click += new System.EventHandler(this.btnAddContracts_Click);
-            // 
-            // btnCadAliq
-            // 
-            this.btnCadAliq.BackColor = System.Drawing.Color.Transparent;
-            this.btnCadAliq.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCadAliq.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCadAliq.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCadAliq.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.btnCadAliq.Image = global::Contingenciamento.Properties.Resources.percent_1281;
-            this.btnCadAliq.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnCadAliq.Location = new System.Drawing.Point(785, 36);
-            this.btnCadAliq.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnCadAliq.Name = "btnCadAliq";
-            this.btnCadAliq.Size = new System.Drawing.Size(185, 185);
-            this.btnCadAliq.TabIndex = 5;
-            this.btnCadAliq.Text = "Cadastrar Alíquotas de Clientes ou Contratos";
-            this.btnCadAliq.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnCadAliq.UseVisualStyleBackColor = false;
-            this.btnCadAliq.Click += new System.EventHandler(this.btnCadAliq_Click);
             // 
             // btnCadHistFunc
             // 
@@ -120,7 +101,7 @@
             this.btnCadHistFunc.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.btnCadHistFunc.Image = global::Contingenciamento.Properties.Resources.logo_excel_128;
             this.btnCadHistFunc.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnCadHistFunc.Location = new System.Drawing.Point(1015, 36);
+            this.btnCadHistFunc.Location = new System.Drawing.Point(707, 36);
             this.btnCadHistFunc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnCadHistFunc.Name = "btnCadHistFunc";
             this.btnCadHistFunc.Size = new System.Drawing.Size(185, 185);
@@ -130,16 +111,33 @@
             this.btnCadHistFunc.UseVisualStyleBackColor = false;
             this.btnCadHistFunc.Click += new System.EventHandler(this.btnCadHistFunc_Click);
             // 
+            // btnConsultas
+            // 
+            this.btnConsultas.BackColor = System.Drawing.Color.Transparent;
+            this.btnConsultas.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnConsultas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConsultas.Font = new System.Drawing.Font("Rockwell", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConsultas.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.btnConsultas.Image = global::Contingenciamento.Properties.Resources.search_128;
+            this.btnConsultas.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnConsultas.Location = new System.Drawing.Point(376, 265);
+            this.btnConsultas.Name = "btnConsultas";
+            this.btnConsultas.Size = new System.Drawing.Size(185, 185);
+            this.btnConsultas.TabIndex = 11;
+            this.btnConsultas.Text = "Consultas";
+            this.btnConsultas.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnConsultas.UseVisualStyleBackColor = false;
+            // 
             // FrmCadastrosChoices
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(1252, 265);
+            this.ClientSize = new System.Drawing.Size(931, 477);
+            this.Controls.Add(this.btnConsultas);
             this.Controls.Add(this.btnAddManyFunds);
             this.Controls.Add(this.btnAddDeptAndRoles);
             this.Controls.Add(this.btnAddContracts);
-            this.Controls.Add(this.btnCadAliq);
             this.Controls.Add(this.btnCadHistFunc);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -151,11 +149,10 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnCadAliq;
         private System.Windows.Forms.Button btnCadHistFunc;
         private System.Windows.Forms.Button btnAddManyFunds;
         private System.Windows.Forms.Button btnAddContracts;
         private System.Windows.Forms.Button btnAddDeptAndRoles;
+        private System.Windows.Forms.Button btnConsultas;
     }
 }
