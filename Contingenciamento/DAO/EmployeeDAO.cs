@@ -18,13 +18,13 @@ namespace Contingenciamento.DAO
             NpgsqlDataReader reader = null;
             try
             {
-                string selectCMD = "Select * from employees Where id = " + id;
+                string selectCMD = "SELECT * FROM employees WHERE id = " + id;
                 dal.OpenConnection();
                 reader = dal.ExecuteDataReader(selectCMD);
 
                 if (reader.Read())
                 {
-                    employee.Id = Convert.ToInt32(reader["id"]);
+                    employee.Id = Convert.ToInt64(reader["id"]);
                     employee.Name = reader["name"].ToString();
                     employee.Matriculation = reader["matriculation"].ToString();
                     employee.Birthday = Convert.ToDateTime(reader["birthday"]);
@@ -54,13 +54,13 @@ namespace Contingenciamento.DAO
             NpgsqlDataReader reader = null;
             try
             {
-                string SelectCMD = "Select * from employees Where matricula = '" + matricula + "'";
+                string SelectCMD = "SELECT * FROM employees WHERE matricula = '" + matricula + "'";
                 dal.OpenConnection();
                 reader = dal.ExecuteDataReader(SelectCMD);
 
                 if (reader.Read())
                 {
-                    employee.Id = Convert.ToInt32(reader["id"]);
+                    employee.Id = Convert.ToInt64(reader["id"]);
                     employee.Name = reader["name"].ToString();
                     employee.Matriculation = reader["matriculation"].ToString();
                     employee.Birthday = Convert.ToDateTime(reader["birthday"]);
@@ -90,14 +90,14 @@ namespace Contingenciamento.DAO
             NpgsqlDataReader reader = null;
             try
             {
-                string query = "select * from employees";
+                string query = "SELECT * FROM employees";
                 dal.OpenConnection();
                 reader = dal.ExecuteDataReader(query);
 
                 while (reader.Read())
                 {
                     Employee employee = new Employee();
-                    employee.Id = Convert.ToInt32(reader["id"]);
+                    employee.Id = Convert.ToInt64(reader["id"]);
                     employee.Name = reader["name"].ToString();
                     employee.Matriculation = reader["matriculation"].ToString();
                     employee.Birthday = Convert.ToDateTime(reader["birthday"]);
@@ -120,11 +120,11 @@ namespace Contingenciamento.DAO
             return employees;
         }
 
-        public int Insert(Employee oEmployee)
+        public long Insert(Employee oEmployee)
         {
             //int rowsAffected = -1;
             object obj = null;
-            int idReturned = -1;
+            long idReturned = -1;
             try
             {
                 string insertCMD = "INSERT INTO employees(name,matriculation,admission_date,demission_date,birthday,pis,cpf,role_id) " +
@@ -139,7 +139,7 @@ namespace Contingenciamento.DAO
                 cmd.Parameters.Add(new NpgsqlParameter("birthday", NpgsqlTypes.NpgsqlDbType.Date));
                 cmd.Parameters.Add(new NpgsqlParameter("pis", NpgsqlTypes.NpgsqlDbType.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("cpf", NpgsqlTypes.NpgsqlDbType.Text));
-                cmd.Parameters.Add(new NpgsqlParameter("role_id", NpgsqlTypes.NpgsqlDbType.Integer));
+                cmd.Parameters.Add(new NpgsqlParameter("role_id", NpgsqlTypes.NpgsqlDbType.Bigint));
 
                 if (String.IsNullOrEmpty(oEmployee.Name))
                     cmd.Parameters[0].Value = DBNull.Value;
@@ -190,12 +190,16 @@ namespace Contingenciamento.DAO
                 obj = dal.ExecuteScalar(cmd);
                 if (obj != null) //salvar em tabelas extras outras informações do usuário
                 {
-                    idReturned = (int) obj;
+                    idReturned = (long) obj;
                     //Informações bancárias
-                    oEmployee.BankData.EmployeeId = idReturned;
-                    bankDao.Insert(oEmployee.BankData);
+                    if (oEmployee.BankData != null)
+                    {
+                        oEmployee.BankData.EmployeeId = idReturned;
+                        bankDao.Insert(oEmployee.BankData);
+                    }
                     //Histórico de admissão/demissão/cargo
-                    admDemHistDAO.InsertAll(oEmployee.AdmissionDemissionHistories, idReturned);
+                    if(oEmployee.AdmissionDemissionHistories.Count > 0)
+                        admDemHistDAO.InsertAll(oEmployee.AdmissionDemissionHistories, idReturned);
                 }
             }
             finally
@@ -211,7 +215,7 @@ namespace Contingenciamento.DAO
             try
             {
                 object obj = null;
-                int idReturned = -1;
+                long idReturned = -1;
                 string insertCMD = "INSERT INTO employees(name,matriculation,admission_date,demission_date,birthday,pis,cpf,role_id) " +
                     "VALUES (:name,:matriculation,:admission_date,:demission_date,:birthday,:pis,:cpf,:role_id) RETURNING id";
 
@@ -224,7 +228,7 @@ namespace Contingenciamento.DAO
                 cmd.Parameters.Add(new NpgsqlParameter("birthday", NpgsqlTypes.NpgsqlDbType.Date));
                 cmd.Parameters.Add(new NpgsqlParameter("pis", NpgsqlTypes.NpgsqlDbType.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("cpf", NpgsqlTypes.NpgsqlDbType.Text));
-                cmd.Parameters.Add(new NpgsqlParameter("role_id", NpgsqlTypes.NpgsqlDbType.Integer));
+                cmd.Parameters.Add(new NpgsqlParameter("role_id", NpgsqlTypes.NpgsqlDbType.Bigint));
                 dal.OpenConnection();
 
                 foreach (var oEmployee in employeeList)
@@ -279,11 +283,15 @@ namespace Contingenciamento.DAO
                     obj = dal.ExecuteScalar(cmd);
                     if (obj != null)
                     {
-                        idReturned = (int)obj;
-                        oEmployee.BankData.EmployeeId = idReturned;
-                        bankDao.Insert(oEmployee.BankData);
+                        idReturned = (long)obj;
+                        if (oEmployee.BankData != null)
+                        {
+                            oEmployee.BankData.EmployeeId = idReturned;
+                            bankDao.Insert(oEmployee.BankData);
+                        }
                         //Histórico de admissão/demissão/cargo
-                        admDemHistDAO.InsertAll(oEmployee.AdmissionDemissionHistories, idReturned);
+                        if (oEmployee.AdmissionDemissionHistories.Count > 0)
+                            admDemHistDAO.InsertAll(oEmployee.AdmissionDemissionHistories, idReturned);
                     }
                 }
             }

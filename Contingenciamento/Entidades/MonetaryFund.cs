@@ -4,13 +4,13 @@ namespace Contingenciamento.Entidades
 {
     public class MonetaryFund
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public bool Primal { get; set; }
         public double Tax { get; set; }
         public List<ExtraFund> ExtraFunds { get; set; }
 
-        public MonetaryFund(int id, string name, bool primal, double tax)
+        public MonetaryFund(long id, string name, bool primal, double tax)
         {
             Id = id;
             Name = name;
@@ -19,14 +19,14 @@ namespace Contingenciamento.Entidades
             ExtraFunds = new List<ExtraFund>();
         }
 
-        public MonetaryFund(int id, string name)
+        public MonetaryFund(long id, string name)
         {
             Id = id;
             Name = name;
             ExtraFunds = new List<ExtraFund>();
         }
 
-        public MonetaryFund(int id, string name, bool primal)
+        public MonetaryFund(long id, string name, bool primal)
         {
             Id = id;
             Name = name;

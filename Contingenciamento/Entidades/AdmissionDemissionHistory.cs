@@ -8,12 +8,12 @@ namespace Contingenciamento.Entidades
 {
     public class AdmissionDemissionHistory
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public DateTime AdmissionDate { get; set; }
         public DateTime DemissionDate { get; set; }
         public Role Role { get; set; }
         public string Matriculation { get; set; }
-        public int EmployeeId { get; set; }
+        public long EmployeeId { get; set; }
 
         public AdmissionDemissionHistory(DateTime adDate, DateTime demDate, Role role)
         {

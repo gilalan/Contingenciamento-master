@@ -15,13 +15,13 @@ namespace Contingenciamento.DAO
             NpgsqlDataReader reader = null;
             try
             {
-                string cmdSelect = "Select * from roles Where id = " + id;
+                string cmdSelect = "SELECT * FROM roles WHERE id = " + id;
                 dal.OpenConnection();
                 reader = dal.ExecuteDataReader(cmdSelect);
 
                 if (reader.Read())
                 {
-                    role.Id = Convert.ToInt32(reader["id"]);
+                    role.Id = Convert.ToInt64(reader["id"]);
                     role.Name = reader["name"].ToString();
                     role.CBOCode = reader["cbo"].ToString();
                 }
@@ -45,14 +45,14 @@ namespace Contingenciamento.DAO
             NpgsqlDataReader reader = null;
             try
             {
-                string query = "select * from roles";
+                string query = "SELECT * FROM roles";
                 dal.OpenConnection();
                 reader = dal.ExecuteDataReader(query);
 
                 while (reader.Read())
                 {
                     Role role = new Role();
-                    role.Id = Convert.ToInt32(reader["id"]);
+                    role.Id = Convert.ToInt64(reader["id"]);
                     role.Name = reader["name"].ToString();
                     role.CBOCode = reader["cbo"].ToString();
 

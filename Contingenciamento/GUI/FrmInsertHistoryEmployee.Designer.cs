@@ -248,6 +248,7 @@
             this.cbContracts.Name = "cbContracts";
             this.cbContracts.Size = new System.Drawing.Size(363, 24);
             this.cbContracts.TabIndex = 16;
+            this.cbContracts.SelectedIndexChanged += new System.EventHandler(this.cbContracts_SelectedIndexChanged);
             // 
             // label3
             // 

@@ -28,7 +28,7 @@ namespace Contingenciamento.DAO
                     "FROM (employee_history eh INNER JOIN employees emp ON (eh.employee_id = emp.id)) " +
                     "INNER JOIN roles rol ON (emp.role_id = rol.id) " +
                     "INNER JOIN departments dep ON (eh.department_id = dep.id) " +
-                    "INNER JOIN contracts cont ON (dep.contract_id = cont.id) " +
+                    "INNER JOIN contracts cont ON (eh.contract_id = cont.id) " +
                     "WHERE eh.id = :passedId ORDER BY eh.id";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(selectCMD);
@@ -125,7 +125,7 @@ namespace Contingenciamento.DAO
                     "FROM (employee_history eh INNER JOIN employees emp ON (eh.employee_id = emp.id)) " +
                     "INNER JOIN roles rol ON (emp.role_id = rol.id) " +
                     "INNER JOIN departments dep ON (eh.department_id = dep.id) " +
-                    "LEFT JOIN contracts cont ON (dep.contract_id = cont.id) " +
+                    "LEFT JOIN contracts cont ON (eh.contract_id = cont.id) " +
                     "WHERE eh.id = :passedMatric ORDER BY eh.id";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(selectCMD);
@@ -219,7 +219,7 @@ namespace Contingenciamento.DAO
                     "FROM (employee_history eh INNER JOIN employees emp ON (eh.employee_id = emp.id)) " +
                     "INNER JOIN roles rol ON (emp.role_id = rol.id) " +
                     "INNER JOIN departments dep ON (eh.department_id = dep.id) " +
-                    "LEFT JOIN contracts cont ON (dep.contract_id = cont.id) " +
+                    "LEFT JOIN contracts cont ON (eh.contract_id = cont.id) " +
                     "ORDER BY eh.id";
 
                 dal.OpenConnection();
@@ -399,10 +399,10 @@ namespace Contingenciamento.DAO
             {
                 string insertCMD = "INSERT INTO employee_history(epoch,base_salary,net_salary,total_earnings,in_vacation,start_vacation_taken,end_vacation_taken, " +
                     "hazard_additional,dangerousness_additional,thirteenth_salary,thirteenth_proportional_salary,vacation_pay,vacation_proportional_pay,penalty_rescission, " +
-                    "employee_id,department_id) " +
+                    "employee_id,department_id,contract_id,processed) " +
                     "VALUES (:epoch,:base_salary,:net_salary,:total_earnings,:in_vacation,:start_vacation_taken,:end_vacation_taken, " +
                     ":hazard_additional,:dangerousness_additional,:thirteenth_salary,:thirteenth_proportional_salary,:vacation_pay,:vacation_proportional_pay," +
-                    ":penalty_rescission,:employee_id,:department_id) RETURNING id";
+                    ":penalty_rescission,:employee_id,:department_id,:contract_id,:processed) RETURNING id";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(insertCMD);
 
@@ -420,8 +420,10 @@ namespace Contingenciamento.DAO
                 cmd.Parameters.Add(new NpgsqlParameter("vacation_pay", NpgsqlTypes.NpgsqlDbType.Double));
                 cmd.Parameters.Add(new NpgsqlParameter("vacation_proportional_pay", NpgsqlTypes.NpgsqlDbType.Double));
                 cmd.Parameters.Add(new NpgsqlParameter("penalty_rescission", NpgsqlTypes.NpgsqlDbType.Double));
-                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Integer));
-                cmd.Parameters.Add(new NpgsqlParameter("department_id", NpgsqlTypes.NpgsqlDbType.Integer));
+                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters.Add(new NpgsqlParameter("department_id", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters.Add(new NpgsqlParameter("contract_id", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters.Add(new NpgsqlParameter("processed", NpgsqlTypes.NpgsqlDbType.Boolean));
 
                 if (oEmployeeHistory.Epoch == null)
                     cmd.Parameters[0].Value = DBNull.Value;
@@ -461,6 +463,14 @@ namespace Contingenciamento.DAO
                 else
                     cmd.Parameters[15].Value = oEmployeeHistory.Department.Id;
 
+                if (oEmployeeHistory.Contract == null)
+                    cmd.Parameters[16].Value = DBNull.Value;
+                else
+                    cmd.Parameters[16].Value = oEmployeeHistory.Contract.Id;
+
+                
+                cmd.Parameters[17].Value = oEmployeeHistory.Processed;
+
                 dal.OpenConnection();
                 obj = dal.ExecuteScalar(cmd);
                 if (obj != null) //salvar em tabelas extras outras informações do usuário
@@ -483,12 +493,12 @@ namespace Contingenciamento.DAO
             try
             {
                 object obj = null;
-                string insertCMD = "INSERT INTO employee_history(epoch,base_salary,net_salary,total_earnings,in_vacation,start_vacation_taken,end_vacation_taken, " +
-                    "hazard_additional,dangerousness_additional,thirteenth_salary,thirteenth_proportional_salary,vacation_pay,vacation_proportional_pay,penalty_rescission, " +
-                    "employee_id,department_id) " +
+                string insertCMD = "INSERT INTO employee_history(epoch,base_salary,net_salary,total_earnings,in_vacation,start_vacation_taken,end_vacation_taken," +
+                    "hazard_additional,dangerousness_additional,thirteenth_salary,thirteenth_proportional_salary,vacation_pay,vacation_proportional_pay,penalty_rescission," +
+                    "employee_id,department_id,contract_id,processed) " +
                     "VALUES (:epoch,:base_salary,:net_salary,:total_earnings,:in_vacation,:start_vacation_taken,:end_vacation_taken, " +
                     ":hazard_additional,:dangerousness_additional,:thirteenth_salary,:thirteenth_proportional_salary,:vacation_pay,:vacation_proportional_pay," +
-                    ":penalty_rescission,:employee_id,:department_id) RETURNING id";
+                    ":penalty_rescission,:employee_id,:department_id,:contract_id,:processed) RETURNING id";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(insertCMD);
 
@@ -506,8 +516,10 @@ namespace Contingenciamento.DAO
                 cmd.Parameters.Add(new NpgsqlParameter("vacation_pay", NpgsqlTypes.NpgsqlDbType.Double));
                 cmd.Parameters.Add(new NpgsqlParameter("vacation_proportional_pay", NpgsqlTypes.NpgsqlDbType.Double));
                 cmd.Parameters.Add(new NpgsqlParameter("penalty_rescission", NpgsqlTypes.NpgsqlDbType.Double));
-                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Integer));
-                cmd.Parameters.Add(new NpgsqlParameter("department_id", NpgsqlTypes.NpgsqlDbType.Integer));
+                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters.Add(new NpgsqlParameter("department_id", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters.Add(new NpgsqlParameter("contract_id", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters.Add(new NpgsqlParameter("processed", NpgsqlTypes.NpgsqlDbType.Boolean));
                 dal.OpenConnection();
 
                 foreach (var oEmployeeHistory in employeeHistoryList)
@@ -551,7 +563,14 @@ namespace Contingenciamento.DAO
                         cmd.Parameters[15].Value = DBNull.Value;
                     else
                         cmd.Parameters[15].Value = oEmployeeHistory.Department.Id;
-                    //usando o ID para salvar na tabela de banks
+
+                    if (oEmployeeHistory.Contract == null)
+                        cmd.Parameters[16].Value = DBNull.Value;
+                    else
+                        cmd.Parameters[16].Value = oEmployeeHistory.Contract.Id;
+
+                    cmd.Parameters[17].Value = oEmployeeHistory.Processed;
+                    
                     obj = dal.ExecuteScalar(cmd);
                     if (obj != null)
                     {
@@ -584,7 +603,7 @@ namespace Contingenciamento.DAO
                 "\"end_vacation_taken\" = :end_vacation_taken, \"hazard_additional\" = :hazard_additional, \"dangerousness_additional\" = :dangerousness_additional " +
                 "\"thirteenth_salary\" = :thirteenth_salary, \"thirteenth_proportional_salary\" = :thirteenth_proportional_salary, \"vacation_pay\" = :vacation_pay " +
                 "\"vacation_proportional_pay\" = :vacation_proportional_pay, \"penalty_rescission\" = :penalty_rescission, \"employee_id\" = :employee_id, " +
-                "\"department_id\" = :department_id WHERE \"id\" = '" + id + "' ;";
+                "\"department_id\" = :department_id, \"contract_id\" = :contract_id, \"processed\" = :processed WHERE \"id\" = '" + id + "' ;";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(updateCMD);
 
@@ -602,8 +621,10 @@ namespace Contingenciamento.DAO
                 cmd.Parameters.Add(new NpgsqlParameter("vacation_pay", NpgsqlTypes.NpgsqlDbType.Double));
                 cmd.Parameters.Add(new NpgsqlParameter("vacation_proportional_pay", NpgsqlTypes.NpgsqlDbType.Double));
                 cmd.Parameters.Add(new NpgsqlParameter("penalty_rescission", NpgsqlTypes.NpgsqlDbType.Double));
-                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Integer));
-                cmd.Parameters.Add(new NpgsqlParameter("department_id", NpgsqlTypes.NpgsqlDbType.Integer));
+                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters.Add(new NpgsqlParameter("department_id", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters.Add(new NpgsqlParameter("contract_id", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters.Add(new NpgsqlParameter("processed", NpgsqlTypes.NpgsqlDbType.Boolean));
 
                 if (oEmployeeHistory.Epoch == null)
                     cmd.Parameters[0].Value = DBNull.Value;
@@ -642,6 +663,13 @@ namespace Contingenciamento.DAO
                     cmd.Parameters[15].Value = DBNull.Value;
                 else
                     cmd.Parameters[15].Value = oEmployeeHistory.Department.Id;
+
+                if (oEmployeeHistory.Contract == null)
+                    cmd.Parameters[16].Value = DBNull.Value;
+                else
+                    cmd.Parameters[16].Value = oEmployeeHistory.Contract.Id;
+
+                cmd.Parameters[17].Value = oEmployeeHistory.Processed;
 
                 dal.OpenConnection();
                 rowsAffected = dal.ExecuteNonQuery(cmd);

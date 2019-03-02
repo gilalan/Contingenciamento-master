@@ -8,11 +8,11 @@ namespace Contingenciamento.Entidades
 {
     public class Role
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string CBOCode { get; set; }
         public string Name { get; set; }
 
-        public Role(int id, string cBOCode, string name)
+        public Role(long id, string cBOCode, string name)
         {
             Id = id;
             CBOCode = cBOCode;

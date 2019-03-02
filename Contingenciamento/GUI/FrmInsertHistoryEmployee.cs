@@ -15,20 +15,25 @@ namespace Contingenciamento
     {
         Facade _facade = new Facade();
         DataSet result;
-        HashSet<EmployeeHistory> employeeHistories;
-        //HashSet<Contract> contracts;
+        Contract contract;
 
+        HashSet<EmployeeHistory> employeeHistories;
+
+        //Lista com entidades recuperadas do banco de dados
         List<Department> allDepartments;
         List<Role> allRoles;
         List<Employee> allEmployees;
         List<Contract> allContracts;
+        List<EmployeeHistory> allEmployeeHistory;
 
-        private List<EmployeeHistory> allEmployeeHistory;
+        //Novas entidades a serem cadastradas
+        HashSet<Department> newDepartments;
+        HashSet<Employee> newEmployees;
+
 
         public FrmInsertHistoryEmployee()
         {
             InitializeComponent();
-            //this.btnSave.BackColor = Color.FromArgb(0, 149, 255);
         }
 
         private void FrmInsertHistoryEmployee_Load(object sender, EventArgs e)
@@ -112,6 +117,171 @@ namespace Contingenciamento
             }
         }
 
+        //Processar os dados da planilha e prepará-los nas classes para salvar na BD posteriormente
+        private void btnProcess_Click(object sender, EventArgs e)
+        {
+            //try
+            //{
+                if (this.result.Tables.Count > 0)
+                {
+                    if (cboSheet.SelectedIndex == -1)
+                    {
+                        MessageBox.Show("Antes de processar, escolha uma planilha na caixa de seleção de planilhas.", "Selecione uma Planilha", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        this.employeeHistories = new HashSet<EmployeeHistory>(new EmployeeHistoryComparer());
+                        List<DataRow> invalidLinesSet = new List<DataRow>();
+                        List<DataRow> preDatesLinesSet = new List<DataRow>();
+                        EmployeeHistory employeeHistory;
+                        Employee employee;
+                        Department department;
+                        DataTable worksheet = this.result.Tables[cboSheet.SelectedIndex];
+                        int lines = worksheet.Rows.Count;
+                        string empName, empMatriculation, depCode, depName;
+                        DateTime empAdmDate, empDemDate;
+                        int mes;
+                        int ano;
+                        this.pbProcess.Maximum = lines;
+
+                        for (var i = 0; i < lines; i++)
+                        {
+                            employeeHistory = new EmployeeHistory();
+                            employee = new Employee();
+                            department = new Department();
+                            empMatriculation = empName = depCode = depName = "";
+                            empAdmDate = empDemDate = DateTime.MinValue;
+
+                            if (_CheckValidLine(worksheet.Rows[i]))
+                            {
+                                //só aceita registros a partir de 6/2014
+                                if (_CheckTimeRule(worksheet.Rows[i][8], worksheet.Rows[i][9]))
+                                {
+                                    if (!String.IsNullOrEmpty(worksheet.Rows[i][1].ToString()))
+                                    {
+                                        empMatriculation = _FormatMatriculation(worksheet.Rows[i][1].ToString());
+                                    }
+
+                                    if (!String.IsNullOrEmpty(worksheet.Rows[i][2].ToString()))
+                                    {
+                                        empName = worksheet.Rows[i][2].ToString();
+                                    }
+
+                                    if (!(worksheet.Rows[i][3] is DBNull))
+                                    {
+                                        empAdmDate = (DateTime)worksheet.Rows[i][3];
+                                        //employeeHistory.Employee.CurrentAdmissionDate = (DateTime)worksheet.Rows[i][3];
+                                    }
+
+                                    if (!(worksheet.Rows[i][4] is DBNull))
+                                    {
+                                        empDemDate = (DateTime)worksheet.Rows[i][4];
+                                        //employeeHistory.Employee.CurrentDemissionDate = (DateTime)worksheet.Rows[i][4];
+                                    }
+
+                                    if (!String.IsNullOrEmpty(worksheet.Rows[i][5].ToString()))
+                                    {
+                                        depCode = _FormatDeptCode(worksheet.Rows[i][5].ToString());
+                                    }
+                                    if (!String.IsNullOrEmpty(worksheet.Rows[i][6].ToString()))
+                                    {
+                                        depName = worksheet.Rows[i][6].ToString();
+                                    }
+
+                                    employeeHistory.BaseSalary = (double)worksheet.Rows[i][7];
+                                    mes = Convert.ToInt32(worksheet.Rows[i][8]);
+                                    ano = Convert.ToInt32(worksheet.Rows[i][9]);
+                                    employeeHistory.Epoch = new DateTime(ano, mes, 1);
+                                    employeeHistory.InVacation = worksheet.Rows[i][10].ToString().ToUpper() == "S" ? true : false;
+
+                                    if (!(worksheet.Rows[i][11] is DBNull))
+                                    {
+                                        employeeHistory.StartVacationTaken = (DateTime)worksheet.Rows[i][11];
+                                    }
+
+                                    if (!(worksheet.Rows[i][12] is DBNull))
+                                    {
+                                        employeeHistory.EndVacationTaken = (DateTime)worksheet.Rows[i][12];
+                                    }
+
+                                    employeeHistory.TotalEarnings = (double)worksheet.Rows[i][13];
+                                    employeeHistory.NetSalary = (double)worksheet.Rows[i][14];
+                                    employeeHistory.HazardAdditional = (double)worksheet.Rows[i][15];
+                                    employeeHistory.DangerousnessAdditional = (double)worksheet.Rows[i][16];
+                                    employeeHistory.ThirteenthSalary = (double)worksheet.Rows[i][17];
+                                    employeeHistory.ThirteenthProportionalSalary = (double)worksheet.Rows[i][18];
+                                    employeeHistory.VacationPay = (double)worksheet.Rows[i][19];
+                                    employeeHistory.VacationProportionalPay = (double)worksheet.Rows[i][20];
+                                    employeeHistory.PenaltyRescission = (double)worksheet.Rows[i][21];
+                                    employeeHistory.Contract = this.contract;
+                                    employeeHistory.Processed = false;
+
+                                    //Caso não encontre o Employee na base de dados, insere ele no banco com as informações limitadas
+                                    employeeHistory.Employee = _GetEmployeeByMatriculation(empMatriculation);
+                                    if (employeeHistory.Employee == null)
+                                    {
+                                        employee = new Employee(empName, empMatriculation, empAdmDate);
+                                        employee.AdmissionDemissionHistories.Add(new AdmissionDemissionHistory(empAdmDate, empMatriculation));
+                                        employee.Id = _facade.InsertEmployee(employee);
+                                        if (employee.Id > 0)
+                                        {
+                                            allEmployees.Add(employee);
+                                        }
+                                        employeeHistory.Employee = employee;
+                                    }
+
+                                    employeeHistory.Department = _GetDeptByCode(depCode);
+                                    if (employeeHistory.Department == null)
+                                    {
+                                        department = new Department(depCode, depName);
+                                        department.Id = _facade.InsertDepartment(department);
+                                        if (department.Id > 0)
+                                        {
+                                            allDepartments.Add(department);
+                                        }
+                                        employeeHistory.Department = department;
+                                        //invalidLinesSet.Add(worksheet.Rows[i]);
+                                        //continue;
+                                    }
+
+                                    this.employeeHistories.Add(employeeHistory);
+                                }
+                                else
+                                {
+                                    preDatesLinesSet.Add(worksheet.Rows[i]);
+                                }
+                            }
+                            else
+                            {
+                                invalidLinesSet.Add(worksheet.Rows[i]);
+                            }
+
+                            this.pbProcess.Increment(1);
+                        }
+
+                        StringBuilder strBuilder = new StringBuilder();
+                        strBuilder.AppendLine("Dados de informação do HISTÓRICO de FUNCIONÁRIOS processados com sucesso!");
+                        strBuilder.Append("Quantidade de Histórico de Funcionário carregada na memória: ");
+                        strBuilder.AppendLine("" + this.employeeHistories.Count);
+                        strBuilder.Append("Quantidade de Linhas inválidas por registros nulos: ");
+                        strBuilder.AppendLine("" + invalidLinesSet.Count);
+                        strBuilder.Append("Quantidade de Linhas não carregadas por conta de Data anterior à 06/2014: ");
+                        strBuilder.AppendLine("" + preDatesLinesSet.Count);
+                        strBuilder.AppendLine("Clique no botão Salvar para inserir na base de dados e aguarde a conclusão da tarefa.");
+                        this.txtOutput.Text = strBuilder.ToString();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("O arquivo carregado não possui nenhuma planilha de trabalho.", "Leitura de Arquivo Excel", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            //}
+            //catch(Exception ex)
+            //{
+            //    MessageBox.Show("Erro no Processamento: " + ex.Message, "Erro no Processamento", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
+        }
+
         //Salvar as informacoes na base de dados
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -140,135 +310,22 @@ namespace Contingenciamento
             }
         }
 
+        private void cbContracts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.contract = this.cbContracts.SelectedItem as Contract;
+        }
+
         private void cboSheet_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!(cboSheet.SelectedIndex >= result.Tables.Count))
                 dataGridView1.DataSource = result.Tables[cboSheet.SelectedIndex];
             else
                 MessageBox.Show("Planilha não existente.", "Erro de Seleção de Planilha", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        private void btnProcess_Click(object sender, EventArgs e)
-        {
-            if (this.result.Tables.Count > 0)
-            {
-                if (cboSheet.SelectedIndex == -1)
-                {
-                    MessageBox.Show("Antes de processar, escolha uma planliha na caixa de seleção de planilhas.", "Selecione uma Planilha", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                else
-                {
-                    this.employeeHistories = new HashSet<EmployeeHistory>(new EmployeeHistoryComparer());
-                    List<DataRow> invalidLinesSet = new List<DataRow>();
-                    List<DataRow> preDatesLinesSet = new List<DataRow>();
-                    EmployeeHistory employeeHistory;
-                    DataTable worksheet = this.result.Tables[cboSheet.SelectedIndex];
-                    int lines = worksheet.Rows.Count;
-                    int mes;
-                    int ano;
-                    this.pbProcess.Maximum = lines;
-
-                    for (var i = 0; i < lines; i++)
-                    {
-                        employeeHistory = new EmployeeHistory();
-
-                        if (_CheckValidLine(worksheet.Rows[i]))
-                        {
-                            //só aceita registros a partir de 6/2014
-                            if (_CheckTimeRule(worksheet.Rows[i][8], worksheet.Rows[i][9]))
-                            {
-                                if (!String.IsNullOrEmpty(worksheet.Rows[i][1].ToString()))
-                                {
-                                    employeeHistory.Employee = _GetEmployeeByMatriculation(_FormatMatriculation(worksheet.Rows[i][1].ToString()));
-                                    if (employeeHistory.Employee == null)
-                                    {
-                                        invalidLinesSet.Add(worksheet.Rows[i]);
-                                        continue;
-                                    }
-                                }
-
-                                if (!(worksheet.Rows[i][3] is DBNull))
-                                {
-                                    employeeHistory.Employee.CurrentAdmissionDate = (DateTime)worksheet.Rows[i][3];
-                                }
-
-                                if (!(worksheet.Rows[i][4] is DBNull))
-                                {
-                                    employeeHistory.Employee.CurrentDemissionDate = (DateTime)worksheet.Rows[i][4];
-                                }
-
-                                if (!String.IsNullOrEmpty(worksheet.Rows[i][5].ToString()))
-                                {
-                                    employeeHistory.Department = _GetDeptByCode(_FormatDeptCode(worksheet.Rows[i][5].ToString()));
-                                    if (employeeHistory.Department == null)
-                                    {
-                                        invalidLinesSet.Add(worksheet.Rows[i]);
-                                        continue;
-                                    }
-                                }
-
-                                employeeHistory.BaseSalary = (double)worksheet.Rows[i][7];
-                                mes = Convert.ToInt32(worksheet.Rows[i][8]);
-                                ano = Convert.ToInt32(worksheet.Rows[i][9]);
-                                employeeHistory.Epoch = new DateTime(ano,mes,1);
-                                employeeHistory.InVacation = worksheet.Rows[i][10].ToString().ToUpper() == "S" ? true : false;
-
-                                if (!(worksheet.Rows[i][11] is DBNull))
-                                {
-                                    employeeHistory.StartVacationTaken = (DateTime)worksheet.Rows[i][11];
-                                }
-
-                                if (!(worksheet.Rows[i][12] is DBNull))
-                                {
-                                    employeeHistory.EndVacationTaken = (DateTime)worksheet.Rows[i][12];
-                                }
-
-                                employeeHistory.TotalEarnings = (double)worksheet.Rows[i][13];
-                                employeeHistory.NetSalary = (double)worksheet.Rows[i][14];
-                                employeeHistory.HazardAdditional = (double)worksheet.Rows[i][15];
-                                employeeHistory.DangerousnessAdditional = (double)worksheet.Rows[i][16];
-                                employeeHistory.ThirteenthSalary = (double)worksheet.Rows[i][17];
-                                employeeHistory.ThirteenthProportionalSalary = (double)worksheet.Rows[i][18];
-                                employeeHistory.VacationPay = (double)worksheet.Rows[i][19];
-                                employeeHistory.VacationProportionalPay = (double)worksheet.Rows[i][20];
-                                employeeHistory.PenaltyRescission = (double)worksheet.Rows[i][21];
-
-                                this.employeeHistories.Add(employeeHistory);
-                            }
-                            else
-                            {
-                                preDatesLinesSet.Add(worksheet.Rows[i]);
-                            }
-                        }
-                        else
-                        {
-                            invalidLinesSet.Add(worksheet.Rows[i]);
-                        }
-                        
-                        this.pbProcess.Increment(1);
-                    }
-
-                    StringBuilder strBuilder = new StringBuilder();
-                    strBuilder.AppendLine("Dados de informação do HISTÓRICO de FUNCIONÁRIOS processados com sucesso!");
-                    strBuilder.Append("Quantidade de Cargos carregados: ");
-                    strBuilder.AppendLine("" + this.employeeHistories.Count);
-                    strBuilder.Append("Quantidade de Linhas inválidas por registros nulos: ");
-                    strBuilder.AppendLine("" + invalidLinesSet.Count);
-                    strBuilder.Append("Quantidade de Linhas não carregadas por conta de Data anterior à 06/2014: ");
-                    strBuilder.AppendLine("" + preDatesLinesSet.Count);
-                    strBuilder.AppendLine("Clique no botão Salvar para inserir na base de dados e aguarde a conclusão da tarefa.");
-                    this.txtOutput.Text = strBuilder.ToString();
-                }                
-            } 
-            else
-            {
-                MessageBox.Show("O arquivo carregado não possui nenhuma planilha de trabalho.", "Leitura de Arquivo Excel", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
+        }        
 
         private bool _CheckValidLine (DataRow line)
         {
-            if ((line[1] is DBNull) && (line[2] is DBNull) && (line[5] is DBNull) && (line[6] is DBNull) && (line[7] is DBNull)
+            if ((line[1] is DBNull) && (line[2] is DBNull) && (line[7] is DBNull)
                 && (line[8] is DBNull) && (line[9] is DBNull) && (line[13] is DBNull))
             {
                 return false;
@@ -346,6 +403,13 @@ namespace Contingenciamento
             return retDep;
         }
 
+        private void _EnableAllButons(bool flag)
+        {
+            this.btnImportWorksheet.Enabled = flag;
+            this.btnProcess.Enabled = flag;
+            this.btnSave.Enabled = flag;
+        }
+
         private void bgWorkerDatabase_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             int rowsAffected = _facade.InsertEmployeeHistoryList(employeeHistories);
@@ -367,11 +431,5 @@ namespace Contingenciamento
             _EnableAllButons(true);
         }   
         
-        private void _EnableAllButons(bool flag)
-        {
-            this.btnImportWorksheet.Enabled = flag;
-            this.btnProcess.Enabled = flag;
-            this.btnSave.Enabled = flag;
-        }        
     }
 }

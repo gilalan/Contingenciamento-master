@@ -15,13 +15,21 @@ namespace Contingenciamento.DAO
             NpgsqlDataReader reader = null;
             try
             {
-                string cmdSelect = "Select * from extra_funds Where id = " + id;
+                string cmdSelect = "SELECT ef.id as ef_id, ef.name as ef_name, mf.id as mf_id, mf.name as mf_name " +
+                    "FROM (extra_funds ef INNER JOIN monetary_funds mf ON (ef.monetary_funds_id = mf.id)) " +
+                    "WHERE ef.id = :passedId ORDER BY ef.id";
+                //string cmdSelect = "SELECT * FROM extra_funds WHERE id = " + id;
+
+                NpgsqlCommand cmd = new NpgsqlCommand(cmdSelect);
+                cmd.Parameters.Add(new NpgsqlParameter("passedId", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters[0].Value = id;
+
                 dal.OpenConnection();
-                reader = dal.ExecuteDataReader(cmdSelect);
+                reader = dal.ExecuteDataReader(cmd);
 
                 if (reader.Read())
                 {
-                    extraFund.Id = Convert.ToInt32(reader["id"]);
+                    extraFund.Id = Convert.ToInt64(reader["id"]);
                     extraFund.Name = reader["name"].ToString();
                 }
                 reader.Close();
@@ -54,9 +62,9 @@ namespace Contingenciamento.DAO
                 while (reader.Read())
                 {
                     ExtraFund extraFund = new ExtraFund();
-                    extraFund.Id = Convert.ToInt32(reader["ef_id"]);
+                    extraFund.Id = Convert.ToInt64(reader["ef_id"]);
                     extraFund.Name = reader["ef_name"].ToString();
-                    extraFund.MonetaryFund = new MonetaryFund(Convert.ToInt32(reader["mf_id"]),
+                    extraFund.MonetaryFund = new MonetaryFund(Convert.ToInt64(reader["mf_id"]),
                         reader["mf_name"].ToString(), true);
 
                     extraFunds.Add(extraFund);
@@ -86,7 +94,7 @@ namespace Contingenciamento.DAO
                 NpgsqlCommand cmd = new NpgsqlCommand(cmdInsert);
 
                 cmd.Parameters.Add(new NpgsqlParameter("name", NpgsqlTypes.NpgsqlDbType.Text));
-                cmd.Parameters.Add(new NpgsqlParameter("monetaryFundId", NpgsqlTypes.NpgsqlDbType.Integer));
+                cmd.Parameters.Add(new NpgsqlParameter("monetaryFundId", NpgsqlTypes.NpgsqlDbType.Bigint));
 
                 cmd.Parameters[0].Value = extraFund.Name;
 
@@ -118,7 +126,7 @@ namespace Contingenciamento.DAO
                 NpgsqlCommand cmd = new NpgsqlCommand(cmdInsert);
 
                 cmd.Parameters.Add(new NpgsqlParameter("name", NpgsqlTypes.NpgsqlDbType.Text));
-                cmd.Parameters.Add(new NpgsqlParameter("monetaryFundId", NpgsqlTypes.NpgsqlDbType.Integer));
+                cmd.Parameters.Add(new NpgsqlParameter("monetaryFundId", NpgsqlTypes.NpgsqlDbType.Bigint));
 
                 dal.OpenConnection();
                 foreach (var extraFund in extraFundList)
@@ -144,7 +152,7 @@ namespace Contingenciamento.DAO
                     + " WHERE \"id\" = '" + id + "' ;");
 
                 cmd.Parameters.Add(new NpgsqlParameter("name", NpgsqlTypes.NpgsqlDbType.Text));
-                cmd.Parameters.Add(new NpgsqlParameter("monetaryFundId", NpgsqlTypes.NpgsqlDbType.Integer));
+                cmd.Parameters.Add(new NpgsqlParameter("monetaryFundId", NpgsqlTypes.NpgsqlDbType.Bigint));
 
                 cmd.Parameters[0].Value = extraFund.Name;
                 cmd.Parameters[1].Value = extraFund.MonetaryFund.Id;

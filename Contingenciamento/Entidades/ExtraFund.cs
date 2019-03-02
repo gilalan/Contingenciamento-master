@@ -2,11 +2,11 @@
 {
     public class ExtraFund
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public MonetaryFund MonetaryFund { get; set; }
 
-        public ExtraFund(int id, string name)
+        public ExtraFund(long id, string name)
         {
             Id = id;
             Name = name;

@@ -25,7 +25,7 @@ namespace Contingenciamento.DAO
 
                 if (reader.Read())
                 {
-                    admissionDemissionHistory.Id = Convert.ToInt32(reader["id"]);
+                    admissionDemissionHistory.Id = Convert.ToInt64(reader["id"]);
                     admissionDemissionHistory.AdmissionDate = Convert.ToDateTime(reader["admission"]);
                     admissionDemissionHistory.DemissionDate = Convert.ToDateTime(reader["demission"]);
                     admissionDemissionHistory.Matriculation = reader["matriculation"].ToString();
@@ -57,7 +57,7 @@ namespace Contingenciamento.DAO
                 while (reader.Read())
                 {
                     AdmissionDemissionHistory admissionDemissionHistory = new AdmissionDemissionHistory();
-                    admissionDemissionHistory.Id = Convert.ToInt32(reader["id"]);
+                    admissionDemissionHistory.Id = Convert.ToInt64(reader["id"]);
                     admissionDemissionHistory.AdmissionDate = Convert.ToDateTime(reader["admission"]);
                     admissionDemissionHistory.DemissionDate = Convert.ToDateTime(reader["demission"]);
                     admissionDemissionHistory.Matriculation = reader["matriculation"].ToString();
@@ -88,8 +88,8 @@ namespace Contingenciamento.DAO
 
                 cmd.Parameters.Add(new NpgsqlParameter("admission", NpgsqlTypes.NpgsqlDbType.Date));
                 cmd.Parameters.Add(new NpgsqlParameter("demission", NpgsqlTypes.NpgsqlDbType.Date));
-                cmd.Parameters.Add(new NpgsqlParameter("role_id", NpgsqlTypes.NpgsqlDbType.Integer));
-                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Integer));
+                cmd.Parameters.Add(new NpgsqlParameter("role_id", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Bigint));
                 cmd.Parameters.Add(new NpgsqlParameter("matriculation", NpgsqlTypes.NpgsqlDbType.Text));
 
                 if (oAdmissionDemissionHistory.AdmissionDate == null)
@@ -142,8 +142,8 @@ namespace Contingenciamento.DAO
 
                 cmd.Parameters.Add(new NpgsqlParameter("admission", NpgsqlTypes.NpgsqlDbType.Date));
                 cmd.Parameters.Add(new NpgsqlParameter("demission", NpgsqlTypes.NpgsqlDbType.Date));
-                cmd.Parameters.Add(new NpgsqlParameter("role_id", NpgsqlTypes.NpgsqlDbType.Integer));
-                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Integer));
+                cmd.Parameters.Add(new NpgsqlParameter("role_id", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Bigint));
                 cmd.Parameters.Add(new NpgsqlParameter("matriculation", NpgsqlTypes.NpgsqlDbType.Text));
                 dal.OpenConnection();
 
@@ -192,7 +192,7 @@ namespace Contingenciamento.DAO
             }
         }
 
-        public void InsertAll (List<AdmissionDemissionHistory> admissionDemissionHistories, int employeeId)
+        public void InsertAll (List<AdmissionDemissionHistory> admissionDemissionHistories, long employeeId)
         {
             try
             {
@@ -203,8 +203,8 @@ namespace Contingenciamento.DAO
 
                 cmd.Parameters.Add(new NpgsqlParameter("admission", NpgsqlTypes.NpgsqlDbType.Date));
                 cmd.Parameters.Add(new NpgsqlParameter("demission", NpgsqlTypes.NpgsqlDbType.Date));
-                cmd.Parameters.Add(new NpgsqlParameter("role_id", NpgsqlTypes.NpgsqlDbType.Integer));
-                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Integer));
+                cmd.Parameters.Add(new NpgsqlParameter("role_id", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Bigint));
                 cmd.Parameters.Add(new NpgsqlParameter("matriculation", NpgsqlTypes.NpgsqlDbType.Text));
                 dal.OpenConnection();
 
@@ -265,8 +265,8 @@ namespace Contingenciamento.DAO
 
                 cmd.Parameters.Add(new NpgsqlParameter("admission", NpgsqlTypes.NpgsqlDbType.Date));
                 cmd.Parameters.Add(new NpgsqlParameter("demission", NpgsqlTypes.NpgsqlDbType.Date));
-                cmd.Parameters.Add(new NpgsqlParameter("role_id", NpgsqlTypes.NpgsqlDbType.Integer));
-                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Integer));
+                cmd.Parameters.Add(new NpgsqlParameter("role_id", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Bigint));
                 cmd.Parameters.Add(new NpgsqlParameter("matriculation", NpgsqlTypes.NpgsqlDbType.Text));
 
                 if (oAdmissionDemissionHistory.AdmissionDate == null)

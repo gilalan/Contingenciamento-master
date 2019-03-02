@@ -27,14 +27,14 @@ namespace Contingenciamento.DAO
                 {
                     extraFund = null;
                     monetaryFund = new MonetaryFund();
-                    monetaryFund.Id = Convert.ToInt32(reader["mf_id"]);
+                    monetaryFund.Id = Convert.ToInt64(reader["mf_id"]);
                     monetaryFund.Name = reader["mf_name"].ToString();
                     monetaryFund.Primal = Convert.ToBoolean(reader["mf_primal"]);
 
                     if (reader["ef_id"] != DBNull.Value && reader["ef_name"] != DBNull.Value)
                     {
                         extraFund = new ExtraFund();
-                        extraFund.Id = Convert.ToInt32(reader["ef_id"]);
+                        extraFund.Id = Convert.ToInt64(reader["ef_id"]);
                         extraFund.Name = reader["ef_name"].ToString();
                         monetaryFund.ExtraFunds.Add(extraFund);
                     }
@@ -85,14 +85,14 @@ namespace Contingenciamento.DAO
                 {
                     extraFund = null;
                     monetaryFund = new MonetaryFund();
-                    monetaryFund.Id = Convert.ToInt32(reader["mf_id"]);
+                    monetaryFund.Id = Convert.ToInt64(reader["mf_id"]);
                     monetaryFund.Name = reader["mf_name"].ToString();
                     monetaryFund.Primal = Convert.ToBoolean(reader["mf_primal"]);
                     
                     if (reader["ef_id"] != DBNull.Value && reader["ef_name"] != DBNull.Value)
                     {
                         extraFund = new ExtraFund();
-                        extraFund.Id = Convert.ToInt32(reader["ef_id"]);
+                        extraFund.Id = Convert.ToInt64(reader["ef_id"]);
                         extraFund.Name = reader["ef_name"].ToString();
                         monetaryFund.ExtraFunds.Add(extraFund);
                     }

@@ -8,8 +8,8 @@ namespace Contingenciamento.Entidades
 {
     public class Bank
     {
-        public int Id { get; set; }
-        public int EmployeeId { get; set; }
+        public long Id { get; set; }
+        public long EmployeeId { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Agency { get; set; }
@@ -17,7 +17,7 @@ namespace Contingenciamento.Entidades
         public string DV { get; set; }
         public double Balance { get; set; }
 
-        public Bank(int id, string code, string name, string agency, string account, string dV, double balance)
+        public Bank(long id, string code, string name, string agency, string account, string dV, double balance)
         {
             Id = id;
             Code = code;
@@ -28,7 +28,7 @@ namespace Contingenciamento.Entidades
             Balance = balance;
         }
 
-        public Bank(int id, string name, string agency, string account, double balance)
+        public Bank(long id, string name, string agency, string account, double balance)
         {
             Id = id;
             Name = name;

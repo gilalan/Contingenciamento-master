@@ -26,6 +26,33 @@ namespace Contingenciamento.Entidades
         public double VacationPay { get; set; }
         public double VacationProportionalPay { get; set; }
         public double PenaltyRescission { get; set; }
+        public bool Processed { get; set; }
+
+        public EmployeeHistory(long id, Employee employee, Department department, Contract contract, DateTime epoch, double baseSalary, 
+            double netSalary, double totalEarnings, bool inVacation, DateTime startVacationTaken, DateTime endVacationTaken, double hazardAdditional, 
+            double dangerousnessAdditional, double thirteenthSalary, double thirteenthProportionalSalary, double vacationPay, 
+            double vacationProportionalPay, double penaltyRescission, bool processed)
+        {
+            Id = id;
+            Employee = employee;
+            Department = department;
+            Contract = contract;
+            Epoch = epoch;
+            BaseSalary = baseSalary;
+            NetSalary = netSalary;
+            TotalEarnings = totalEarnings;
+            InVacation = inVacation;
+            StartVacationTaken = startVacationTaken;
+            EndVacationTaken = endVacationTaken;
+            HazardAdditional = hazardAdditional;
+            DangerousnessAdditional = dangerousnessAdditional;
+            ThirteenthSalary = thirteenthSalary;
+            ThirteenthProportionalSalary = thirteenthProportionalSalary;
+            VacationPay = vacationPay;
+            VacationProportionalPay = vacationProportionalPay;
+            PenaltyRescission = penaltyRescission;
+            Processed = processed;
+        }
 
         public EmployeeHistory(long id, Employee employee, Department department, Contract contract, DateTime epoch, double baseSalary, 
             double netSalary, double totalEarnings, bool inVacation, DateTime startVacationTaken, DateTime endVacationTaken, double hazardAdditional, 
@@ -81,7 +108,7 @@ namespace Contingenciamento.Entidades
             TimeSpan diff = obj.Epoch.ToUniversalTime() - origin;
             int totalSecs = Convert.ToInt32 (Math.Floor((diff.TotalSeconds)));
 
-            return obj.Employee.Id ^ totalSecs ^ Convert.ToInt32(obj.InVacation);
+            return Convert.ToInt32(obj.Employee.Id) ^ totalSecs ^ Convert.ToInt32(obj.InVacation);
         }
     }
 }

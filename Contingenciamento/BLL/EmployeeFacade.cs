@@ -9,7 +9,7 @@ namespace Contingenciamento.BLL
 {
     public partial class Facade
     {
-        public int InsertEmployee(Employee employee)
+        public long InsertEmployee(Employee employee)
         {
             return this._employeeDAO.Insert(employee);
         }

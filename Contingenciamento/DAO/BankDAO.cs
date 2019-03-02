@@ -15,13 +15,13 @@ namespace Contingenciamento.DAO
             NpgsqlDataReader reader = null;
             try
             {
-                string selectCMD = "Select * from bank_data Where id = " + id;
+                string SELECTCMD = "SELECT * FROM bank_data WHERE id = " + id;
                 dal.OpenConnection();
-                reader = dal.ExecuteDataReader(selectCMD);
+                reader = dal.ExecuteDataReader(SELECTCMD);
 
                 if (reader.Read())
                 {
-                    bank.Id = Convert.ToInt32(reader["id"]);
+                    bank.Id = Convert.ToInt64(reader["id"]);
                     bank.Name = reader["name"].ToString();
                     bank.Code = reader["code"].ToString();
                     bank.Agency = reader["agency"].ToString();
@@ -48,14 +48,14 @@ namespace Contingenciamento.DAO
             NpgsqlDataReader reader = null;
             try
             {
-                string query = "select * from bank_data";
+                string query = "SELECT * FROM bank_data";
                 dal.OpenConnection();
                 reader = dal.ExecuteDataReader(query);
 
                 while (reader.Read())
                 {
                     Bank bank = new Bank();
-                    bank.Id = Convert.ToInt32(reader["id"]);
+                    bank.Id = Convert.ToInt64(reader["id"]);
                     bank.Name = reader["name"].ToString();
                     bank.Code = reader["code"].ToString();
                     bank.Agency = reader["agency"].ToString();
@@ -91,7 +91,7 @@ namespace Contingenciamento.DAO
                 cmd.Parameters.Add(new NpgsqlParameter("agency", NpgsqlTypes.NpgsqlDbType.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("account", NpgsqlTypes.NpgsqlDbType.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("dv", NpgsqlTypes.NpgsqlDbType.Text));
-                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Integer));
+                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Bigint));
 
                 cmd.Parameters[0].Value = oBank.Name;
                 cmd.Parameters[1].Value = oBank.Code;
@@ -125,7 +125,7 @@ namespace Contingenciamento.DAO
                 cmd.Parameters.Add(new NpgsqlParameter("agency", NpgsqlTypes.NpgsqlDbType.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("account", NpgsqlTypes.NpgsqlDbType.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("dv", NpgsqlTypes.NpgsqlDbType.Text));
-                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Integer));
+                cmd.Parameters.Add(new NpgsqlParameter("employee_id", NpgsqlTypes.NpgsqlDbType.Bigint));
                 dal.OpenConnection();
 
                 foreach (var oBank in bankList)
@@ -187,7 +187,7 @@ namespace Contingenciamento.DAO
             int rowsAffected = -1;
             try
             {
-                string deleteCMD = String.Format("Delete From bank_data Where id = '{0}'", id);
+                string deleteCMD = String.Format("DELETE FROM bank_data WHERE id = '{0}'", id);
 
                 dal.OpenConnection();
                 rowsAffected = dal.ExecuteNonQuery(deleteCMD);

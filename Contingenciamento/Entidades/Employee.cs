@@ -8,8 +8,8 @@ namespace Contingenciamento.Entidades
 {
     public class Employee
     {
-        public int Id { get; set; }
-        public int SollId { get; set; }
+        public long Id { get; set; }
+        public long SollId { get; set; }
         public string Name { get; set; }
         public string Matriculation { get; set; }
         public string PIS { get; set; }
@@ -22,7 +22,7 @@ namespace Contingenciamento.Entidades
         public DateTime CurrentDemissionDate { get; set; }
         public List<AdmissionDemissionHistory> AdmissionDemissionHistories { get; set; }
 
-        public Employee(int id, int sollId, string name, string matriculation, string pIS, string cPF, string status, DateTime birthday, Bank bankData, Role role, DateTime currentAdmissionDate, DateTime currentDemissionDate, List<AdmissionDemissionHistory> admissionDemissionHistories)
+        public Employee(long id, long sollId, string name, string matriculation, string pIS, string cPF, string status, DateTime birthday, Bank bankData, Role role, DateTime currentAdmissionDate, DateTime currentDemissionDate, List<AdmissionDemissionHistory> admissionDemissionHistories)
         {
             Id = id;
             SollId = sollId;
@@ -49,6 +49,14 @@ namespace Contingenciamento.Entidades
             BankData = bankData;
             Birthday = birthday;
             CurrentAdmissionDate = currentAdmissionDate;
+            AdmissionDemissionHistories = new List<AdmissionDemissionHistory>();
+        }
+
+        public Employee(string name, string matriculation, DateTime currentAdmDate)
+        {
+            Name = name;
+            Matriculation = matriculation;
+            CurrentAdmissionDate = currentAdmDate;
             AdmissionDemissionHistories = new List<AdmissionDemissionHistory>();
         }
 
