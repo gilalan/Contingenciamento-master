@@ -76,10 +76,12 @@ namespace Contingenciamento.DAO
             NpgsqlDataReader reader = null;
             try
             {
-                string query = "SELECT dep.id as dep_id, dep.name as dep_name, dep.code as dep_code, dep.contract_id as dep_contract_id, " +
-                    "ct.id as ct_id, ct.name as ct_name " +
-                    "FROM (departments dep LEFT JOIN contracts ct ON (dep.contract_id = ct.id)) " +
-                    "ORDER BY dep.id";
+                //string query = "SELECT dep.id as dep_id, dep.name as dep_name, dep.code as dep_code, " +
+                //"ct.id as ct_id, ct.name as ct_name " +
+                //"FROM (departments dep LEFT JOIN contracts ct ON (dep.contract_id = ct.id)) " +
+                //"ORDER BY dep.id";
+                string query = "SELECT dep.id as dep_id, dep.name as dep_name, dep.code as dep_code " +
+                    "FROM departments dep ORDER BY dep.id";
                 dal.OpenConnection();
                 reader = dal.ExecuteDataReader(query);
 
@@ -89,12 +91,7 @@ namespace Contingenciamento.DAO
                     department.Id = Convert.ToInt64(reader["dep_id"]);
                     department.Name = reader["dep_name"].ToString();
                     department.Code = reader["dep_code"].ToString();
-                    if (!(reader["dep_contract_id"] is DBNull))
-                    {
-                        department.Contract = new Contract(Convert.ToInt64(reader["ct_id"]),
-                            reader["ct_name"].ToString());
-                    }
-
+                    
                     departments.Add(department);
                 }
                 reader.Close();
@@ -117,21 +114,15 @@ namespace Contingenciamento.DAO
             long returnedId = -1;
             try
             {
-                string cmdInsert = "INSERT INTO departments (name, code, contract_id) VALUES (:name, :code, :contractId) RETURNING id";
+                string cmdInsert = "INSERT INTO departments (name, code) VALUES (:name, :code) RETURNING id";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(cmdInsert);
 
                 cmd.Parameters.Add(new NpgsqlParameter("name", NpgsqlTypes.NpgsqlDbType.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("code", NpgsqlTypes.NpgsqlDbType.Text));
-                cmd.Parameters.Add(new NpgsqlParameter("contractId", NpgsqlTypes.NpgsqlDbType.Integer));
 
                 cmd.Parameters[0].Value = department.Name;
                 cmd.Parameters[1].Value = department.Code;
-
-                if (department.Contract == null)
-                    cmd.Parameters[2].Value = DBNull.Value;
-                else
-                    cmd.Parameters[2].Value = department.Contract.Id;
 
                 dal.OpenConnection();
                 obj = dal.ExecuteScalar(cmd);
@@ -152,13 +143,12 @@ namespace Contingenciamento.DAO
             int count = 0;
             try
             {
-                string cmdInsert = "INSERT INTO departments (name, code, contract_id) VALUES (:name, :code, :contractId) RETURNING id";
+                string cmdInsert = "INSERT INTO departments (name, code) VALUES (:name, :code) RETURNING id";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(cmdInsert);
 
                 cmd.Parameters.Add(new NpgsqlParameter("name", NpgsqlTypes.NpgsqlDbType.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("code", NpgsqlTypes.NpgsqlDbType.Text));
-                cmd.Parameters.Add(new NpgsqlParameter("contractId", NpgsqlTypes.NpgsqlDbType.Integer));
                 int rowsAffected = -1;
 
                 dal.OpenConnection();
@@ -166,10 +156,7 @@ namespace Contingenciamento.DAO
                 {
                     cmd.Parameters[0].Value = department.Name;
                     cmd.Parameters[1].Value = department.Code;
-                    if (department.Contract == null)
-                        cmd.Parameters[2].Value = DBNull.Value;
-                    else
-                        cmd.Parameters[2].Value = department.Contract.Id;
+                    
                     rowsAffected = dal.ExecuteNonQuery(cmd);
                     if (rowsAffected > 0)
                         count++;
@@ -188,16 +175,14 @@ namespace Contingenciamento.DAO
             int rowsAffected = -1;
             try
             {
-                NpgsqlCommand cmd = new NpgsqlCommand("UPDATE departments SET \"name\" = :name, \"code\" = :code, \"contract_id\" = :contractId"
+                NpgsqlCommand cmd = new NpgsqlCommand("UPDATE departments SET \"name\" = :name, \"code\" = :code"
                     + " WHERE \"id\" = '" + id + "' ;");
 
                 cmd.Parameters.Add(new NpgsqlParameter("name", NpgsqlTypes.NpgsqlDbType.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("code", NpgsqlTypes.NpgsqlDbType.Text));
-                cmd.Parameters.Add(new NpgsqlParameter("contractId", NpgsqlTypes.NpgsqlDbType.Integer));
 
                 cmd.Parameters[0].Value = department.Name;
                 cmd.Parameters[1].Value = department.Code;
-                cmd.Parameters[2].Value = department.Contract.Id;
 
                 dal.OpenConnection();
                 rowsAffected = dal.ExecuteNonQuery(cmd);

@@ -112,6 +112,5 @@ D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contin
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmAllFunds.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertEntities.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmAddDepartment.resources
-D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.csprojResolveAssemblyReference.cache
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmDoContingency.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.FrmInsertHistoryEmployee.resources

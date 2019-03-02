@@ -8,7 +8,6 @@ namespace Contingenciamento.Entidades
         public long Id { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
-        public Contract Contract { get; set; }
 
         public Department(long id, string name, string code)
         {
