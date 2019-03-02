@@ -303,75 +303,75 @@ namespace Contingenciamento.DAO
 
             try
             {
-                string selectCMD = "SELECT eh.id as eh_id, eh.epoch as eh_epoch, eh.base_salary as eh_base_salary, eh.net_salary as eh_net_salary, " +
-                    "eh.total_earnings as eh_total_earnings, eh.in_vacation as eh_in_vacation, eh.start_vacation_taken as eh_start_vacation_taken, " +
-                    "eh.end_vacation_taken as eh_end_vacation_taken, eh.hazard_additional as eh_hazard_additional, " +
-                    "eh.dangerousness_additional as eh_dangerousness_additional, eh.thirteenth_salary as eh_thirteenth_salary, " +
-                    "eh.thirteenth_proportional_salary as eh_thirteenth_proportional_salary, eh.vacation_pay as eh_vacation_pay, " +
-                    "eh.vacation_proportional_pay as eh_vacation_proportional_pay, eh.penalty_rescission as eh_penalty_rescission, emp.id as emp_id, " +
-                    "emp.name as emp_name, emp.matriculation as emp_matriculation, emp.admission_date as emp_admission_date, emp.birthday as emp_birthday, " +
-                    "emp.pis as emp_pis, emp.cpf as emp_cpf, emp.demission_date as emp_demission_date, " +
-                    "rol.id as rol_id, rol.name as rol_name, d.name as d_name, d.code as d_code " +
-                    "FROM (employee_history eh INNER JOIN employees emp ON (eh.employee_id = emp.id)) " +
-                    "INNER JOIN roles rol ON (emp.role_id = rol.id) " +
-                    "INNER JOIN departments d ON (eh.department_id = d.id) " +
-                    "WHERE code LIKE ";
+                //string selectCMD = "SELECT eh.id as eh_id, eh.epoch as eh_epoch, eh.base_salary as eh_base_salary, eh.net_salary as eh_net_salary, " +
+                //    "eh.total_earnings as eh_total_earnings, eh.in_vacation as eh_in_vacation, eh.start_vacation_taken as eh_start_vacation_taken, " +
+                //    "eh.end_vacation_taken as eh_end_vacation_taken, eh.hazard_additional as eh_hazard_additional, " +
+                //    "eh.dangerousness_additional as eh_dangerousness_additional, eh.thirteenth_salary as eh_thirteenth_salary, " +
+                //    "eh.thirteenth_proportional_salary as eh_thirteenth_proportional_salary, eh.vacation_pay as eh_vacation_pay, " +
+                //    "eh.vacation_proportional_pay as eh_vacation_proportional_pay, eh.penalty_rescission as eh_penalty_rescission, emp.id as emp_id, " +
+                //    "emp.name as emp_name, emp.matriculation as emp_matriculation, emp.admission_date as emp_admission_date, emp.birthday as emp_birthday, " +
+                //    "emp.pis as emp_pis, emp.cpf as emp_cpf, emp.demission_date as emp_demission_date, " +
+                //    "rol.id as rol_id, rol.name as rol_name, d.name as d_name, d.code as d_code " +
+                //    "FROM (employee_history eh INNER JOIN employees emp ON (eh.employee_id = emp.id)) " +
+                //    "INNER JOIN roles rol ON (emp.role_id = rol.id) " +
+                //    "INNER JOIN departments d ON (eh.department_id = d.id) " +
+                //    "WHERE code LIKE ";
 
-                //NpgsqlCommand cmd = new NpgsqlCommand(selectCMD);
-                //cmd.Parameters.Add(new NpgsqlParameter("passedId", NpgsqlTypes.NpgsqlDbType.Integer));
-                //cmd.Parameters.Add(new NpgsqlParameter("passedId", NpgsqlTypes.NpgsqlDbType.Text));
-                string newQuery;
-                dal.OpenConnection();
-                foreach (Department dept in ct.Departments)
-                {
-                    //cmd.Parameters[0].Value = "%" + dept.Code + "%";
-                    newQuery = selectCMD + "%" + dept.Code + "%";
-                    reader = dal.ExecuteDataReader(newQuery);
-                    Employee employee;
-                    Role role;
-                    EmployeeHistory employeeHistory;
+                ////NpgsqlCommand cmd = new NpgsqlCommand(selectCMD);
+                ////cmd.Parameters.Add(new NpgsqlParameter("passedId", NpgsqlTypes.NpgsqlDbType.Integer));
+                ////cmd.Parameters.Add(new NpgsqlParameter("passedId", NpgsqlTypes.NpgsqlDbType.Text));
+                //string newQuery;
+                //dal.OpenConnection();
+                //foreach (Department dept in ct.Departments)
+                //{
+                //    //cmd.Parameters[0].Value = "%" + dept.Code + "%";
+                //    newQuery = selectCMD + "%" + dept.Code + "%";
+                //    reader = dal.ExecuteDataReader(newQuery);
+                //    Employee employee;
+                //    Role role;
+                //    EmployeeHistory employeeHistory;
 
-                    while (reader.Read())
-                    {
-                        employeeHistory = new EmployeeHistory();
-                        employeeHistory.Id = Convert.ToInt64(reader["eh_id"]);
-                        employeeHistory.Epoch = Convert.ToDateTime(reader["eh_epoch"]);
-                        employeeHistory.StartVacationTaken = Convert.ToDateTime(reader["eh_start_vacation_taken"]);
-                        employeeHistory.EndVacationTaken = Convert.ToDateTime(reader["eh_end_vacation_taken"]);
-                        employeeHistory.InVacation = Convert.ToBoolean(reader["eh_in_vacation"]);
-                        employeeHistory.BaseSalary = Convert.ToDouble(reader["eh_base_salary"]);
-                        employeeHistory.NetSalary = Convert.ToDouble(reader["eh_net_salary"]);
-                        employeeHistory.TotalEarnings = Convert.ToDouble(reader["eh_total_earnings"]);
-                        employeeHistory.HazardAdditional = Convert.ToDouble(reader["eh_hazard_additional"]);
-                        employeeHistory.DangerousnessAdditional = Convert.ToDouble(reader["eh_dangerousness_additional"]);
-                        employeeHistory.ThirteenthSalary = Convert.ToDouble(reader["eh_thirteenth_salary"]);
-                        employeeHistory.ThirteenthProportionalSalary = Convert.ToDouble(reader["eh_thirteenth_proportional_salary"]);
-                        employeeHistory.VacationPay = Convert.ToDouble(reader["eh_vacation_pay"]);
-                        employeeHistory.VacationProportionalPay = Convert.ToDouble(reader["eh_vacation_proportional_pay"]);
-                        employeeHistory.PenaltyRescission = Convert.ToDouble(reader["eh_penalty_rescission"]);
+                //    while (reader.Read())
+                //    {
+                //        employeeHistory = new EmployeeHistory();
+                //        employeeHistory.Id = Convert.ToInt64(reader["eh_id"]);
+                //        employeeHistory.Epoch = Convert.ToDateTime(reader["eh_epoch"]);
+                //        employeeHistory.StartVacationTaken = Convert.ToDateTime(reader["eh_start_vacation_taken"]);
+                //        employeeHistory.EndVacationTaken = Convert.ToDateTime(reader["eh_end_vacation_taken"]);
+                //        employeeHistory.InVacation = Convert.ToBoolean(reader["eh_in_vacation"]);
+                //        employeeHistory.BaseSalary = Convert.ToDouble(reader["eh_base_salary"]);
+                //        employeeHistory.NetSalary = Convert.ToDouble(reader["eh_net_salary"]);
+                //        employeeHistory.TotalEarnings = Convert.ToDouble(reader["eh_total_earnings"]);
+                //        employeeHistory.HazardAdditional = Convert.ToDouble(reader["eh_hazard_additional"]);
+                //        employeeHistory.DangerousnessAdditional = Convert.ToDouble(reader["eh_dangerousness_additional"]);
+                //        employeeHistory.ThirteenthSalary = Convert.ToDouble(reader["eh_thirteenth_salary"]);
+                //        employeeHistory.ThirteenthProportionalSalary = Convert.ToDouble(reader["eh_thirteenth_proportional_salary"]);
+                //        employeeHistory.VacationPay = Convert.ToDouble(reader["eh_vacation_pay"]);
+                //        employeeHistory.VacationProportionalPay = Convert.ToDouble(reader["eh_vacation_proportional_pay"]);
+                //        employeeHistory.PenaltyRescission = Convert.ToDouble(reader["eh_penalty_rescission"]);
 
-                        employee = new Employee();
-                        employee.Id = Convert.ToInt32(reader["emp_id"]);
-                        employee.Name = reader["emp_name"].ToString();
-                        employee.Matriculation = reader["emp_matriculation"].ToString();
-                        employee.Birthday = Convert.ToDateTime(reader["emp_birthday"]);
-                        employee.CurrentAdmissionDate = Convert.ToDateTime(reader["emp_admission_date"]);
-                        employee.CurrentDemissionDate = Convert.ToDateTime(reader["emp_demission_date"]);
-                        employee.PIS = reader["emp_pis"].ToString();
-                        employee.CPF = reader["emp_cpf"].ToString();
-                        role = new Role();
-                        role.Id = Convert.ToInt32(reader["rol_id"]);
-                        role.Name = reader["rol_name"].ToString();
-                        employee.Role = role;
+                //        employee = new Employee();
+                //        employee.Id = Convert.ToInt32(reader["emp_id"]);
+                //        employee.Name = reader["emp_name"].ToString();
+                //        employee.Matriculation = reader["emp_matriculation"].ToString();
+                //        employee.Birthday = Convert.ToDateTime(reader["emp_birthday"]);
+                //        employee.CurrentAdmissionDate = Convert.ToDateTime(reader["emp_admission_date"]);
+                //        employee.CurrentDemissionDate = Convert.ToDateTime(reader["emp_demission_date"]);
+                //        employee.PIS = reader["emp_pis"].ToString();
+                //        employee.CPF = reader["emp_cpf"].ToString();
+                //        role = new Role();
+                //        role.Id = Convert.ToInt32(reader["rol_id"]);
+                //        role.Name = reader["rol_name"].ToString();
+                //        employee.Role = role;
 
-                        employeeHistory.Employee = employee;
-                        employeeHistory.Department = dept;
-                        employeeHistory.Contract = ct;
+                //        employeeHistory.Employee = employee;
+                //        employeeHistory.Department = dept;
+                //        employeeHistory.Contract = ct;
 
-                        employeeHistories.Add(employeeHistory);
-                    }
-                    reader.Close();
-                }
+                //        employeeHistories.Add(employeeHistory);
+                //    }
+                //    reader.Close();
+                //}
 
             }
             catch (Exception)

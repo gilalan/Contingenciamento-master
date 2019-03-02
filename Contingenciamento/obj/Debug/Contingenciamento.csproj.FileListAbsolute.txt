@@ -91,7 +91,6 @@ D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contin
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\System.Threading.Tasks.Extensions.xml
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\System.ValueTuple.xml
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.DlgTextoEmail.resources
-D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.FrmCadastros.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmCadastrosChoices.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmConfiguracoes.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertContract.resources
@@ -115,3 +114,4 @@ D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contin
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmAddDepartment.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.csprojResolveAssemblyReference.cache
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmDoContingency.resources
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.FrmInsertHistoryEmployee.resources

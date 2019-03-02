@@ -20,6 +20,11 @@ namespace Contingenciamento.BLL
             return this._contractDAO.Get<long>(id);
         }
 
+        public List<Contract> GetOnlyContracts()
+        {
+            return this._contractDAO.GetOnlyContracts();
+        }
+
         public List<Contract> GetTopContract()
         {
             return this._contractDAO.GetTop();

@@ -127,11 +127,11 @@
     <Compile Include="GUI\FrmAllFunds.Designer.cs">
       <DependentUpon>FrmAllFunds.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FrmCadastros.cs">
+    <Compile Include="GUI\FrmInsertHistoryEmployee.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\FrmCadastros.Designer.cs">
-      <DependentUpon>FrmCadastros.cs</DependentUpon>
+    <Compile Include="GUI\FrmInsertHistoryEmployee.Designer.cs">
+      <DependentUpon>FrmInsertHistoryEmployee.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\FrmCadastrosChoices.cs">
       <SubType>Form</SubType>
@@ -206,8 +206,8 @@
     <EmbeddedResource Include="GUI\FrmAllFunds.resx">
       <DependentUpon>FrmAllFunds.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\FrmCadastros.resx">
-      <DependentUpon>FrmCadastros.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\FrmInsertHistoryEmployee.resx">
+      <DependentUpon>FrmInsertHistoryEmployee.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmCadastrosChoices.resx">
       <DependentUpon>FrmCadastrosChoices.cs</DependentUpon>

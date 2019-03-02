@@ -1,6 +1,6 @@
 ﻿namespace Contingenciamento
 {
-    partial class FrmCadastros
+    partial class FrmInsertHistoryEmployee
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnImportWorksheet = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.txtPlanilha = new System.Windows.Forms.TextBox();
@@ -46,22 +46,24 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cbContracts = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
+            // btnImportWorksheet
             // 
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(6, 36);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(122, 25);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Importar Planilha";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnImportWorksheet.ForeColor = System.Drawing.Color.Black;
+            this.btnImportWorksheet.Location = new System.Drawing.Point(6, 31);
+            this.btnImportWorksheet.Name = "btnImportWorksheet";
+            this.btnImportWorksheet.Size = new System.Drawing.Size(122, 25);
+            this.btnImportWorksheet.TabIndex = 0;
+            this.btnImportWorksheet.Text = "Importar Planilha";
+            this.btnImportWorksheet.UseVisualStyleBackColor = true;
+            this.btnImportWorksheet.Click += new System.EventHandler(this.btnImportWorksheet_Click);
             // 
             // btnSave
             // 
@@ -73,7 +75,7 @@
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "Salvar";
             this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.button2_Click);
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // dataGridView1
             // 
@@ -85,15 +87,15 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(930, 282);
+            this.dataGridView1.Size = new System.Drawing.Size(930, 178);
             this.dataGridView1.TabIndex = 4;
             // 
             // txtPlanilha
             // 
             this.txtPlanilha.ForeColor = System.Drawing.Color.Black;
-            this.txtPlanilha.Location = new System.Drawing.Point(154, 39);
+            this.txtPlanilha.Location = new System.Drawing.Point(137, 32);
             this.txtPlanilha.Name = "txtPlanilha";
-            this.txtPlanilha.Size = new System.Drawing.Size(782, 22);
+            this.txtPlanilha.Size = new System.Drawing.Size(339, 22);
             this.txtPlanilha.TabIndex = 5;
             // 
             // openFileDialog1
@@ -104,7 +106,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(6, 72);
+            this.label1.Location = new System.Drawing.Point(6, 65);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(128, 17);
             this.label1.TabIndex = 6;
@@ -115,9 +117,9 @@
             this.cboSheet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboSheet.ForeColor = System.Drawing.Color.Black;
             this.cboSheet.FormattingEnabled = true;
-            this.cboSheet.Location = new System.Drawing.Point(154, 69);
+            this.cboSheet.Location = new System.Drawing.Point(137, 62);
             this.cboSheet.Name = "cboSheet";
-            this.cboSheet.Size = new System.Drawing.Size(782, 24);
+            this.cboSheet.Size = new System.Drawing.Size(339, 24);
             this.cboSheet.TabIndex = 7;
             this.cboSheet.SelectedIndexChanged += new System.EventHandler(this.cboSheet_SelectedIndexChanged);
             // 
@@ -164,7 +166,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.label5.Location = new System.Drawing.Point(6, 120);
+            this.label5.Location = new System.Drawing.Point(6, 104);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(48, 17);
             this.label5.TabIndex = 12;
@@ -174,10 +176,11 @@
             // 
             this.txtOutput.BackColor = System.Drawing.SystemColors.Info;
             this.txtOutput.ForeColor = System.Drawing.Color.Indigo;
-            this.txtOutput.Location = new System.Drawing.Point(6, 140);
+            this.txtOutput.Location = new System.Drawing.Point(6, 124);
             this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
-            this.txtOutput.Size = new System.Drawing.Size(930, 125);
+            this.txtOutput.ReadOnly = true;
+            this.txtOutput.Size = new System.Drawing.Size(930, 240);
             this.txtOutput.TabIndex = 13;
             // 
             // pbSave
@@ -194,8 +197,10 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cbContracts);
             this.groupBox1.Controls.Add(this.txtPlanilha);
-            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.btnImportWorksheet);
+            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.cboSheet);
             this.groupBox1.ForeColor = System.Drawing.Color.ForestGreen;
@@ -212,7 +217,7 @@
             this.groupBox2.ForeColor = System.Drawing.Color.ForestGreen;
             this.groupBox2.Location = new System.Drawing.Point(15, 131);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(950, 309);
+            this.groupBox2.Size = new System.Drawing.Size(950, 210);
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Exibição dos dados";
@@ -228,14 +233,35 @@
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.btnSave);
             this.groupBox3.ForeColor = System.Drawing.Color.ForestGreen;
-            this.groupBox3.Location = new System.Drawing.Point(15, 446);
+            this.groupBox3.Location = new System.Drawing.Point(15, 347);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(950, 271);
+            this.groupBox3.Size = new System.Drawing.Size(950, 370);
             this.groupBox3.TabIndex = 17;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Processar e Salvar no Banco de Dados";
             // 
-            // FrmCadastros
+            // cbContracts
+            // 
+            this.cbContracts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbContracts.FormattingEnabled = true;
+            this.cbContracts.Location = new System.Drawing.Point(569, 75);
+            this.cbContracts.Name = "cbContracts";
+            this.cbContracts.Size = new System.Drawing.Size(363, 24);
+            this.cbContracts.TabIndex = 16;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.DarkGreen;
+            this.label3.Location = new System.Drawing.Point(569, 32);
+            this.label3.MaximumSize = new System.Drawing.Size(365, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(333, 36);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Selecione o Contrato que será associado a atual planilha de histórico importada:";
+            // 
+            // FrmInsertHistoryEmployee
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -246,11 +272,11 @@
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
-            this.Name = "FrmCadastros";
+            this.Name = "FrmInsertHistoryEmployee";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cadastrar Histórico de Funcionários";
-            this.Load += new System.EventHandler(this.FrmCadastros_Load);
+            this.Load += new System.EventHandler(this.FrmInsertHistoryEmployee_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -263,7 +289,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnImportWorksheet;
         private System.Windows.Forms.Button btnSave;      
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TextBox txtPlanilha;
@@ -281,5 +307,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.ComboBox cbContracts;
+        private System.Windows.Forms.Label label3;
     }
 }

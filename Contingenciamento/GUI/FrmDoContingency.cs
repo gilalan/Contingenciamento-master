@@ -36,7 +36,7 @@ namespace Contingenciamento.GUI
         {
             Contract ct = this.cbContracts.SelectedItem as Contract;
 
-            this.lblDeptsCount.Text = ct.Departments.Count.ToString();
+            //this.lblDeptsCount.Text = ct.Departments.Count.ToString();
             this.lblContFundsCount.Text = ct.ContingencyAliquot.Count.ToString();
             //this.lblMonetaryFundType.Text;
             this.lblEmployeesCount.Text = _GetEmployeesInContract(ct);
@@ -44,12 +44,12 @@ namespace Contingenciamento.GUI
 
         private string _GetEmployeesInContract(Contract ct)
         {
-            List<EmployeeHistory> employeeHistoriesCT = _facade.GetHistoryFromContract(ct);
+            //List<EmployeeHistory> employeeHistoriesCT = _facade.GetHistoryFromContract(ct); REFAZER!!!!
             //List<EmployeeHistory> employeeHistoriesCT = _facade.GetTopEmployeeHistory();
-            foreach (EmployeeHistory eh in employeeHistoriesCT)
-            {
+            //foreach (EmployeeHistory eh in employeeHistoriesCT)
+            //{
 
-            }
+            //}
             return "";
         }
 

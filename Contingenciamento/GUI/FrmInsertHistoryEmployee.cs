@@ -11,7 +11,7 @@ using ExcelDataReader;
 
 namespace Contingenciamento
 {
-    public partial class FrmCadastros : Form
+    public partial class FrmInsertHistoryEmployee : Form
     {
         Facade _facade = new Facade();
         DataSet result;
@@ -21,36 +21,55 @@ namespace Contingenciamento
         List<Department> allDepartments;
         List<Role> allRoles;
         List<Employee> allEmployees;
-        //List<Contract> allContracts;
+        List<Contract> allContracts;
 
         private List<EmployeeHistory> allEmployeeHistory;
 
-        public FrmCadastros()
+        public FrmInsertHistoryEmployee()
         {
             InitializeComponent();
             //this.btnSave.BackColor = Color.FromArgb(0, 149, 255);
         }
 
-        private void FrmCadastros_Load(object sender, EventArgs e)
+        private void FrmInsertHistoryEmployee_Load(object sender, EventArgs e)
         {
             allDepartments = _facade.GetTopDepartment();
             allRoles = _facade.GetTopRole();
             allEmployees = _facade.GetTopEmployee();
-            //allContracts = _facade.GetTopContract();
+            allContracts = _facade.GetOnlyContracts();
+            _FillContractsCB(allContracts);
+
+            if (allContracts.Count == 0)
+            {
+                MessageBox.Show("Atenção: a base de dados não possui registros de Contratos. Você precisa cadastrar o Contrato que receberá a planilha de Histórico",
+                    "Nenhum contrato cadastrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _EnableAllButons(false);
+            }
 
             if (allRoles.Count == 0)
             {
                 MessageBox.Show("Atenção: a base de dados não possui registros de cargos dos funcionários. O primeiro passo " +
-                    "para o cadastro das entidades relacionadas ao Funcionário é o cadastro dos Cargos/Funções que eles ocupam.", 
+                    "para o cadastro das entidades relacionadas ao Funcionário é o cadastro dos Cargos/Funções que eles ocupam.",
                     "Tabela de Cargos dos Funcionários", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+
+        }
+
+        private void _FillContractsCB(List<Contract> contracts)
+        {
+            var source = new BindingSource();
+            //monetaryFunds.Insert(0, new MonetaryFund());
+            source.DataSource = contracts;
+            this.cbContracts.DataSource = source;
+            this.cbContracts.DisplayMember = "Name";
+            this.cbContracts.ValueMember = "Id";
         }
 
         //Import worksheet
-        private void button1_Click(object sender, EventArgs e)
+        private void btnImportWorksheet_Click(object sender, EventArgs e)
         {
             try
-            {                
+            {
                 using (OpenFileDialog ofd = new OpenFileDialog() { Filter = "Excel Workbook 97-2003|*.xls|Excel Workbook|*.xlsx", ValidateNames = true })
                 {
                     if (ofd.ShowDialog() == DialogResult.OK)
@@ -94,13 +113,12 @@ namespace Contingenciamento
         }
 
         //Salvar as informacoes na base de dados
-        private void button2_Click(object sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
                 //desabilita os botões enquanto a tarefa é executada.
-                this.btnProcess.Enabled = false;
-                this.btnSave.Enabled = false;
+                _EnableAllButons(false);
                 bgWorkerDatabase.RunWorkerAsync();
 
                 //define a progressBar para Marquee
@@ -110,7 +128,7 @@ namespace Contingenciamento
                 //informa que a tarefa esta sendo executada.
                 this.txtOutput.Text = "Salvando na base de dados, essa tarefa pode demorar alguns minutos, aguarde...";
             }
-            
+
             catch (Exception ex)
             {
                 MessageBox.Show("Ocorreu o seguinte erro: " + ex.Message, "Importação para Base de Dados", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -118,9 +136,9 @@ namespace Contingenciamento
 
             finally
             {
-                
+
             }
-        }       
+        }
 
         private void cboSheet_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -346,8 +364,14 @@ namespace Contingenciamento
             pbSave.Style = ProgressBarStyle.Blocks;
             pbSave.Value = 100;
             //habilita os botões.
-            btnProcess.Enabled = true;
-            btnSave.Enabled = true;
-        }
+            _EnableAllButons(true);
+        }   
+        
+        private void _EnableAllButons(bool flag)
+        {
+            this.btnImportWorksheet.Enabled = flag;
+            this.btnProcess.Enabled = flag;
+            this.btnSave.Enabled = flag;
+        }        
     }
 }

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Contingenciamento.GUI
@@ -19,7 +12,7 @@ namespace Contingenciamento.GUI
 
         private void btnCadHistFunc_Click(object sender, EventArgs e)
         {
-            FrmCadastros frmCadastros = new FrmCadastros();
+            FrmInsertHistoryEmployee frmCadastros = new FrmInsertHistoryEmployee();
             frmCadastros.ShowDialog();
         }           
 

@@ -15,7 +15,7 @@ namespace Contingenciamento.GUI
         HashSet<ContingencyAliquot> contingencyFundsAliquots = new HashSet<ContingencyAliquot>(new ContingencyAliquotComparer());
         HashSet<MonetaryFund> monetaryFundsSet = new HashSet<MonetaryFund>(new MonetaryFundComparer());
         String aliqPattern = "[0-9]{1,2},[0-9]{2}";
-        HashSet<Department> allDeptCodes = new HashSet<Department>(new DepartmentComparer());
+        //HashSet<Department> allDeptCodes = new HashSet<Department>(new DepartmentComparer());
 
         public FrmInsertContract()
         {
@@ -44,14 +44,14 @@ namespace Contingenciamento.GUI
         private void _StylingListViews()
         {
             //#Colunas de Departamentos
-            ColumnHeader c1 = new ColumnHeader();
-            c1.Text = "Código do Departamento";
-            this.listDepts.Columns.Add(c1);
-            ColumnHeader c2 = new ColumnHeader();
-            c2.Text = "Nome do Departamento";
-            this.listDepts.Columns.Add(c2);
-            this.listDepts.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            this.listDepts.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            //ColumnHeader c1 = new ColumnHeader();
+            //c1.Text = "Código do Departamento";
+            //this.listDepts.Columns.Add(c1);
+            //ColumnHeader c2 = new ColumnHeader();
+            //c2.Text = "Nome do Departamento";
+            //this.listDepts.Columns.Add(c2);
+            //this.listDepts.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            //this.listDepts.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
             //#Colunas de Alíquotas das Verbas de Contingência
             ColumnHeader colAli1 = new ColumnHeader();
@@ -96,44 +96,44 @@ namespace Contingenciamento.GUI
         /*
          * Parte relacionada a adição dos códigos de Depto ao contrato
          */
-        private void btnAddDept_Click(object sender, EventArgs e)
-        {
-            string dptCode = this.txtDptCode.Text;
-            Department dept = _facade.GetDepartmentByCode(dptCode);
-            if (dept == null)
-            {
-                if (DialogResult.Yes == MessageBox.Show("Departamento não encontrado na base de dados, deseja adicioná-lo?", "Adicionar Departamento Novo",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
-                {
-                    FrmAddDepartment frmAddDepartment = new FrmAddDepartment(dptCode);                  
-                    frmAddDepartment.FormClosed += new FormClosedEventHandler(_FormAddDeptClosed);
-                    frmAddDepartment.ShowDialog();
-                }
-            }
-            else
-            {
-                _TryAddingDept(dept);
-            }
-        }
+        //private void btnAddDept_Click(object sender, EventArgs e)
+        //{
+        //    string dptCode = this.txtDptCode.Text;
+        //    Department dept = _facade.GetDepartmentByCode(dptCode);
+        //    if (dept == null)
+        //    {
+        //        if (DialogResult.Yes == MessageBox.Show("Departamento não encontrado na base de dados, deseja adicioná-lo?", "Adicionar Departamento Novo",
+        //            MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
+        //        {
+        //            FrmAddDepartment frmAddDepartment = new FrmAddDepartment(dptCode);                  
+        //            frmAddDepartment.FormClosed += new FormClosedEventHandler(_FormAddDeptClosed);
+        //            frmAddDepartment.ShowDialog();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        _TryAddingDept(dept);
+        //    }
+        //}
 
-        private void _TryAddingDept(Department dept)
-        {
-            if (this.allDeptCodes.Add(dept))
-            {
-                ListViewItem item;
-                item = new ListViewItem();
-                item.Text = dept.Code;
-                item.SubItems.Add(dept.Name);
-                this.listDepts.Items.Add(item);
-                this.txtDptCode.Text = "";
-            }
-        }
+        //private void _TryAddingDept(Department dept)
+        //{
+        //    if (this.allDeptCodes.Add(dept))
+        //    {
+        //        ListViewItem item;
+        //        item = new ListViewItem();
+        //        item.Text = dept.Code;
+        //        item.SubItems.Add(dept.Name);
+        //        this.listDepts.Items.Add(item);
+        //        this.txtDptCode.Text = "";
+        //    }
+        //}
 
-        private void _FormAddDeptClosed (object sender, FormClosedEventArgs e)
-        {
-            FrmAddDepartment frmAddDepartment = (FrmAddDepartment)sender;
-            _TryAddingDept(frmAddDepartment.Department);
-        }
+        //private void _FormAddDeptClosed (object sender, FormClosedEventArgs e)
+        //{
+        //    FrmAddDepartment frmAddDepartment = (FrmAddDepartment)sender;
+        //    _TryAddingDept(frmAddDepartment.Department);
+        //}
 
         /*
          * Parte relacionada a adição das alíquotas ao contrato
@@ -190,11 +190,6 @@ namespace Contingenciamento.GUI
             e.Handled = true;
         }
 
-        private void linkPastAliquots_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-
-        }
-
         private void btnSaveContract_Click(object sender, EventArgs e)
         {
             Contract contract = _GetValidContract();
@@ -204,7 +199,7 @@ namespace Contingenciamento.GUI
                 {
                     //desabilita os botões enquanto a tarefa é executada.
                     this.btnAddAliquot.Enabled = false;
-                    this.btnAddDept.Enabled = false;
+                    //this.btnAddDept.Enabled = false;
                     this.btnSaveContract.Enabled = false;
                     bgWorkerDatabase.RunWorkerAsync(contract);
 
@@ -253,7 +248,7 @@ namespace Contingenciamento.GUI
                 contract.Name = this.txtContractName.Text;
                 contract.StartDate = this.dateTPStart.Value;
                 contract.EndDate = this.dateTPEnd.Value;
-                contract.Departments = new List<Department>(this.allDeptCodes);
+                //contract.Departments = new List<Department>(this.allDeptCodes);
                 contract.ContingencyAliquot = new List<ContingencyAliquot>(this.contingencyFundsAliquots);
                 contract.MonetaryFunds = _GetSelectedMonetaryFunds();
                 return contract;
@@ -353,7 +348,7 @@ namespace Contingenciamento.GUI
         {
             //desabilita os botões enquanto a tarefa é executada.
             this.btnAddAliquot.Enabled = true;
-            this.btnAddDept.Enabled = true;
+            //this.btnAddDept.Enabled = true;
             this.btnSaveContract.Enabled = true;
 
             //Carrega todo progressbar.
