@@ -100,6 +100,7 @@
     <Compile Include="Entidades\Bank.cs" />
     <Compile Include="Entidades\ContingencyAliquot.cs" />
     <Compile Include="Entidades\ContingencyFund.cs" />
+    <Compile Include="Entidades\ContingencyPast.cs" />
     <Compile Include="Entidades\Contract.cs" />
     <Compile Include="Entidades\Department.cs" />
     <Compile Include="Entidades\Employee.cs" />

@@ -22,45 +22,7 @@ namespace Contingenciamento.DAO
             NpgsqlDataReader reader = null;
             try
             {
-                NpgsqlCommand cmd;
-
-                //string selectDeptCMD = "SELECT c.id as c_id, c.name as c_name, c.start_date as c_start_date, c.end_date as c_end_date, " +
-                //    "cmf.id as cmf_id, mf.id as mf_id, mf.name as mf_name, mf.primal as mf_primal, ef.id as ef_id, ef.name as ef_name, " +
-                //    "ca.id as ca_id, ca.value as ca_value, cf.id as cf_id, cf.name as cf_name " +
-                //    "FROM (contracts c INNER JOIN contract_monetary_funds cmf ON (c.id = cmf.contract_id)) " +
-                //    "INNER JOIN monetary_funds mf ON (cmf.monetary_fund_id = mf.id) " +
-                //    "INNER JOIN extra_funds ef ON (cmf.extra_fund_id = ef.id) " +
-                //    "INNER JOIN contingency_aliquot ca ON (c.id = ca.contract_id) " +
-                //    "INNER JOIN contingency_funds cf ON (ca.contingency_fund_id = cf.id) " +
-                //    "WHERE c.id = :passedId ORDER BY c.id";
-
-                //cmd = new NpgsqlCommand(selectDeptCMD);
-
-                //cmd.Parameters.Add(new NpgsqlParameter("passedId", NpgsqlTypes.NpgsqlDbType.Bigint));
-                //cmd.Parameters[0].Value = id;
-
-                //dal.OpenConnection();
-                //reader = dal.ExecuteDataReader(cmd);
-                //Department department;
-                //while (reader.Read())
-                //{
-                //    if (contract == null)
-                //    {
-                //        contract = new Contract();
-                //        contract.Id = Convert.ToInt64(reader["c_id"]);
-                //        contract.Name = reader["c_name"].ToString();
-                //        contract.StartDate = Convert.ToDateTime(reader["c_start_date"]);
-                //        contract.EndDate = Convert.ToDateTime(reader["c_end_date"]);
-                //    }
-                //    department = new Department(Convert.ToInt64(reader["dep_id"]), reader["dep_name"].ToString(),
-                //        reader["dep_code"].ToString());
-
-                //    departments.Add(department);
-                //}
-                //if (contract != null)
-                //{
-                //    contract.Departments = departments;
-                //}
+                NpgsqlCommand cmd;               
 
                 string selectMonetaryFundsCMD = "SELECT c.id as c_id, c.name as c_name, c.start_date as c_start_date, c.end_date as c_end_date, " +
                 "cmf.id as cmf_id, cmf.contract_id as cmf_contract_id, cmf.monetary_fund_id as cmf_monetary_fund_id, " +
@@ -80,7 +42,7 @@ namespace Contingenciamento.DAO
                 reader = dal.ExecuteDataReader(cmd);
                 MonetaryFund monetaryFund;
                 ExtraFund extraFund;
-                int currentMFId = 0;
+                long currentMFId = 0;
                 while (reader.Read())
                 {
                     if (contract == null)
@@ -88,20 +50,27 @@ namespace Contingenciamento.DAO
                         contract = new Contract();
                         contract.Id = Convert.ToInt64(reader["c_id"]);
                         contract.Name = reader["c_name"].ToString();
-                        contract.StartDate = Convert.ToDateTime(reader["c_start_date"]);
-                        contract.EndDate = Convert.ToDateTime(reader["c_end_date"]);
+                        if (reader["start_date"] is DBNull)
+                            contract.StartDate = DateTime.MinValue;
+                        else
+                            contract.StartDate = Convert.ToDateTime(reader["start_date"]);
+
+                        if (reader["end_date"] is DBNull)
+                            contract.EndDate = DateTime.MinValue;
+                        else
+                            contract.EndDate = Convert.ToDateTime(reader["end_date"]);
                     }
-                    currentMFId = Convert.ToInt32(reader["mf_id"]);
+                    currentMFId = Convert.ToInt64(reader["mf_id"]);
 
                     if (reader["ef_id"] is DBNull && reader["ef_name"] is DBNull)
                     {
-                        monetaryFund = new MonetaryFund(Convert.ToInt32(reader["mf_id"]), reader["mf_name"].ToString());
+                        monetaryFund = new MonetaryFund(Convert.ToInt64(reader["mf_id"]), reader["mf_name"].ToString());
                         monetaryFunds.Add(monetaryFund);
                     }
                     else
                     {
-                        extraFund = new ExtraFund(Convert.ToInt32(reader["ef_id"]), reader["ef_name"].ToString());
-                        monetaryFund = new MonetaryFund(Convert.ToInt32(reader["mf_id"]), reader["mf_name"].ToString());
+                        extraFund = new ExtraFund(Convert.ToInt64(reader["ef_id"]), reader["ef_name"].ToString());
+                        monetaryFund = new MonetaryFund(Convert.ToInt64(reader["mf_id"]), reader["mf_name"].ToString());
                         if (monetaryFunds.Add(monetaryFund))
                         {
                             monetaryFund.ExtraFunds.Add(extraFund);
@@ -146,8 +115,8 @@ namespace Contingenciamento.DAO
                         contract.StartDate = Convert.ToDateTime(reader["c_start_date"]);
                         contract.EndDate = Convert.ToDateTime(reader["c_end_date"]);
                     }
-                    contingencyFund = new ContingencyFund(Convert.ToInt32(reader["cf_id"]), reader["cf_name"].ToString());
-                    contingencyAliquot = new ContingencyAliquot(Convert.ToInt32(reader["ca_id"]), Convert.ToDouble(reader["ca_value"]),
+                    contingencyFund = new ContingencyFund(Convert.ToInt64(reader["cf_id"]), reader["cf_name"].ToString());
+                    contingencyAliquot = new ContingencyAliquot(Convert.ToInt64(reader["ca_id"]), Convert.ToDouble(reader["ca_value"]),
                         Convert.ToDateTime(reader["ca_start_date"]), Convert.ToDateTime(reader["ca_end_date"]), contingencyFund);
 
                     contingencyAliquots.Add(contingencyAliquot);
@@ -192,8 +161,15 @@ namespace Contingenciamento.DAO
                     contract = new Contract();
                     contract.Id = Convert.ToInt64(reader["id"]);
                     contract.Name = reader["name"].ToString();
-                    contract.StartDate = Convert.ToDateTime(reader["start_date"]);
-                    contract.EndDate = Convert.ToDateTime(reader["end_date"]);
+                    if (reader["start_date"] is DBNull)
+                        contract.StartDate = DateTime.MinValue;
+                    else
+                        contract.StartDate = Convert.ToDateTime(reader["start_date"]);
+
+                    if (reader["end_date"] is DBNull)
+                        contract.EndDate = DateTime.MinValue;
+                    else
+                        contract.EndDate = Convert.ToDateTime(reader["end_date"]);
                     contracts.Add(contract);
                 }
                 reader.Close();
@@ -222,7 +198,7 @@ namespace Contingenciamento.DAO
 
         //        if (reader.Read())
         //        {
-        //            contract.Id = Convert.ToInt32(reader["id"]);
+        //            contract.Id = Convert.ToInt64(reader["id"]);
         //            contract.Name = reader["name"].ToString();
         //            contract.Matriculation = reader["matriculation"].ToString();
         //            contract.Birthday = Convert.ToDateTime(reader["birthday"]);
@@ -270,8 +246,17 @@ namespace Contingenciamento.DAO
                     contract = new Contract();
                     contract.Id = Convert.ToInt64(reader["id"]);
                     contract.Name = reader["name"].ToString();
-                    contract.StartDate = Convert.ToDateTime(reader["start_date"]);
-                    contract.EndDate = Convert.ToDateTime(reader["end_date"]);
+
+                    if (reader["start_date"] is DBNull)
+                        contract.StartDate = DateTime.MinValue;
+                    else
+                        contract.StartDate = Convert.ToDateTime(reader["start_date"]);
+
+                    if (reader["end_date"] is DBNull)
+                        contract.EndDate = DateTime.MinValue;
+                    else
+                        contract.EndDate = Convert.ToDateTime(reader["end_date"]);
+
                     contracts.Add(contract);
                 }
                 reader.Close();
@@ -281,35 +266,8 @@ namespace Contingenciamento.DAO
                 ExtraFund extraFund;
                 ContingencyAliquot contingencyAliquot;
                 ContingencyFund contingencyFund;
-                foreach (Contract ct in contracts)
-                {
-                    //departments = new List<Department>();
-                    monetaryFunds = new HashSet<MonetaryFund>(new MonetaryFundComparer());
-                    contingencyAliquots = new List<ContingencyAliquot>();
 
-                    //string selectDeptCMD = "SELECT c.id as c_id, c.name as c_name, c.start_date as c_start_date, c.end_date as c_end_date, " +
-                    //"dep.id as dep_id, dep.name as dep_name, dep.code as dep_code FROM contracts c " +
-                    //"INNER JOIN departments dep ON (c.id = dep.contract_id) " +
-                    //"WHERE c.id = :passedId ORDER BY c.id";
-
-                    //cmd = new NpgsqlCommand(selectDeptCMD);
-
-                    //cmd.Parameters.Add(new NpgsqlParameter("passedId", NpgsqlTypes.NpgsqlDbType.Bigint));
-                    //cmd.Parameters[0].Value = ct.Id;
-
-                    //reader = dal.ExecuteDataReader(cmd);
-                    //while (reader.Read())
-                    //{
-                    //    department = new Department(Convert.ToInt64(reader["dep_id"]), reader["dep_code"].ToString(),
-                    //        reader["dep_name"].ToString());
-
-                    //    departments.Add(department);
-                    //}
-                    //reader.Close();
-                    //ct.Departments = departments;
-
-
-                    string selectMonetaryFundsCMD = "SELECT c.id as c_id, c.name as c_name, c.start_date as c_start_date, c.end_date as c_end_date, " +
+                string selectMonetaryFundsCMD = "SELECT c.id as c_id, c.name as c_name, c.start_date as c_start_date, c.end_date as c_end_date, " +
                     "cmf.id as cmf_id, cmf.contract_id as cmf_contract_id, cmf.monetary_fund_id as cmf_monetary_fund_id, " +
                     "mf.id as mf_id, mf.name as mf_name, mf.primal as mf_primal, " +
                     "ef.id as ef_id, ef.name as ef_name " +
@@ -319,24 +277,39 @@ namespace Contingenciamento.DAO
                     "LEFT JOIN extra_funds ef ON (cmf.extra_fund_id = ef.id) " +
                     "WHERE c.id = :passedId ORDER BY c.id";
 
-                    cmd.CommandText = selectMonetaryFundsCMD;
-                    
+                string selectContAliquotCMD = "SELECT c.id as c_id, c.name as c_name, c.start_date as c_start_date, c.end_date as c_end_date, " +
+                    "ca.id as ca_id, ca.start_date as ca_start_date, ca.end_date as ca_end_date, ca.value as ca_value, " +
+                    "cf.id as cf_id, cf.name as cf_name FROM (contracts c INNER JOIN contingency_aliquot ca ON " +
+                    "(c.id = ca.contract_id)) " +
+                    "LEFT JOIN contingency_funds cf ON (ca.contingency_fund_id = cf.id) " +
+                    "WHERE c.id = :passedId ORDER BY c.id";
+
+                //Consultar as verbas monetárias do contrato
+                cmd.CommandText = selectMonetaryFundsCMD;
+                cmd.Parameters.Add(new NpgsqlParameter("passedId", NpgsqlTypes.NpgsqlDbType.Bigint));
+
+                foreach (Contract ct in contracts)
+                {
+                    cmd.Parameters[0].Value = ct.Id;
+                    monetaryFunds = new HashSet<MonetaryFund>(new MonetaryFundComparer());
+                    contingencyAliquots = new List<ContingencyAliquot>();
+
                     reader = dal.ExecuteDataReader(cmd);
                     
-                    int currentMFId = 0;
+                    long currentMFId = 0;
                     while (reader.Read())
                     {                        
-                        currentMFId = Convert.ToInt32(reader["mf_id"]);
+                        currentMFId = Convert.ToInt64(reader["mf_id"]);
 
                         if (reader["ef_id"] is DBNull && reader["ef_name"] is DBNull)
                         {
-                            monetaryFund = new MonetaryFund(Convert.ToInt32(reader["mf_id"]), reader["mf_name"].ToString());
+                            monetaryFund = new MonetaryFund(Convert.ToInt64(reader["mf_id"]), reader["mf_name"].ToString());
                             monetaryFunds.Add(monetaryFund);
                         }
                         else
                         {
-                            extraFund = new ExtraFund(Convert.ToInt32(reader["ef_id"]), reader["ef_name"].ToString());
-                            monetaryFund = new MonetaryFund(Convert.ToInt32(reader["mf_id"]), reader["mf_name"].ToString());
+                            extraFund = new ExtraFund(Convert.ToInt64(reader["ef_id"]), reader["ef_name"].ToString());
+                            monetaryFund = new MonetaryFund(Convert.ToInt64(reader["mf_id"]), reader["mf_name"].ToString());
                             if (monetaryFunds.Add(monetaryFund))
                             {
                                 monetaryFund.ExtraFunds.Add(extraFund);
@@ -356,20 +329,14 @@ namespace Contingenciamento.DAO
                     reader.Close();
                     ct.MonetaryFunds = new List<MonetaryFund>(monetaryFunds);
 
-                    string selectContAliquotCMD = "SELECT c.id as c_id, c.name as c_name, c.start_date as c_start_date, c.end_date as c_end_date, " +
-                    "ca.id as ca_id, ca.start_date as ca_start_date, ca.end_date as ca_end_date, ca.value as ca_value, " +
-                    "cf.id as cf_id, cf.name as cf_name FROM (contracts c INNER JOIN contingency_aliquot ca ON " +
-                    "(c.id = ca.contract_id)) " +
-                    "LEFT JOIN contingency_funds cf ON (ca.contingency_fund_id = cf.id) " +
-                    "WHERE c.id = :passedId ORDER BY c.id";
-
+                    //Consultar as alíquotas do contrato
                     cmd.CommandText = selectContAliquotCMD;
 
                     reader = dal.ExecuteDataReader(cmd);
                     while (reader.Read())
                     {
-                        contingencyFund = new ContingencyFund(Convert.ToInt32(reader["cf_id"]), reader["cf_name"].ToString());
-                        contingencyAliquot = new ContingencyAliquot(Convert.ToInt32(reader["ca_id"]), Convert.ToDouble(reader["ca_value"]),
+                        contingencyFund = new ContingencyFund(Convert.ToInt64(reader["cf_id"]), reader["cf_name"].ToString());
+                        contingencyAliquot = new ContingencyAliquot(Convert.ToInt64(reader["ca_id"]), Convert.ToDouble(reader["ca_value"]),
                             Convert.ToDateTime(reader["ca_start_date"]), Convert.ToDateTime(reader["ca_end_date"]), contingencyFund);
 
                         contingencyAliquots.Add(contingencyAliquot);

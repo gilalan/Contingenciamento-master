@@ -28,8 +28,13 @@ namespace Contingenciamento.BLL
 
         public List<EmployeeHistory> GetHistoryFromContract(Contract ct)
         {
-            return this._employeeHistoryDAO.GetFromContract(ct);
+            return this._employeeHistoryDAO.GetByContract(ct);
         }
+
+        public long GetEmployeesCountByContract(Contract ct)
+        {
+            return this._employeeHistoryDAO.GetEmployeesCountByContract(ct);
+        }    
 
         public List<EmployeeHistory> GetTopEmployeeHistory()
         {

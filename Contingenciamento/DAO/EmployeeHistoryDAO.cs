@@ -104,6 +104,38 @@ namespace Contingenciamento.DAO
             return employeeHistory;
         }
 
+        public long GetEmployeesCountByContract(Contract ct)
+        {
+            NpgsqlDataReader reader = null;
+            long countRows = 0;
+            try
+            {
+                string selectCountRowsCMD = "SELECT COUNT(*) as count_rows FROM (SELECT eh.employee_id, COUNT('employee_id') FROM employee_history eh WHERE eh.contract_id = :ctId " +
+                    "GROUP BY(eh.employee_id) ORDER BY COUNT('employee_id') DESC) AS derivedTable;";
+
+                NpgsqlCommand cmd = new NpgsqlCommand(selectCountRowsCMD);
+
+                cmd.Parameters.Add(new NpgsqlParameter("ctId", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters[0].Value = ct.Id;
+
+                dal.OpenConnection();
+                reader = dal.ExecuteDataReader(cmd);
+                if (reader.Read())
+                {
+                    countRows = Convert.ToInt64(reader["count_rows"]);
+                }
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+                this.dal.CloseConection();
+            }
+            return countRows;
+        }
+
         public EmployeeHistory GetByEmployeeMatriculation<K>(K matriculation)
         {
 
@@ -296,13 +328,53 @@ namespace Contingenciamento.DAO
             return employeeHistories;
         }
 
-        public List<EmployeeHistory> GetFromContract(Contract ct)
+        public List<EmployeeHistory> GetByContract(Contract ct)
         {
             List<EmployeeHistory> employeeHistories = new List<EmployeeHistory>();
             NpgsqlDataReader reader = null;
 
             try
             {
+                string selectCMD = "SELECT eh.id as eh_id, eh.epoch as eh_epoch, eh.base_salary as eh_base_salary, eh.net_salary as eh_net_salary, " +
+                    "eh.total_earnings as eh_total_earnings, eh.in_vacation as eh_in_vacation, eh.start_vacation_taken as eh_start_vacation_taken, " +
+                    "eh.end_vacation_taken as eh_end_vacation_taken, eh.hazard_additional as eh_hazard_additional, " +
+                    "eh.dangerousness_additional as eh_dangerousness_additional, eh.thirteenth_salary as eh_thirteenth_salary, " +
+                    "eh.thirteenth_proportional_salary as eh_thirteenth_proportional_salary, eh.vacation_pay as eh_vacation_pay, " +
+                    "eh.vacation_proportional_pay as eh_vacation_proportional_pay, eh.penalty_rescission as eh_penalty_rescission, " +
+                    "eh.contract_id as eh_contract_id, eh.processed as eh_processed " +
+                    "FROM employee_history eh WHERE (eh.contract_id = :ctId AND eh.processed = :proc)";
+
+                NpgsqlCommand cmd = new NpgsqlCommand(selectCMD);
+                cmd.Parameters.Add(new NpgsqlParameter("ctId", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters.Add(new NpgsqlParameter("proc", NpgsqlTypes.NpgsqlDbType.Boolean));
+                cmd.Parameters[0].Value = ct.Id;
+                cmd.Parameters[1].Value = false;
+
+                EmployeeHistory employeeHistory;
+                dal.OpenConnection();
+                reader = dal.ExecuteDataReader(cmd);
+                while (reader.Read())
+                {
+                    employeeHistory = new EmployeeHistory();
+                    employeeHistory.Id = Convert.ToInt64(reader["eh_id"]);
+                    employeeHistory.Epoch = Convert.ToDateTime(reader["eh_epoch"]);
+                    employeeHistory.StartVacationTaken = Convert.ToDateTime(reader["eh_start_vacation_taken"]);
+                    employeeHistory.EndVacationTaken = Convert.ToDateTime(reader["eh_end_vacation_taken"]);
+                    employeeHistory.InVacation = Convert.ToBoolean(reader["eh_in_vacation"]);
+                    employeeHistory.BaseSalary = Convert.ToDouble(reader["eh_base_salary"]);
+                    employeeHistory.NetSalary = Convert.ToDouble(reader["eh_net_salary"]);
+                    employeeHistory.TotalEarnings = Convert.ToDouble(reader["eh_total_earnings"]);
+                    employeeHistory.HazardAdditional = Convert.ToDouble(reader["eh_hazard_additional"]);
+                    employeeHistory.DangerousnessAdditional = Convert.ToDouble(reader["eh_dangerousness_additional"]);
+                    employeeHistory.ThirteenthSalary = Convert.ToDouble(reader["eh_thirteenth_salary"]);
+                    employeeHistory.ThirteenthProportionalSalary = Convert.ToDouble(reader["eh_thirteenth_proportional_salary"]);
+                    employeeHistory.VacationPay = Convert.ToDouble(reader["eh_vacation_pay"]);
+                    employeeHistory.VacationProportionalPay = Convert.ToDouble(reader["eh_vacation_proportional_pay"]);
+                    employeeHistory.PenaltyRescission = Convert.ToDouble(reader["eh_penalty_rescission"]);
+
+                    employeeHistories.Add(employeeHistory);
+                }
+                reader.Close();
                 //string selectCMD = "SELECT eh.id as eh_id, eh.epoch as eh_epoch, eh.base_salary as eh_base_salary, eh.net_salary as eh_net_salary, " +
                 //    "eh.total_earnings as eh_total_earnings, eh.in_vacation as eh_in_vacation, eh.start_vacation_taken as eh_start_vacation_taken, " +
                 //    "eh.end_vacation_taken as eh_end_vacation_taken, eh.hazard_additional as eh_hazard_additional, " +
@@ -374,10 +446,7 @@ namespace Contingenciamento.DAO
                 //}
 
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            
             finally
             {
                 if (reader != null)

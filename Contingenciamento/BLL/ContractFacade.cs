@@ -39,5 +39,38 @@ namespace Contingenciamento.BLL
         {
             return this._contractDAO.BulkInsert(contracts);
         }
+
+        public List<ContingencyPast> ProcessContingencyContract(Contract contract, MonetaryFund monetaryFund)
+        {
+            List<EmployeeHistory> employeeHistories = this._employeeHistoryDAO.GetByContract(contract);
+            List<ContingencyPast> contingencyPasts = new List<ContingencyPast>();
+            ContingencyPast cp;
+            foreach (EmployeeHistory eh in employeeHistories)
+            {
+                foreach (ContingencyAliquot ca in contract.ContingencyAliquot)
+                {
+                    cp = new ContingencyPast();
+                    cp.EmployeeHistoryId = eh.Id;
+                    cp.MonetaryFundName = monetaryFund.Name;
+                    cp.ContingencyFundName = ca.ContingencyFund.Name;
+                    cp.Aliquot = ca.Value;
+                    //essa parte tá horrorosa
+                    if (monetaryFund.Name.ToUpper().Equals("SALÁRIO BASE"))
+                    {
+                        cp.CalculatedValue = (ca.Value/100) * eh.BaseSalary;
+                    }
+                    else if (monetaryFund.Name.ToUpper().Equals("PROVENTOS TOTAIS"))
+                    {
+                        cp.CalculatedValue = (ca.Value / 100) * eh.TotalEarnings;
+                    }
+                    else
+                    {
+                        cp.CalculatedValue = (ca.Value / 100) * eh.NetSalary;
+                    }
+                    contingencyPasts.Add(cp);
+                }
+            }
+            return contingencyPasts;
+        }
     }
 }
