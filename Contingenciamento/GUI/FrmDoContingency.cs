@@ -1,7 +1,10 @@
 ﻿using Contingenciamento.BLL;
 using Contingenciamento.Entidades;
+using Contingenciamento.User_Controls;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Contingenciamento.GUI
@@ -11,6 +14,9 @@ namespace Contingenciamento.GUI
         Facade _facade = new Facade();
         Contract currentContract;
         List<Contract> allContracts;
+        Dictionary<int, List<ContingencyPast>> yearListCPsPairs;
+        List<ContingencyPast> contPasts;
+        string selectedMFToContingency;
 
         public FrmDoContingency()
         {
@@ -119,55 +125,204 @@ namespace Contingenciamento.GUI
             } 
             else
             {
-                List<ContingencyPast> contPasts = _facade.ProcessContingencyContract(this.currentContract, selectedMF);
-                this.dgvContResult.DataSource = contPasts;
+                try
+                {
+                    //desabilita os botões enquanto a tarefa é executada.
+                    _EnableAllButtons(false);
+                    bgWorkDatabase.RunWorkerAsync(selectedMF);
+
+                    //define a progressBar para Marquee
+                    pbContingency.Style = ProgressBarStyle.Marquee;
+                    pbContingency.MarqueeAnimationSpeed = 6;
+
+                    //informa que a tarefa esta sendo executada.
+                    this.lblWaiting.Text = "Aguarde, processando e salvando na base de dados...";
+                }
+
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ocorreu o seguinte erro: " + ex.Message, "Importação para Base de Dados", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            //ContingencyPast contract = _GetValidContract();
-            //if (contract != null)
-            //{
-            //    try
-            //    {
-            //        //desabilita os botões enquanto a tarefa é executada.
-            //        _EnableAllButtons(false);
-            //        bgWorkDatabase.RunWorkerAsync(contPast);
+        }
 
-            //        //define a progressBar para Marquee
-            //        pbContingency.Style = ProgressBarStyle.Marquee;
-            //        pbContingency.MarqueeAnimationSpeed = 6;
+        private void _CreateDataSet(List<ContingencyPast> contPasts)
+        {
+            HashSet<int> years = new HashSet<int>();
 
-            //        //informa que a tarefa esta sendo executada.
-            //        this.lblWaiting.Text = "Aguarde, salvando na base de dados...";
-            //    }
+            foreach (ContingencyPast cp in contPasts)
+            {
+                years.Add(cp.EmployeeHistory.Epoch.Year);
+            }
 
-            //    catch (Exception ex)
-            //    {
-            //        MessageBox.Show("Ocorreu o seguinte erro: " + ex.Message, "Importação para Base de Dados", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    }
-            //}
+            this.yearListCPsPairs = new Dictionary<int, List<ContingencyPast>>();
+            List<ContingencyPast> limitedCPList;
+            foreach (int year in years)
+            {
+                limitedCPList = new List<ContingencyPast>();
+                foreach (ContingencyPast cp in contPasts)
+                {
+                    if (cp.EmployeeHistory.Epoch.Year == year)
+                    {
+                        limitedCPList.Add(cp);
+                    }
+                }
+                //limitedCPList.Sort()
+                this.yearListCPsPairs.Add(year, limitedCPList);
+            }
+
+            _FillYearsCB(years);
+        }
+
+        private void _FillYearsCB(HashSet<int> years)
+        {
+            var source = new BindingSource();
+            source.DataSource = years;
+            this.cbYears.DataSource = source;
+            //this.cbContracts.DisplayMember = "Name";
+            //this.cbContracts.ValueMember = "Id";
+        }
+
+        private void cbYears_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int year = (int) this.cbYears.SelectedItem;
+            this.panelGrid.Controls.Clear();
+            _FillDataGridView(year);
+        }
+
+        private void _FillDataGridView(int year)
+        {
+            //DataTable table1 = new DataTable("Janeiro");
+            //table1.Columns.Add("Id");
+            //table1.Columns.Add("Nome");
+            //table1.Columns.Add("13º Salário");
+            //table1.Columns.Add("Férias");
+            //table1.Columns.Add("Rescisão");
+            //table1.Columns.Add("Incidência");
+            //table1.Columns.Add("TOTAL");
+            //table1.Rows.Add(1, "Valdir Papel", 152, 90, 54, 51, 251);
+            //table1.Rows.Add(2, "Lelo Alves", 152, 90, 54, 51, 251);
+            //table1.Rows.Add(3, "Marcília Amorim", 152, 90, 54, 51, 251);
+
+            //DataTable table2 = new DataTable("Fevereiro");
+            //table2.Columns.Add("Id");
+            //table2.Columns.Add("Nome");
+            //table2.Columns.Add("13º Salário");
+            //table2.Columns.Add("Férias");
+            //table2.Columns.Add("Rescisão");
+            //table2.Columns.Add("Incidência");
+            //table2.Columns.Add("TOTAL");
+            //table2.Rows.Add(12, "Papai Noel", 152, 90, 54, 51, 251);
+
+            //DataGridContingency dataGridContingency1 = new DataGridContingency(table1);
+            //DataGridContingency dataGridContingency2 = new DataGridContingency(table2);
+            //this.panelGrid.Controls.Add(dataGridContingency1);
+            //this.panelGrid.Controls.Add(dataGridContingency2);
+           
+            string[] namedMonths = new string[] { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
+
+            if (this.yearListCPsPairs.ContainsKey(year))
+            {
+                List<ContingencyPast> cpList = this.yearListCPsPairs[year];
+                List<ContingencyPast> SortedCPList = cpList.OrderBy(o => o.EmployeeHistory.Epoch.Month).ThenBy(o => o.EmployeeHistory.Employee.Name).ToList();
+                List<ContingencyAliquot> SortedCAList = this.currentContract.ContingencyAliquot.OrderBy(o => o.ContingencyFund.Id).ToList();
+                List<DataTable> tables = new List<DataTable>();
+                DataGridContingency dataGridContingency;
+                DataRow row;
+                double total = 0;
+                //Serão 12 dataTables representando os 12 meses do ano.
+                for (int i = 1; i <= namedMonths.Length; i++)
+                {
+                    DataTable dt = new DataTable(namedMonths[i-1]);
+                    dt.Columns.Add("Matrícula");
+                    dt.Columns.Add("Nome Completo");
+                    dt.Columns.Add("PIS");
+                    dt.Columns.Add("CPF");
+                    dt.Columns.Add(selectedMFToContingency);
+                    foreach (ContingencyAliquot contAliq in SortedCAList)
+                    {
+                        dt.Columns.Add(contAliq.ContingencyFund.Name);
+                    }
+                    dt.Columns.Add("Total");
+                   // tables.Add(dt);
+                    foreach (ContingencyPast cp in SortedCPList)
+                    {
+                        if (cp.EmployeeHistory.Epoch.Month == i)
+                        {
+                            total = 0;
+                            row = dt.NewRow();
+                            row["Matrícula"] = cp.EmployeeHistory.Employee.Matriculation;
+                            row["Nome Completo"] = cp.EmployeeHistory.Employee.Name;
+                            row["PIS"] = cp.EmployeeHistory.Employee.PIS;
+                            row["CPF"] = cp.EmployeeHistory.Employee.CPF;
+                            row[selectedMFToContingency] = _GetValueFromSelectMF(selectedMFToContingency, cp.EmployeeHistory);
+                            foreach (ContingencyAliquot cal in cp.ContingencyAliquots)
+                            {
+                                row[cal.ContingencyFund.Name] = cal.CalculatedValue;
+                                total += cal.CalculatedValue;
+                            }
+                            row["Total"] = total;
+                            dt.Rows.Add(row);
+                        }
+                    }
+                    dataGridContingency = new DataGridContingency(dt, this.panelGrid.Size);
+                    this.panelGrid.Controls.Add(dataGridContingency);
+                }
+            }
+        }
+
+        private double _GetValueFromSelectMF(string selectedMFToContingency, EmployeeHistory employeeHistory)
+        {
+            if (selectedMFToContingency.ToUpper().Equals("SALÁRIO BASE"))
+            {
+                return employeeHistory.BaseSalary;
+            }
+            else if (selectedMFToContingency.ToUpper().Equals("PROVENTOS TOTAIS"))
+            {
+                return employeeHistory.TotalEarnings;
+            }
+            else
+            {
+                return employeeHistory.NetSalary;
+            }
         }
 
         private void bgWorkDatabase_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            //ContingencyPast contPast = (ContingencyPast)e.Argument;
-            //try
-            //{
-            //    long retId = _facade.InsertContingencyPast(contPast);
-            //    if (retId > 0)
-            //    {
-            //        MessageBox.Show("Contrato inserido na base de dados com sucesso. Id Retornado: " + retId, "Contrato Inserido",
-            //            MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Ops, ocorreu um erro e o contrato não foi inserido!", "Erro ao inserir contrato na base de dados",
-            //            MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    }
-            //}
+            MonetaryFund selectedMF = (MonetaryFund)e.Argument;
+            try
+            {
+                contPasts = _facade.ProcessContingencyContract(this.currentContract, selectedMF);
+                if (contPasts.Count == 0)
+                {
+                    MessageBox.Show("O histórico para esse contrato já se encontra contingenciado na base de dados.",
+                        "Contingenciamento Já Realizado",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    int countRows = _facade.InsertContingencyPastList(contPasts);
+                    this.selectedMFToContingency = selectedMF.Name;
+                    _CreateDataSet(contPasts);
 
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Erro: " + ex.Message, "Erro ao salvar na base de dados", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
+                    if (countRows > 0)
+                    {//BRIR TELA SIM/NÃO para visualizar no form de visualização correto do contingenciamento
+                        MessageBox.Show("O contingenciamento foi processado e salvo com sucesso na base de dados" +
+                            "Contagem retornada: " + countRows, "Contingenciamento Salvo",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ops, ocorreu um erro e o contingenciamento não foi adicionado a base de dados!", "Erro ao inserir contingenciamento na base de dados",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro: " + ex.Message, "Erro ao salvar na base de dados", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void bgWorkDatabase_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
@@ -181,13 +336,14 @@ namespace Contingenciamento.GUI
             pbContingency.Value = 100;
 
             //informa que a tarefa esta sendo executada.
-            this.lblWaiting.Text = "";
+            this.lblWaiting.Text = "Tarefa Concluída";
         }
 
         private void _EnableAllButtons(bool v)
         {
             this.cbContracts.Enabled = v;
             this.btnDoConting.Enabled = v;
+            this.cbYears.Enabled = v;
         }
 
         private void treeMonetaryFunds_AfterCheck(object sender, TreeViewEventArgs e)
@@ -229,6 +385,12 @@ namespace Contingenciamento.GUI
                 return null;
             else 
                 return retMF;
+        }
+
+        private void btnOpenViewContingency_Click(object sender, EventArgs e)
+        {
+            FrmViewContingency frmViewContingency = new FrmViewContingency(contPasts);
+            frmViewContingency.ShowDialog();
         }
     }
 }

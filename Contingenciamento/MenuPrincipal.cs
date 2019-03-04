@@ -44,8 +44,10 @@ namespace Contingenciamento
 
         private void btnDoContingency_Click(object sender, EventArgs e)
         {
-            FrmDoContingency frmDoContingency = new FrmDoContingency();
-            frmDoContingency.ShowDialog();
+            FrmContingencyChoices frmContingencyChoices = new FrmContingencyChoices();
+            frmContingencyChoices.ShowDialog();
+            //FrmDoContingency frmDoContingency = new FrmDoContingency();
+            //frmDoContingency.ShowDialog();
         }
 
         private void pictureBox7_Click(object sender, EventArgs e)

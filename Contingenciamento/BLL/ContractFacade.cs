@@ -47,28 +47,31 @@ namespace Contingenciamento.BLL
             ContingencyPast cp;
             foreach (EmployeeHistory eh in employeeHistories)
             {
+                cp = new ContingencyPast();
+                cp.EmployeeHistory = eh;
+                cp.MonetaryFundName = monetaryFund.Name;
                 foreach (ContingencyAliquot ca in contract.ContingencyAliquot)
                 {
-                    cp = new ContingencyPast();
-                    cp.EmployeeHistoryId = eh.Id;
-                    cp.MonetaryFundName = monetaryFund.Name;
-                    cp.ContingencyFundName = ca.ContingencyFund.Name;
-                    cp.Aliquot = ca.Value;
-                    //essa parte tá horrorosa
+                    //essa parte tá horrorosa (calculando para cada Mês) 
                     if (monetaryFund.Name.ToUpper().Equals("SALÁRIO BASE"))
                     {
-                        cp.CalculatedValue = (ca.Value/100) * eh.BaseSalary;
+                        ca.CalculatedValue = (ca.Value/100) * eh.BaseSalary; 
                     }
                     else if (monetaryFund.Name.ToUpper().Equals("PROVENTOS TOTAIS"))
                     {
-                        cp.CalculatedValue = (ca.Value / 100) * eh.TotalEarnings;
+                        ca.CalculatedValue = (ca.Value / 100) * eh.TotalEarnings;
                     }
                     else
                     {
-                        cp.CalculatedValue = (ca.Value / 100) * eh.NetSalary;
+                        ca.CalculatedValue = (ca.Value / 100) * eh.NetSalary;
                     }
-                    contingencyPasts.Add(cp);
+
+                    if (ca.ContingencyFund.Name.ToUpper() == "FÉRIAS")
+                        ca.CalculatedValue = System.Convert.ToDouble(ca.CalculatedValue/3);
+
+                    cp.ContingencyAliquots.Add(ca);
                 }
+                contingencyPasts.Add(cp);
             }
             return contingencyPasts;
         }

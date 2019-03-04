@@ -48,5 +48,10 @@ namespace Contingenciamento.BLL
         {
             return new EmployeeHistoryDAO();
         }
+
+        public static ContingencyPastDAO CreateContigencyPastDAO()
+        {
+            return new ContingencyPastDAO();
+        }
     }
 }

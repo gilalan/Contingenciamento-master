@@ -20,14 +20,14 @@ namespace Contingenciamento.DAO
                     "eh.end_vacation_taken as eh_end_vacation_taken, eh.hazard_additional as eh_hazard_additional, " +
                     "eh.dangerousness_additional as eh_dangerousness_additional, eh.thirteenth_salary as eh_thirteenth_salary, " +
                     "eh.thirteenth_proportional_salary as eh_thirteenth_proportional_salary, eh.vacation_pay as eh_vacation_pay, " +
-                    "eh.vacation_proportional_pay as eh_vacation_proportional_pay, eh.penalty_rescission as eh_penalty_rescission, emp.id as emp_id, " +
-                    "emp.name as emp_name, emp.matriculation as emp_matriculation, emp.admission_date as emp_admission_date, emp.birthday as emp_birthday, " +
+                    "eh.vacation_proportional_pay as eh_vacation_proportional_pay, eh.penalty_rescission as eh_penalty_rescission, " +
+                    "eh.contract_id as eh_contract_id, eh.processed as eh_processed, emp.id as emp_id, emp.name as emp_name, " +
+                    "emp.matriculation as emp_matriculation, emp.admission_date as emp_admission_date, emp.birthday as emp_birthday, " +
                     "emp.pis as emp_pis, emp.cpf as emp_cpf, emp.demission_date as emp_demission_date, " +
-                    "rol.id as rol_id, rol.name as rol_name, dep.id as dep_id, dep.name as dep_name, dep.code as dep_code, cont.id as cont_id, " +
-                    "cont.name as cont_name, cont.start_date as cont_start_date, cont.end_date as cont_end_date " +
+                    "rol.id as rol_id, rol.name as rol_name, dep.id as dep_id, dep.name as dep_name, dep.code as dep_code " +
                     "FROM (employee_history eh INNER JOIN employees emp ON (eh.employee_id = emp.id)) " +
-                    "INNER JOIN roles rol ON (emp.role_id = rol.id) " +
-                    "INNER JOIN departments dep ON (eh.department_id = dep.id) " +
+                    "LEFT JOIN roles rol ON (emp.role_id = rol.id) " +
+                    "LEFT JOIN departments dep ON (eh.department_id = dep.id) " +
                     "INNER JOIN contracts cont ON (eh.contract_id = cont.id) " +
                     "WHERE eh.id = :passedId ORDER BY eh.id";
 
@@ -56,38 +56,48 @@ namespace Contingenciamento.DAO
                     employeeHistory.VacationPay = Convert.ToDouble(reader["eh_vacation_pay"]);
                     employeeHistory.VacationProportionalPay = Convert.ToDouble(reader["eh_vacation_proportional_pay"]);
                     employeeHistory.PenaltyRescission = Convert.ToDouble(reader["eh_penalty_rescission"]);
+                    employeeHistory.Processed = Convert.ToBoolean(reader["eh_processed"]);
 
-                    Employee employee = new Employee();
-                    employee.Id = Convert.ToInt32(reader["emp_id"]);
-                    employee.Name = reader["emp_name"].ToString();
-                    employee.Matriculation = reader["emp_matriculation"].ToString();
-                    employee.Birthday = Convert.ToDateTime(reader["emp_birthday"]);
-                    employee.CurrentAdmissionDate = Convert.ToDateTime(reader["emp_admission_date"]);
-                    employee.CurrentDemissionDate = Convert.ToDateTime(reader["emp_demission_date"]);
-                    employee.PIS = reader["emp_pis"].ToString();
-                    employee.CPF = reader["emp_cpf"].ToString();
-                    Role role = new Role();
-                    role.Id = Convert.ToInt32(reader["rol_id"]);
-                    role.Name = reader["rol_name"].ToString();
-                    employee.Role = role;
+                    if (!(reader["emp_id"] is DBNull))
+                    {
+                        Employee employee = new Employee();
+                        employee.Id = Convert.ToInt64(reader["emp_id"]);
+                        employee.Name = reader["emp_name"].ToString();
+                        employee.Matriculation = reader["emp_matriculation"].ToString();
+                        employee.Birthday = Convert.ToDateTime(reader["emp_birthday"]);
+                        employee.CurrentAdmissionDate = Convert.ToDateTime(reader["emp_admission_date"]);
+                        employee.CurrentDemissionDate = Convert.ToDateTime(reader["emp_demission_date"]);
+                        employee.PIS = reader["emp_pis"].ToString();
+                        employee.CPF = reader["emp_cpf"].ToString();
+                        if (!(reader["rol_id"] is DBNull))
+                        {
+                            Role role = new Role();
+                            role.Id = Convert.ToInt64(reader["rol_id"]);
+                            role.Name = reader["rol_name"].ToString();
+                            employee.Role = role;
+                        }
+                        employeeHistory.Employee = employee;
+                    }
 
-                    Department department = new Department();
-                    department.Id = Convert.ToInt64(reader["dep_id"]);
-                    department.Name = reader["dep_name"].ToString();
-                    department.Code = reader["dep_code"].ToString();
+                    if (!(reader["dep_id"] is DBNull))
+                    {
+                        Department department = new Department();
+                        department.Id = Convert.ToInt64(reader["dep_id"]);
+                        department.Name = reader["dep_name"].ToString();
+                        department.Code = reader["dep_code"].ToString();
+                        employeeHistory.Department = department;
+                    }
 
-                    Contract contract = new Contract();
                     if (!(reader["cont_id"] is DBNull))
                     {
+                        Contract contract = new Contract();
                         contract.Id = Convert.ToInt64(reader["cont_id"]);
                         contract.Name = reader["cont_name"].ToString();
                         contract.StartDate = Convert.ToDateTime(reader["cont_start_date"]);
                         contract.EndDate = Convert.ToDateTime(reader["cont_end_date"]);
+                        employeeHistory.Contract = contract;
                     }
 
-                    employeeHistory.Employee = employee;
-                    employeeHistory.Department = department;
-                    employeeHistory.Contract = contract;
 
                 }
                 reader.Close();
@@ -155,8 +165,8 @@ namespace Contingenciamento.DAO
                     "rol.id as rol_id, rol.name as rol_name, dep.id as dep_id, dep.name as dep_name, dep.code as dep_code, cont.id as cont_id, " +
                     "cont.name as cont_name, cont.start_date as cont_start_date, cont.end_date as cont_end_date " +
                     "FROM (employee_history eh INNER JOIN employees emp ON (eh.employee_id = emp.id)) " +
-                    "INNER JOIN roles rol ON (emp.role_id = rol.id) " +
-                    "INNER JOIN departments dep ON (eh.department_id = dep.id) " +
+                    "LEFT JOIN roles rol ON (emp.role_id = rol.id) " +
+                    "LEFT JOIN departments dep ON (eh.department_id = dep.id) " +
                     "LEFT JOIN contracts cont ON (eh.contract_id = cont.id) " +
                     "WHERE eh.id = :passedMatric ORDER BY eh.id";
 
@@ -243,14 +253,15 @@ namespace Contingenciamento.DAO
                     "eh.end_vacation_taken as eh_end_vacation_taken, eh.hazard_additional as eh_hazard_additional, " +
                     "eh.dangerousness_additional as eh_dangerousness_additional, eh.thirteenth_salary as eh_thirteenth_salary, " +
                     "eh.thirteenth_proportional_salary as eh_thirteenth_proportional_salary, eh.vacation_pay as eh_vacation_pay, " +
-                    "eh.vacation_proportional_pay as eh_vacation_proportional_pay, eh.penalty_rescission as eh_penalty_rescission, emp.id as emp_id, " +
+                    "eh.vacation_proportional_pay as eh_vacation_proportional_pay, eh.penalty_rescission as eh_penalty_rescission, " +
+                    "eh.processed as eh_processed, emp.id as emp_id, " +
                     "emp.name as emp_name, emp.matriculation as emp_matriculation, emp.admission_date as emp_admission_date, emp.birthday as emp_birthday, " +
                     "emp.pis as emp_pis, emp.cpf as emp_cpf, emp.demission_date as emp_demission_date, " +
                     "rol.id as rol_id, rol.name as rol_name, dep.id as dep_id, dep.name as dep_name, dep.code as dep_code, cont.id as cont_id, " +
                     "cont.name as cont_name, cont.start_date as cont_start_date, cont.end_date as cont_end_date " +
                     "FROM (employee_history eh INNER JOIN employees emp ON (eh.employee_id = emp.id)) " +
-                    "INNER JOIN roles rol ON (emp.role_id = rol.id) " +
-                    "INNER JOIN departments dep ON (eh.department_id = dep.id) " +
+                    "LEFT JOIN roles rol ON (emp.role_id = rol.id) " +
+                    "LEFT JOIN departments dep ON (eh.department_id = dep.id) " +
                     "LEFT JOIN contracts cont ON (eh.contract_id = cont.id) " +
                     "ORDER BY eh.id";
 
@@ -280,38 +291,47 @@ namespace Contingenciamento.DAO
                     employeeHistory.VacationPay = Convert.ToDouble(reader["eh_vacation_pay"]);
                     employeeHistory.VacationProportionalPay = Convert.ToDouble(reader["eh_vacation_proportional_pay"]);
                     employeeHistory.PenaltyRescission = Convert.ToDouble(reader["eh_penalty_rescission"]);
+                    employeeHistory.Processed = Convert.ToBoolean(reader["eh_processed"]);
 
-                    employee = new Employee();
-                    employee.Id = Convert.ToInt32(reader["emp_id"]);
-                    employee.Name = reader["emp_name"].ToString();
-                    employee.Matriculation = reader["emp_matriculation"].ToString();
-                    employee.Birthday = Convert.ToDateTime(reader["emp_birthday"]);
-                    employee.CurrentAdmissionDate = Convert.ToDateTime(reader["emp_admission_date"]);
-                    employee.CurrentDemissionDate = Convert.ToDateTime(reader["emp_demission_date"]);
-                    employee.PIS = reader["emp_pis"].ToString();
-                    employee.CPF = reader["emp_cpf"].ToString();
-                    role = new Role();
-                    role.Id = Convert.ToInt32(reader["rol_id"]);
-                    role.Name = reader["rol_name"].ToString();
-                    employee.Role = role;
+                    if (!(reader["emp_id"] is DBNull))
+                    {
+                        employee = new Employee();
+                        employee.Id = Convert.ToInt64(reader["emp_id"]);
+                        employee.Name = reader["emp_name"].ToString();
+                        employee.Matriculation = reader["emp_matriculation"].ToString();
+                        employee.Birthday = Convert.ToDateTime(reader["emp_birthday"]);
+                        employee.CurrentAdmissionDate = Convert.ToDateTime(reader["emp_admission_date"]);
+                        employee.CurrentDemissionDate = Convert.ToDateTime(reader["emp_demission_date"]);
+                        employee.PIS = reader["emp_pis"].ToString();
+                        employee.CPF = reader["emp_cpf"].ToString();
+                        if (!(reader["rol_id"] is DBNull))
+                        {
+                            role = new Role();
+                            role.Id = Convert.ToInt64(reader["rol_id"]);
+                            role.Name = reader["rol_name"].ToString();
+                            employee.Role = role;
+                        }
+                        employeeHistory.Employee = employee;
+                    }
 
-                    department = new Department();
-                    department.Id = Convert.ToInt64(reader["dep_id"]);
-                    department.Name = reader["dep_name"].ToString();
-                    department.Code = reader["dep_code"].ToString();
+                    if (!(reader["dep_id"] is DBNull))
+                    {
+                        department = new Department();
+                        department.Id = Convert.ToInt64(reader["dep_id"]);
+                        department.Name = reader["dep_name"].ToString();
+                        department.Code = reader["dep_code"].ToString();
+                        employeeHistory.Department = department;
+                    }
 
-                    contract = new Contract();
                     if (!(reader["cont_id"] is DBNull))
                     {
+                        contract = new Contract();
                         contract.Id = Convert.ToInt64(reader["cont_id"]);
                         contract.Name = reader["cont_name"].ToString();
                         contract.StartDate = Convert.ToDateTime(reader["cont_start_date"]);
                         contract.EndDate = Convert.ToDateTime(reader["cont_end_date"]);
+                        employeeHistory.Contract = contract;
                     }
-
-                    employeeHistory.Employee = employee;
-                    employeeHistory.Department = department;
-                    employeeHistory.Contract = contract;
 
                     employeeHistories.Add(employeeHistory);
                 }
@@ -341,8 +361,14 @@ namespace Contingenciamento.DAO
                     "eh.dangerousness_additional as eh_dangerousness_additional, eh.thirteenth_salary as eh_thirteenth_salary, " +
                     "eh.thirteenth_proportional_salary as eh_thirteenth_proportional_salary, eh.vacation_pay as eh_vacation_pay, " +
                     "eh.vacation_proportional_pay as eh_vacation_proportional_pay, eh.penalty_rescission as eh_penalty_rescission, " +
-                    "eh.contract_id as eh_contract_id, eh.processed as eh_processed " +
-                    "FROM employee_history eh WHERE (eh.contract_id = :ctId AND eh.processed = :proc)";
+                    "eh.contract_id as eh_contract_id, eh.processed as eh_processed, emp.id as emp_id, emp.name as emp_name, " +
+                    "emp.matriculation as emp_matriculation, emp.admission_date as emp_admission_date, emp.birthday as emp_birthday, " +
+                    "emp.pis as emp_pis, emp.cpf as emp_cpf, emp.demission_date as emp_demission_date, " +
+                    "rol.id as rol_id, rol.name as rol_name, dep.id as dep_id, dep.name as dep_name, dep.code as dep_code " +
+                    "FROM (employee_history eh INNER JOIN employees emp ON (eh.employee_id = emp.id)) " +
+                    "LEFT JOIN roles rol ON (emp.role_id = rol.id) " +
+                    "LEFT JOIN departments dep ON (eh.department_id = dep.id) " +
+                    "WHERE (eh.contract_id = :ctId AND eh.processed = :proc)";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(selectCMD);
                 cmd.Parameters.Add(new NpgsqlParameter("ctId", NpgsqlTypes.NpgsqlDbType.Bigint));
@@ -371,80 +397,41 @@ namespace Contingenciamento.DAO
                     employeeHistory.VacationPay = Convert.ToDouble(reader["eh_vacation_pay"]);
                     employeeHistory.VacationProportionalPay = Convert.ToDouble(reader["eh_vacation_proportional_pay"]);
                     employeeHistory.PenaltyRescission = Convert.ToDouble(reader["eh_penalty_rescission"]);
+                    employeeHistory.Processed = Convert.ToBoolean(reader["eh_processed"]);
+
+                    if (!(reader["emp_id"] is DBNull))
+                    {
+                        Employee employee = new Employee();
+                        employee.Id = Convert.ToInt64(reader["emp_id"]);
+                        employee.Name = reader["emp_name"].ToString();
+                        employee.Matriculation = reader["emp_matriculation"].ToString();
+                        employee.Birthday = Convert.ToDateTime(reader["emp_birthday"]);
+                        employee.CurrentAdmissionDate = Convert.ToDateTime(reader["emp_admission_date"]);
+                        employee.CurrentDemissionDate = Convert.ToDateTime(reader["emp_demission_date"]);
+                        employee.PIS = reader["emp_pis"].ToString();
+                        employee.CPF = reader["emp_cpf"].ToString();
+                        if (!(reader["rol_id"] is DBNull))
+                        {
+                            Role role = new Role();
+                            role.Id = Convert.ToInt64(reader["rol_id"]);
+                            role.Name = reader["rol_name"].ToString();
+                            employee.Role = role;
+                        }
+                        employeeHistory.Employee = employee;
+                    }
+                    
+                    if (!(reader["dep_id"] is DBNull))
+                    {
+                        Department department = new Department();
+                        department.Id = Convert.ToInt64(reader["dep_id"]);
+                        department.Name = reader["dep_name"].ToString();
+                        department.Code = reader["dep_code"].ToString();
+                        employeeHistory.Department = department;
+                    }
 
                     employeeHistories.Add(employeeHistory);
                 }
-                reader.Close();
-                //string selectCMD = "SELECT eh.id as eh_id, eh.epoch as eh_epoch, eh.base_salary as eh_base_salary, eh.net_salary as eh_net_salary, " +
-                //    "eh.total_earnings as eh_total_earnings, eh.in_vacation as eh_in_vacation, eh.start_vacation_taken as eh_start_vacation_taken, " +
-                //    "eh.end_vacation_taken as eh_end_vacation_taken, eh.hazard_additional as eh_hazard_additional, " +
-                //    "eh.dangerousness_additional as eh_dangerousness_additional, eh.thirteenth_salary as eh_thirteenth_salary, " +
-                //    "eh.thirteenth_proportional_salary as eh_thirteenth_proportional_salary, eh.vacation_pay as eh_vacation_pay, " +
-                //    "eh.vacation_proportional_pay as eh_vacation_proportional_pay, eh.penalty_rescission as eh_penalty_rescission, emp.id as emp_id, " +
-                //    "emp.name as emp_name, emp.matriculation as emp_matriculation, emp.admission_date as emp_admission_date, emp.birthday as emp_birthday, " +
-                //    "emp.pis as emp_pis, emp.cpf as emp_cpf, emp.demission_date as emp_demission_date, " +
-                //    "rol.id as rol_id, rol.name as rol_name, d.name as d_name, d.code as d_code " +
-                //    "FROM (employee_history eh INNER JOIN employees emp ON (eh.employee_id = emp.id)) " +
-                //    "INNER JOIN roles rol ON (emp.role_id = rol.id) " +
-                //    "INNER JOIN departments d ON (eh.department_id = d.id) " +
-                //    "WHERE code LIKE ";
-
-                ////NpgsqlCommand cmd = new NpgsqlCommand(selectCMD);
-                ////cmd.Parameters.Add(new NpgsqlParameter("passedId", NpgsqlTypes.NpgsqlDbType.Integer));
-                ////cmd.Parameters.Add(new NpgsqlParameter("passedId", NpgsqlTypes.NpgsqlDbType.Text));
-                //string newQuery;
-                //dal.OpenConnection();
-                //foreach (Department dept in ct.Departments)
-                //{
-                //    //cmd.Parameters[0].Value = "%" + dept.Code + "%";
-                //    newQuery = selectCMD + "%" + dept.Code + "%";
-                //    reader = dal.ExecuteDataReader(newQuery);
-                //    Employee employee;
-                //    Role role;
-                //    EmployeeHistory employeeHistory;
-
-                //    while (reader.Read())
-                //    {
-                //        employeeHistory = new EmployeeHistory();
-                //        employeeHistory.Id = Convert.ToInt64(reader["eh_id"]);
-                //        employeeHistory.Epoch = Convert.ToDateTime(reader["eh_epoch"]);
-                //        employeeHistory.StartVacationTaken = Convert.ToDateTime(reader["eh_start_vacation_taken"]);
-                //        employeeHistory.EndVacationTaken = Convert.ToDateTime(reader["eh_end_vacation_taken"]);
-                //        employeeHistory.InVacation = Convert.ToBoolean(reader["eh_in_vacation"]);
-                //        employeeHistory.BaseSalary = Convert.ToDouble(reader["eh_base_salary"]);
-                //        employeeHistory.NetSalary = Convert.ToDouble(reader["eh_net_salary"]);
-                //        employeeHistory.TotalEarnings = Convert.ToDouble(reader["eh_total_earnings"]);
-                //        employeeHistory.HazardAdditional = Convert.ToDouble(reader["eh_hazard_additional"]);
-                //        employeeHistory.DangerousnessAdditional = Convert.ToDouble(reader["eh_dangerousness_additional"]);
-                //        employeeHistory.ThirteenthSalary = Convert.ToDouble(reader["eh_thirteenth_salary"]);
-                //        employeeHistory.ThirteenthProportionalSalary = Convert.ToDouble(reader["eh_thirteenth_proportional_salary"]);
-                //        employeeHistory.VacationPay = Convert.ToDouble(reader["eh_vacation_pay"]);
-                //        employeeHistory.VacationProportionalPay = Convert.ToDouble(reader["eh_vacation_proportional_pay"]);
-                //        employeeHistory.PenaltyRescission = Convert.ToDouble(reader["eh_penalty_rescission"]);
-
-                //        employee = new Employee();
-                //        employee.Id = Convert.ToInt32(reader["emp_id"]);
-                //        employee.Name = reader["emp_name"].ToString();
-                //        employee.Matriculation = reader["emp_matriculation"].ToString();
-                //        employee.Birthday = Convert.ToDateTime(reader["emp_birthday"]);
-                //        employee.CurrentAdmissionDate = Convert.ToDateTime(reader["emp_admission_date"]);
-                //        employee.CurrentDemissionDate = Convert.ToDateTime(reader["emp_demission_date"]);
-                //        employee.PIS = reader["emp_pis"].ToString();
-                //        employee.CPF = reader["emp_cpf"].ToString();
-                //        role = new Role();
-                //        role.Id = Convert.ToInt32(reader["rol_id"]);
-                //        role.Name = reader["rol_name"].ToString();
-                //        employee.Role = role;
-
-                //        employeeHistory.Employee = employee;
-                //        employeeHistory.Department = dept;
-                //        employeeHistory.Contract = ct;
-
-                //        employeeHistories.Add(employeeHistory);
-                //    }
-                //    reader.Close();
-                //}
-
+                reader.Close();               
             }
             
             finally
@@ -749,6 +736,30 @@ namespace Contingenciamento.DAO
             }
 
             //return rowsAffected;
+        }
+
+        public int UpdateProcessed<K>(K id, bool flag)
+        {
+            int rowsAffected = -1;
+            try
+            {
+                string updateCMD = "UPDATE employee_history SET \"processed\" = :processed WHERE \"id\" = '" + id + "' ;";
+
+                NpgsqlCommand cmd = new NpgsqlCommand(updateCMD);
+                
+                cmd.Parameters.Add(new NpgsqlParameter("processed", NpgsqlTypes.NpgsqlDbType.Boolean));
+
+                cmd.Parameters[0].Value = flag;
+
+                dal.OpenConnection();
+                rowsAffected = dal.ExecuteNonQuery(cmd);
+            }
+            finally
+            {
+                this.dal.CloseConection();
+            }
+
+            return rowsAffected;
         }
 
         public void Delete<K>(K id)

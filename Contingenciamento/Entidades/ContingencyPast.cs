@@ -1,28 +1,25 @@
-﻿
+﻿using System.Collections.Generic;
+
 namespace Contingenciamento.Entidades
 {
     public class ContingencyPast
     {
         public long Id { get; set; }
-        public long EmployeeHistoryId { get; set; }
+        public EmployeeHistory EmployeeHistory { get; set; }
         public string MonetaryFundName { get; set; }
-        public string ContingencyFundName { get; set; }
-        public double Aliquot { get; set; }
-        public double CalculatedValue { get; set; }
+        public List<ContingencyAliquot> ContingencyAliquots { get; set; }
 
-        public ContingencyPast(long id, long employeeHistoryId, string monetaryFundName, string contingencyFundName, double aliquot, double calculatedValue)
+        public ContingencyPast(long id, EmployeeHistory employeeHistory, string monetaryFundName, List<ContingencyAliquot> contingencyAliquots)
         {
             Id = id;
-            EmployeeHistoryId = employeeHistoryId;
+            EmployeeHistory = employeeHistory;
             MonetaryFundName = monetaryFundName;
-            ContingencyFundName = contingencyFundName;
-            Aliquot = aliquot;
-            CalculatedValue = calculatedValue;
+            ContingencyAliquots = contingencyAliquots;
         }
 
         public ContingencyPast()
         {
-
+            ContingencyAliquots = new List<ContingencyAliquot>();
         }
     }
 }

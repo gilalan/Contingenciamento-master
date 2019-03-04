@@ -10,6 +10,7 @@ namespace Contingenciamento.Entidades
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public ContingencyFund ContingencyFund { get; set; }
+        public double CalculatedValue { get; set; } //usado apenas na exibição dos dados
 
         public ContingencyAliquot(long id, double value, DateTime startDate, DateTime endDate, ContingencyFund contingencyFund)
         {

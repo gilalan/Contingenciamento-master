@@ -28,12 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.btnConsultas = new System.Windows.Forms.Button();
             this.btnAddManyFunds = new System.Windows.Forms.Button();
             this.btnAddDeptAndRoles = new System.Windows.Forms.Button();
             this.btnAddContracts = new System.Windows.Forms.Button();
             this.btnCadHistFunc = new System.Windows.Forms.Button();
-            this.btnConsultas = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // btnConsultas
+            // 
+            this.btnConsultas.BackColor = System.Drawing.Color.Transparent;
+            this.btnConsultas.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnConsultas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConsultas.Font = new System.Drawing.Font("Rockwell", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConsultas.ForeColor = System.Drawing.Color.Black;
+            this.btnConsultas.Image = global::Contingenciamento.Properties.Resources.search_128;
+            this.btnConsultas.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnConsultas.Location = new System.Drawing.Point(376, 265);
+            this.btnConsultas.Name = "btnConsultas";
+            this.btnConsultas.Size = new System.Drawing.Size(185, 185);
+            this.btnConsultas.TabIndex = 11;
+            this.btnConsultas.Text = "Consultas";
+            this.btnConsultas.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnConsultas.UseVisualStyleBackColor = false;
             // 
             // btnAddManyFunds
             // 
@@ -41,7 +58,7 @@
             this.btnAddManyFunds.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAddManyFunds.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddManyFunds.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddManyFunds.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.btnAddManyFunds.ForeColor = System.Drawing.Color.Black;
             this.btnAddManyFunds.Image = global::Contingenciamento.Properties.Resources.verba_128;
             this.btnAddManyFunds.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnAddManyFunds.Location = new System.Drawing.Point(37, 36);
@@ -60,7 +77,7 @@
             this.btnAddDeptAndRoles.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAddDeptAndRoles.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddDeptAndRoles.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddDeptAndRoles.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.btnAddDeptAndRoles.ForeColor = System.Drawing.Color.Black;
             this.btnAddDeptAndRoles.Image = global::Contingenciamento.Properties.Resources.business_128;
             this.btnAddDeptAndRoles.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnAddDeptAndRoles.Location = new System.Drawing.Point(261, 36);
@@ -79,7 +96,7 @@
             this.btnAddContracts.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAddContracts.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddContracts.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddContracts.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.btnAddContracts.ForeColor = System.Drawing.Color.Black;
             this.btnAddContracts.Image = global::Contingenciamento.Properties.Resources.contract_128;
             this.btnAddContracts.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnAddContracts.Location = new System.Drawing.Point(483, 36);
@@ -98,7 +115,7 @@
             this.btnCadHistFunc.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCadHistFunc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCadHistFunc.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCadHistFunc.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.btnCadHistFunc.ForeColor = System.Drawing.Color.Black;
             this.btnCadHistFunc.Image = global::Contingenciamento.Properties.Resources.logo_excel_128;
             this.btnCadHistFunc.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnCadHistFunc.Location = new System.Drawing.Point(707, 36);
@@ -110,23 +127,6 @@
             this.btnCadHistFunc.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnCadHistFunc.UseVisualStyleBackColor = false;
             this.btnCadHistFunc.Click += new System.EventHandler(this.btnCadHistFunc_Click);
-            // 
-            // btnConsultas
-            // 
-            this.btnConsultas.BackColor = System.Drawing.Color.Transparent;
-            this.btnConsultas.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnConsultas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnConsultas.Font = new System.Drawing.Font("Rockwell", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConsultas.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.btnConsultas.Image = global::Contingenciamento.Properties.Resources.search_128;
-            this.btnConsultas.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnConsultas.Location = new System.Drawing.Point(376, 265);
-            this.btnConsultas.Name = "btnConsultas";
-            this.btnConsultas.Size = new System.Drawing.Size(185, 185);
-            this.btnConsultas.TabIndex = 11;
-            this.btnConsultas.Text = "Consultas";
-            this.btnConsultas.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnConsultas.UseVisualStyleBackColor = false;
             // 
             // FrmCadastrosChoices
             // 

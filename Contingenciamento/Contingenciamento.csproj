@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="BLL\BankFacade.cs" />
     <Compile Include="BLL\ContingencyFundFacade.cs" />
+    <Compile Include="BLL\ContingencyPastFacade.cs" />
     <Compile Include="BLL\ContractFacade.cs" />
     <Compile Include="BLL\DepartmentFacade.cs" />
     <Compile Include="BLL\EmployeeFacade.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="DAO\BankDAO.cs" />
     <Compile Include="DAO\ContingencyAliquotDAO.cs" />
     <Compile Include="DAO\ContingencyFundDAO.cs" />
+    <Compile Include="DAO\ContingencyPastDAO.cs" />
     <Compile Include="DAO\ContractDAO.cs" />
     <Compile Include="DAO\ContractMonetaryFundsDAO.cs" />
     <Compile Include="DAO\DAOHelper.cs" />
@@ -127,6 +129,12 @@
     </Compile>
     <Compile Include="GUI\FrmAllFunds.Designer.cs">
       <DependentUpon>FrmAllFunds.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FrmContingencyChoices.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FrmContingencyChoices.Designer.cs">
+      <DependentUpon>FrmContingencyChoices.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\FrmInsertHistoryEmployee.cs">
       <SubType>Form</SubType>
@@ -188,6 +196,12 @@
     <Compile Include="GUI\FrmRelatorios.Designer.cs">
       <DependentUpon>FrmRelatorios.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FrmViewContingency.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FrmViewContingency.Designer.cs">
+      <DependentUpon>FrmViewContingency.cs</DependentUpon>
+    </Compile>
     <Compile Include="MenuPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -196,6 +210,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User Controls\DataGridContingency.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="User Controls\DataGridContingency.Designer.cs">
+      <DependentUpon>DataGridContingency.cs</DependentUpon>
+    </Compile>
     <Compile Include="Util\DefaultWorksheetReader.cs" />
     <Compile Include="Util\RelatoriosUtil.cs" />
     <EmbeddedResource Include="GUI\DlgTextoEmail.resx">
@@ -206,6 +226,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmAllFunds.resx">
       <DependentUpon>FrmAllFunds.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FrmContingencyChoices.resx">
+      <DependentUpon>FrmContingencyChoices.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmInsertHistoryEmployee.resx">
       <DependentUpon>FrmInsertHistoryEmployee.cs</DependentUpon>
@@ -237,6 +260,9 @@
     <EmbeddedResource Include="GUI\FrmRelatorios.resx">
       <DependentUpon>FrmRelatorios.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FrmViewContingency.resx">
+      <DependentUpon>FrmViewContingency.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MenuPrincipal.resx">
       <DependentUpon>MenuPrincipal.cs</DependentUpon>
     </EmbeddedResource>
@@ -250,6 +276,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="User Controls\DataGridContingency.resx">
+      <DependentUpon>DataGridContingency.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
