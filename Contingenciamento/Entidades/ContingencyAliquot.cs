@@ -21,6 +21,14 @@ namespace Contingenciamento.Entidades
             ContingencyFund = contingencyFund;
         }
 
+        public ContingencyAliquot(long id, double value, ContingencyFund contingencyFund, double calculatedValue)
+        {
+            Id = id;
+            Value = value;
+            ContingencyFund = contingencyFund;
+            CalculatedValue = calculatedValue;
+        }
+
         public ContingencyAliquot(double value, ContingencyFund contingencyFund)
         {
             Value = value;

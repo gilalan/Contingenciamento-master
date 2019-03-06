@@ -1,4 +1,5 @@
 ﻿using Contingenciamento.Entidades;
+using System;
 using System.Collections.Generic;
 
 namespace Contingenciamento.BLL
@@ -42,9 +43,10 @@ namespace Contingenciamento.BLL
 
         public List<ContingencyPast> ProcessContingencyContract(Contract contract, MonetaryFund monetaryFund)
         {
-            List<EmployeeHistory> employeeHistories = this._employeeHistoryDAO.GetByContract(contract);
+            List<EmployeeHistory> employeeHistories = this._employeeHistoryDAO.GetByContract(contract, false);
             List<ContingencyPast> contingencyPasts = new List<ContingencyPast>();
             ContingencyPast cp;
+            ContingencyAliquot caToAdd;
             foreach (EmployeeHistory eh in employeeHistories)
             {
                 cp = new ContingencyPast();
@@ -52,24 +54,28 @@ namespace Contingenciamento.BLL
                 cp.MonetaryFundName = monetaryFund.Name;
                 foreach (ContingencyAliquot ca in contract.ContingencyAliquot)
                 {
+                    caToAdd = new ContingencyAliquot();
+                    caToAdd.Id = ca.Id;
+                    caToAdd.ContingencyFund = new ContingencyFund(ca.ContingencyFund.Id, ca.ContingencyFund.Name);
+                    caToAdd.Value = ca.Value;
                     //essa parte tá horrorosa (calculando para cada Mês) 
                     if (monetaryFund.Name.ToUpper().Equals("SALÁRIO BASE"))
                     {
-                        ca.CalculatedValue = (ca.Value/100) * eh.BaseSalary; 
+                        caToAdd.CalculatedValue = Math.Round((ca.Value/100) * eh.BaseSalary, 2); 
                     }
                     else if (monetaryFund.Name.ToUpper().Equals("PROVENTOS TOTAIS"))
                     {
-                        ca.CalculatedValue = (ca.Value / 100) * eh.TotalEarnings;
+                        caToAdd.CalculatedValue = Math.Round((ca.Value / 100) * eh.TotalEarnings, 2);
                     }
                     else
                     {
-                        ca.CalculatedValue = (ca.Value / 100) * eh.NetSalary;
+                        caToAdd.CalculatedValue = Math.Round((ca.Value / 100) * eh.NetSalary, 2);
                     }
 
-                    if (ca.ContingencyFund.Name.ToUpper() == "FÉRIAS")
-                        ca.CalculatedValue = System.Convert.ToDouble(ca.CalculatedValue/3);
+                    //if (ca.ContingencyFund.Name.ToUpper() == "FÉRIAS")
+                    //    caToAdd.CalculatedValue = Math.Round(System.Convert.ToDouble(ca.CalculatedValue/3), 2);
 
-                    cp.ContingencyAliquots.Add(ca);
+                    cp.ContingencyAliquots.Add(caToAdd);
                 }
                 contingencyPasts.Add(cp);
             }

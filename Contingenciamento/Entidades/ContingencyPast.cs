@@ -22,4 +22,28 @@ namespace Contingenciamento.Entidades
             ContingencyAliquots = new List<ContingencyAliquot>();
         }
     }
+
+    class ContingencyPastComparer : IEqualityComparer<ContingencyPast>
+    {
+        public bool Equals(ContingencyPast x, ContingencyPast y)
+        {
+            if (x == null || y == null || x.GetType() != y.GetType() || x.EmployeeHistory == null || y.EmployeeHistory == null)
+                return false;
+
+            return x.EmployeeHistory.Id == y.EmployeeHistory.Id;
+        }
+
+        public int GetHashCode(ContingencyPast obj)
+        {
+            // Don't compute hash code on null object.
+            if (obj == null || obj.EmployeeHistory == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return obj.EmployeeHistory.Id.GetHashCode();
+            }
+        }
+    }
 }

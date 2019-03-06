@@ -79,6 +79,13 @@ namespace Contingenciamento.Entidades
             PenaltyRescission = penaltyRescission;
         }
 
+        public EmployeeHistory(long id)
+        {
+            Id = id;
+            this.Employee = new Employee();
+            this.Department = new Department();
+        }
+
         public EmployeeHistory()
         {
             this.Employee = new Employee();

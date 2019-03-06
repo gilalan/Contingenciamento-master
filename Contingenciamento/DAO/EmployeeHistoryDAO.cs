@@ -348,7 +348,7 @@ namespace Contingenciamento.DAO
             return employeeHistories;
         }
 
-        public List<EmployeeHistory> GetByContract(Contract ct)
+        public List<EmployeeHistory> GetByContract(Contract ct, bool processed)
         {
             List<EmployeeHistory> employeeHistories = new List<EmployeeHistory>();
             NpgsqlDataReader reader = null;
@@ -374,7 +374,7 @@ namespace Contingenciamento.DAO
                 cmd.Parameters.Add(new NpgsqlParameter("ctId", NpgsqlTypes.NpgsqlDbType.Bigint));
                 cmd.Parameters.Add(new NpgsqlParameter("proc", NpgsqlTypes.NpgsqlDbType.Boolean));
                 cmd.Parameters[0].Value = ct.Id;
-                cmd.Parameters[1].Value = false;
+                cmd.Parameters[1].Value = processed;
 
                 EmployeeHistory employeeHistory;
                 dal.OpenConnection();

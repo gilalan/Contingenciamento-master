@@ -25,6 +25,12 @@ namespace Contingenciamento.BLL
             return this._contingencyPastDAO.GetTop();
         }
 
+        public List<ContingencyPast> GetContingencyPastsByContract(Contract contract)
+        {
+            HashSet<ContingencyPast> cps = this._contingencyPastDAO.GetByContract(contract);
+            return new List<ContingencyPast>(cps);
+        }
+
         public int DeleteContingencyPast(int id)
         {
             return this._contingencyPastDAO.Delete<int>(id);

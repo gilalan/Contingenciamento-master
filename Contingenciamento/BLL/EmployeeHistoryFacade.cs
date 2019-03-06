@@ -26,9 +26,9 @@ namespace Contingenciamento.BLL
             return this._employeeHistoryDAO.GetByEmployeeMatriculation(matriculation);
         }
 
-        public List<EmployeeHistory> GetHistoryFromContract(Contract ct)
+        public List<EmployeeHistory> GetHistoryFromContract(Contract ct, bool processed)
         {
-            return this._employeeHistoryDAO.GetByContract(ct);
+            return this._employeeHistoryDAO.GetByContract(ct, processed);
         }
 
         public long GetEmployeesCountByContract(Contract ct)
