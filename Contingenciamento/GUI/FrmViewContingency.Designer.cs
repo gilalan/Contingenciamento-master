@@ -46,6 +46,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.txtContractName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnExcelExport = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -55,6 +56,7 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.btnExcelExport);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.cbYears);
             this.groupBox1.Controls.Add(this.panelGrid);
@@ -256,6 +258,18 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "Selecione um período para visualizar:";
             // 
+            // btnExcelExport
+            // 
+            this.btnExcelExport.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExcelExport.Location = new System.Drawing.Point(472, 22);
+            this.btnExcelExport.Name = "btnExcelExport";
+            this.btnExcelExport.Size = new System.Drawing.Size(202, 23);
+            this.btnExcelExport.TabIndex = 59;
+            this.btnExcelExport.Text = "Exportar para EXCEL";
+            this.btnExcelExport.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnExcelExport.UseVisualStyleBackColor = true;
+            this.btnExcelExport.Click += new System.EventHandler(this.btnExcelExport_Click);
+            // 
             // FrmViewContingency
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -298,5 +312,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtEmployeesCount;
         private System.Windows.Forms.Button btnView;
+        private System.Windows.Forms.Button btnExcelExport;
     }
 }

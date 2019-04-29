@@ -196,4 +196,10 @@
   <data name="money_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\money_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="demission_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\demission_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="vacation_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\vacation_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

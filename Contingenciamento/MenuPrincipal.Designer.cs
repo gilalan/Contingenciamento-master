@@ -133,6 +133,7 @@
             this.btnGetFunds.Text = "Solicitar Liberação de Verba";
             this.btnGetFunds.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnGetFunds.UseVisualStyleBackColor = false;
+            this.btnGetFunds.Click += new System.EventHandler(this.btnGetFunds_Click);
             // 
             // btnDoContingency
             // 

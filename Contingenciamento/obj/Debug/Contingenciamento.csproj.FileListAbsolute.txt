@@ -118,3 +118,12 @@ D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contin
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmContingencyChoices.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmViewContingency.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.User_Controls.DataGridContingency.resources
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmExcelExport.resources
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\NPOI.dll
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\NPOI.OOXML.dll
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\NPOI.OpenXml4Net.dll
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\NPOI.OpenXmlFormats.dll
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\ICSharpCode.SharpZipLib.xml
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.Frm13SalarySolicit.resources
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmSolicitationChoices.resources

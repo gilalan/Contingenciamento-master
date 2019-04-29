@@ -14,7 +14,9 @@ namespace Contingenciamento.GUI
         Facade _facade = new Facade();
         Contract currentContract;
         List<Contract> allContracts;
+        List<int> orderedYears;
         Dictionary<int, List<ContingencyPast>> yearListCPsPairs;
+        Dictionary<KeyValuePair<int,int>, List<ContingencyPast>> yearMonthCPsList;
 
         public FrmViewContingency()
         {
@@ -83,6 +85,7 @@ namespace Contingenciamento.GUI
             }
 
             this.yearListCPsPairs = new Dictionary<int, List<ContingencyPast>>();
+            this.yearMonthCPsList = new Dictionary<KeyValuePair<int, int>, List<ContingencyPast>>();
             List<ContingencyPast> limitedCPList;
             foreach (int year in years)
             {
@@ -97,7 +100,7 @@ namespace Contingenciamento.GUI
                 //limitedCPList.Sort()
                 this.yearListCPsPairs.Add(year, limitedCPList);
             }
-            List<int> orderedYears = new List<int>(years);
+            orderedYears = new List<int>(years);
             orderedYears.Sort();
             _FillYearsCB(orderedYears);
         }
@@ -134,9 +137,13 @@ namespace Contingenciamento.GUI
                 string selectedMFToContingency = "Verba Monetaria";
                 double total = 0;
                 int countMonthRows = 0;
+                KeyValuePair<int,int> kvpMonthYear;
+                List<ContingencyPast> monthYearCPList; 
                 //Serão 12 dataTables representando os 12 meses do ano.
                 for (int i = 1; i <= namedMonths.Length; i++)
                 {
+                    kvpMonthYear = new KeyValuePair<int, int>(year, i);
+                    monthYearCPList = new List<ContingencyPast>();
                     countMonthRows = 0;
                     DataTable dt = new DataTable(namedMonths[i - 1]);
                     dt.Columns.Add("Matrícula");
@@ -170,6 +177,7 @@ namespace Contingenciamento.GUI
                             }
                             row["Total"] = total;
                             dt.Rows.Add(row);
+                            monthYearCPList.Add(cp);
                         }
                     }
                     if (countMonthRows > 0)
@@ -177,6 +185,7 @@ namespace Contingenciamento.GUI
                         dataGridContingency = new DataGridContingency(dt, this.panelGrid.Size);
                         this.panelGrid.Controls.Add(dataGridContingency);
                     }
+                    yearMonthCPsList.Add(kvpMonthYear, monthYearCPList);
                 }
             }
         }
@@ -194,6 +203,21 @@ namespace Contingenciamento.GUI
             else
             {
                 return employeeHistory.NetSalary;
+            }
+        }
+
+        private void btnExcelExport_Click(object sender, EventArgs e)
+        {
+            if (this.cbYears.Items.Count > 0)
+            {
+                int objYear = (int)this.cbYears.SelectedIndex;
+                FrmExcelExport frmExcelExp = new FrmExcelExport(objYear, orderedYears, yearMonthCPsList, currentContract);
+                frmExcelExp.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Para exportar, deve existir um contingenciamento ativo para um contrato.", 
+                    "Escolha um contrato antes de exportar", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
             }
         }
     }

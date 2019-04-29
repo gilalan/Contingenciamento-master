@@ -90,6 +90,12 @@ namespace Contingenciamento
             //MessageBox.Show("resultado: " + (d1 - d2).TotalHours);
 
             //Facade fac = new Facade();
-        }        
+        }
+
+        private void btnGetFunds_Click(object sender, EventArgs e)
+        {
+            FrmSolicitationChoices frmSolicitationChoices = new FrmSolicitationChoices();
+            frmSolicitationChoices.ShowDialog();
+        }
     }
 }

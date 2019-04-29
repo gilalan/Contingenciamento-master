@@ -43,8 +43,23 @@
     <Reference Include="ExcelDataReader.DataSet, Version=3.4.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
       <HintPath>..\packages\ExcelDataReader.DataSet.3.4.0\lib\net45\ExcelDataReader.DataSet.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.0.0.999, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.0.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Npgsql, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.4.0.0\lib\net451\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
     <Reference Include="PostgreSQLCopyHelper, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\PostgreSQLCopyHelper.2.2.0\lib\net451\PostgreSQLCopyHelper.dll</HintPath>
@@ -118,6 +133,12 @@
     <Compile Include="GUI\DlgTextoEmail.Designer.cs">
       <DependentUpon>DlgTextoEmail.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Frm13SalarySolicit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Frm13SalarySolicit.Designer.cs">
+      <DependentUpon>Frm13SalarySolicit.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FrmAddDepartment.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +156,12 @@
     </Compile>
     <Compile Include="GUI\FrmContingencyChoices.Designer.cs">
       <DependentUpon>FrmContingencyChoices.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FrmExcelExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FrmExcelExport.Designer.cs">
+      <DependentUpon>FrmExcelExport.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\FrmInsertHistoryEmployee.cs">
       <SubType>Form</SubType>
@@ -196,6 +223,12 @@
     <Compile Include="GUI\FrmRelatorios.Designer.cs">
       <DependentUpon>FrmRelatorios.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FrmSolicitationChoices.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FrmSolicitationChoices.Designer.cs">
+      <DependentUpon>FrmSolicitationChoices.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FrmViewContingency.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -216,10 +249,14 @@
     <Compile Include="User Controls\DataGridContingency.Designer.cs">
       <DependentUpon>DataGridContingency.cs</DependentUpon>
     </Compile>
+    <Compile Include="Util\DefaultExporterWorksheet.cs" />
     <Compile Include="Util\DefaultWorksheetReader.cs" />
     <Compile Include="Util\RelatoriosUtil.cs" />
     <EmbeddedResource Include="GUI\DlgTextoEmail.resx">
       <DependentUpon>DlgTextoEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Frm13SalarySolicit.resx">
+      <DependentUpon>Frm13SalarySolicit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmAddDepartment.resx">
       <DependentUpon>FrmAddDepartment.cs</DependentUpon>
@@ -229,6 +266,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmContingencyChoices.resx">
       <DependentUpon>FrmContingencyChoices.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FrmExcelExport.resx">
+      <DependentUpon>FrmExcelExport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmInsertHistoryEmployee.resx">
       <DependentUpon>FrmInsertHistoryEmployee.cs</DependentUpon>
@@ -259,6 +299,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmRelatorios.resx">
       <DependentUpon>FrmRelatorios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FrmSolicitationChoices.resx">
+      <DependentUpon>FrmSolicitationChoices.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmViewContingency.resx">
       <DependentUpon>FrmViewContingency.cs</DependentUpon>
@@ -368,6 +411,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="images\money_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\vacation_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\demission_128.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
