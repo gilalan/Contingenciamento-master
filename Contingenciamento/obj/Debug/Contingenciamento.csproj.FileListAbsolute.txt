@@ -46,7 +46,6 @@ F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciame
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\bin\Debug\System.Threading.Tasks.Extensions.dll
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\bin\Debug\System.ValueTuple.dll
-F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\bin\Debug\DropDownControls.xml
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\bin\Debug\ExcelDataReader.xml
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\bin\Debug\ExcelDataReader.DataSet.xml
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\bin\Debug\Npgsql.pdb
@@ -56,16 +55,9 @@ F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciame
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\bin\Debug\System.ValueTuple.xml
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.csprojAssemblyReference.cache
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.DlgTextoEmail.resources
-F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmCadastroAliquotas.resources
-F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.FrmCadastros.resources
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmCadastrosChoices.resources
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmConfiguracoes.resources
-F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.FrmConsultas.resources
-F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmRelatorioCliente.resources
-F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmRelatorioContrato.resources
-F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmRelatorioFuncionario.resources
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.FrmRelatorios.resources
-F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmRelatorioVerba.resources
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.MenuPrincipal.resources
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.Properties.Resources.resources
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.csproj.GenerateResource.cache
@@ -127,3 +119,21 @@ D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contin
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\bin\Debug\ICSharpCode.SharpZipLib.xml
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.Frm13SalarySolicit.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmSolicitationChoices.resources
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\bin\Debug\ICSharpCode.SharpZipLib.dll
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\bin\Debug\NPOI.dll
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\bin\Debug\NPOI.OOXML.dll
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\bin\Debug\NPOI.OpenXml4Net.dll
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\bin\Debug\NPOI.OpenXmlFormats.dll
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\bin\Debug\ICSharpCode.SharpZipLib.xml
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.Frm13SalarySolicit.resources
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmAddDepartment.resources
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmAllFunds.resources
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmContingencyChoices.resources
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmExcelExport.resources
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.FrmInsertHistoryEmployee.resources
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmDoContingency.resources
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmInsertEntities.resources
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmSolicitationChoices.resources
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmViewContingency.resources
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.User_Controls.DataGridContingency.resources
+F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmVacationSolicit.resources

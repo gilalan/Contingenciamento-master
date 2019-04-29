@@ -326,6 +326,19 @@ namespace Contingenciamento.Util
             headerRedStyle.SetFont(font1);
             styles.Add("AllBordersFillRed", headerRedStyle);
 
+            ICellStyle headerBlueStyle = wb.CreateCellStyle();
+            headerRedStyle.BorderBottom = BorderStyle.Thin;
+            headerRedStyle.BottomBorderColor = IndexedColors.Black.Index;
+            headerRedStyle.BorderLeft = BorderStyle.Thin;
+            headerRedStyle.LeftBorderColor = IndexedColors.Black.Index;
+            headerRedStyle.BorderRight = BorderStyle.Thin;
+            headerRedStyle.RightBorderColor = IndexedColors.Black.Index;
+            headerRedStyle.BorderTop = BorderStyle.Thin;
+            headerRedStyle.TopBorderColor = IndexedColors.Black.Index;
+            headerRedStyle.FillForegroundColor = IndexedColors.Grey40Percent.Index;
+            headerRedStyle.FillPattern = FillPattern.SolidForeground;
+            styles.Add("AllBordersFillGrey", headerRedStyle);
+
             ICellStyle styleCurrency = wb.CreateCellStyle();
             styleCurrency.CloneStyleFrom(styleBorder);
             styleCurrency.DataFormat = wb.CreateDataFormat().GetFormat("\"R$\"#,##0.00");
@@ -655,6 +668,333 @@ namespace Contingenciamento.Util
                 lcell.SetCellType(CellType.Numeric);
                 lcell.SetCellFormula("SUM("+namedCells[i-2]+fixedRange1.ToString()+":"+ namedCells[i-2]+fixedRange2.ToString()+")");
                 lcell.CellStyle = styles["AllBordersCurrencyBoldYellow"];
+            }
+        }
+
+        public static IWorkbook ExportCtgencyVacationEmployeeList(List<ContingencyPast> cpListByYear, int year)
+        {
+            IWorkbook wb = new XSSFWorkbook();
+            ISheet sheet = wb.CreateSheet("Relação de Colaboradores");
+            ICreationHelper cH = wb.GetCreationHelper();
+            Dictionary<string, ICellStyle> Styles = _CreateStyles(wb);
+
+            //Parte do cabeçalho
+            sheet = _CreateVacationDefaultHeader(sheet, wb, year);
+            int titlesLength = 5; //Quantidade de colunas do cabeçalho fixo (criado no método anterior)
+            int rowNumber = sheet.LastRowNum + 1;
+            int countBodyRows = 1;
+            int staticHeaderRows = 4;
+
+            Dictionary<int, string> kvpMonths = new Dictionary<int, string>();
+            kvpMonths.Add(1, "Jan"); kvpMonths.Add(2, "Fev"); kvpMonths.Add(3, "Mar"); kvpMonths.Add(4, "Abr"); kvpMonths.Add(5, "Mai"); kvpMonths.Add(6, "Jun");
+            kvpMonths.Add(7, "Jul"); kvpMonths.Add(8, "Ago"); kvpMonths.Add(9, "Set"); kvpMonths.Add(10, "Out"); kvpMonths.Add(11, "Nov"); kvpMonths.Add(12, "Dez");
+            String[] orderedShortMonths = { "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez" };
+
+            Dictionary<Employee, List<ContingencyPast>> contPastsByMonth = _ProcessEmployeeHistoryByMonth(cpListByYear);
+
+            foreach (KeyValuePair<Employee, List<ContingencyPast>> kvpEmpCP in contPastsByMonth)
+            {
+                IRow row = sheet.CreateRow(rowNumber++);
+
+                ICell c0 = row.CreateCell(0);
+                c0.SetCellType(CellType.Numeric);
+                c0.SetCellValue(countBodyRows);
+                c0.CellStyle = Styles["AllBorders"];
+                ICell c1 = row.CreateCell(1);
+                c1.SetCellValue(cH.CreateRichTextString(kvpEmpCP.Key.Name));
+                c1.CellStyle = Styles["AllBorders"];
+                ICell c2 = row.CreateCell(2);
+                c2.SetCellValue(cH.CreateRichTextString(kvpEmpCP.Key.CurrentAdmissionDate.ToShortDateString()));
+                c2.CellStyle = Styles["AllBorders"];
+                ICell c3 = row.CreateCell(3);
+                c3.SetCellValue(cH.CreateRichTextString("dd/mm/yyyy a dd/mm/yyyy"));
+                c3.CellStyle = Styles["AllBorders"];
+                
+                foreach (ContingencyPast cp in kvpEmpCP.Value)
+                {
+                    if (cp.EmployeeHistory.InVacation)
+                    {
+                        ICell c4 = row.CreateCell(4);
+                        c4.SetCellValue(cH.CreateRichTextString(cp.EmployeeHistory.StartVacationTaken.ToShortDateString() +
+                            " a " + cp.EmployeeHistory.EndVacationTaken.ToShortDateString()));
+                        c4.CellStyle = Styles["AllBorders"];
+
+                        int firstMonth = cp.EmployeeHistory.StartVacationTaken.Month; //1 a 12
+                        int lastMonth = cp.EmployeeHistory.EndVacationTaken.Month;
+                        
+                        //Vai ter que fazer um gingado aqui pra poder pegar os meses certinhos que compõem as férias do funcionário
+
+                        for (int i = 0; i < orderedShortMonths.Length * 2; i = i + 2)
+                        {
+                            ICell rCell = row.CreateCell(i + titlesLength);
+                            ICell rOCell = row.CreateCell(i + 1 + titlesLength);
+
+                            //rCell.SetCellValue(shortMonths[i / 2] + "-" + year);
+                            //rOCell.SetCellValue(shortMonths[i / 2] + "-" + year);
+                            rCell.CellStyle = Styles["AllBorders"];
+                            rOCell.CellStyle = Styles["AllBorders"];
+
+                        }
+
+                        IRow r3 = sheet.CreateRow(rowNumber++);
+
+                        if (cp.EmployeeHistory.Epoch.Month == 12)
+                        {
+                            ICell c2 = row.CreateCell(2);
+                            c2.SetCellType(CellType.Numeric);
+                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                            c2.CellStyle = Styles["AllBordersCurrency"];
+
+                            ICell c3 = row.CreateCell(3);
+                            c3.SetCellType(CellType.Numeric);
+                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                            c3.CellStyle = Styles["AllBordersCurrency"];
+                        }
+
+                        else if (cp.EmployeeHistory.Epoch.Month == 11)
+                        {
+                            ICell c2 = row.CreateCell(4);
+                            c2.SetCellType(CellType.Numeric);
+                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                            c2.CellStyle = Styles["AllBordersCurrency"];
+
+                            ICell c3 = row.CreateCell(5);
+                            c3.SetCellType(CellType.Numeric);
+                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                            c3.CellStyle = Styles["AllBordersCurrency"];
+                        }
+
+                        else if (cp.EmployeeHistory.Epoch.Month == 10)
+                        {
+                            ICell c2 = row.CreateCell(6);
+                            c2.SetCellType(CellType.Numeric);
+                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                            c2.CellStyle = Styles["AllBordersCurrency"];
+
+                            ICell c3 = row.CreateCell(7);
+                            c3.SetCellType(CellType.Numeric);
+                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                            c3.CellStyle = Styles["AllBordersCurrency"];
+                        }
+
+                        else if (cp.EmployeeHistory.Epoch.Month == 9)
+                        {
+                            ICell c2 = row.CreateCell(8);
+                            c2.SetCellType(CellType.Numeric);
+                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                            c2.CellStyle = Styles["AllBordersCurrency"];
+
+                            ICell c3 = row.CreateCell(9);
+                            c3.SetCellType(CellType.Numeric);
+                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                            c3.CellStyle = Styles["AllBordersCurrency"];
+                        }
+
+                        else if (cp.EmployeeHistory.Epoch.Month == 8)
+                        {
+                            ICell c2 = row.CreateCell(10);
+                            c2.SetCellType(CellType.Numeric);
+                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                            c2.CellStyle = Styles["AllBordersCurrency"];
+
+                            ICell c3 = row.CreateCell(11);
+                            c3.SetCellType(CellType.Numeric);
+                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                            c3.CellStyle = Styles["AllBordersCurrency"];
+                        }
+
+                        else if (cp.EmployeeHistory.Epoch.Month == 7)
+                        {
+                            ICell c2 = row.CreateCell(12);
+                            c2.SetCellType(CellType.Numeric);
+                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                            c2.CellStyle = Styles["AllBordersCurrency"];
+
+                            ICell c3 = row.CreateCell(13);
+                            c3.SetCellType(CellType.Numeric);
+                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                            c3.CellStyle = Styles["AllBordersCurrency"];
+                        }
+
+                        else if (cp.EmployeeHistory.Epoch.Month == 6)
+                        {
+                            ICell c2 = row.CreateCell(14);
+                            c2.SetCellType(CellType.Numeric);
+                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                            c2.CellStyle = Styles["AllBordersCurrency"];
+
+                            ICell c3 = row.CreateCell(15);
+                            c3.SetCellType(CellType.Numeric);
+                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                            c3.CellStyle = Styles["AllBordersCurrency"];
+                        }
+
+                        else if (cp.EmployeeHistory.Epoch.Month == 5)
+                        {
+                            ICell c2 = row.CreateCell(16);
+                            c2.SetCellType(CellType.Numeric);
+                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                            c2.CellStyle = Styles["AllBordersCurrency"];
+
+                            ICell c3 = row.CreateCell(17);
+                            c3.SetCellType(CellType.Numeric);
+                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                            c3.CellStyle = Styles["AllBordersCurrency"];
+                        }
+
+                        else if (cp.EmployeeHistory.Epoch.Month == 4)
+                        {
+                            ICell c2 = row.CreateCell(18);
+                            c2.SetCellType(CellType.Numeric);
+                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                            c2.CellStyle = Styles["AllBordersCurrency"];
+
+                            ICell c3 = row.CreateCell(19);
+                            c3.SetCellType(CellType.Numeric);
+                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                            c3.CellStyle = Styles["AllBordersCurrency"];
+                        }
+
+                        else if (cp.EmployeeHistory.Epoch.Month == 3)
+                        {
+                            ICell c2 = row.CreateCell(20);
+                            c2.SetCellType(CellType.Numeric);
+                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                            c2.CellStyle = Styles["AllBordersCurrency"];
+
+                            ICell c3 = row.CreateCell(21);
+                            c3.SetCellType(CellType.Numeric);
+                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                            c3.CellStyle = Styles["AllBordersCurrency"];
+                        }
+
+                        else if (cp.EmployeeHistory.Epoch.Month == 2)
+                        {
+                            ICell c2 = row.CreateCell(22);
+                            c2.SetCellType(CellType.Numeric);
+                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                            c2.CellStyle = Styles["AllBordersCurrency"];
+
+                            ICell c3 = row.CreateCell(23);
+                            c3.SetCellType(CellType.Numeric);
+                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                            c3.CellStyle = Styles["AllBordersCurrency"];
+                        }
+
+                        else if (cp.EmployeeHistory.Epoch.Month == 1)
+                        {
+                            ICell c2 = row.CreateCell(24);
+                            c2.SetCellType(CellType.Numeric);
+                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                            c2.CellStyle = Styles["AllBordersCurrency"];
+
+                            ICell c3 = row.CreateCell(25);
+                            c3.SetCellType(CellType.Numeric);
+                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                            c3.CellStyle = Styles["AllBordersCurrency"];
+                        }
+                    }
+                }
+
+                int fixedFormulaCell = staticHeaderRows + countBodyRows;
+                ICell c26 = row.CreateCell(26);
+                c26.SetCellType(CellType.Numeric);
+                c26.SetCellFormula("SUM(C" + fixedFormulaCell + ":Z" + fixedFormulaCell + ")");
+                c26.CellStyle = Styles["AllBordersCurrency"];
+
+                countBodyRows++;
+            }
+
+            //IRow lastRow = sheet.CreateRow(rowNumber);
+            //int fixedRange1 = staticHeaderRows + 1;
+            //int fixedRange2 = staticHeaderRows + (countBodyRows - 1);
+            //_CreateLastRow13Salary(lastRow, fixedRange1, fixedRange2, Styles);
+
+            return wb;
+        }
+
+        private static ISheet _CreateVacationDefaultHeader(ISheet sheet, IWorkbook wb, int year)
+        {
+            Dictionary<string, ICellStyle> Styles = _CreateStyles(wb);
+
+            sheet.SetColumnWidth(0, 5 * 256);
+            sheet.SetColumnWidth(1, 35 * 256);
+            sheet.SetColumnWidth(2, 15 * 256);
+            sheet.SetColumnWidth(3, 25 * 256);
+            sheet.SetColumnWidth(4, 25 * 256);
+            sheet.SetColumnWidth(5, 11 * 256);
+            sheet.SetColumnWidth(6, 11 * 256);
+            sheet.SetColumnWidth(7, 11 * 256);
+            sheet.SetColumnWidth(8, 11 * 256);
+            sheet.SetColumnWidth(9, 11 * 256);
+            sheet.SetColumnWidth(10, 11 * 256);
+            sheet.SetColumnWidth(11, 11 * 256);
+            sheet.SetColumnWidth(12, 11 * 256);
+            sheet.SetColumnWidth(13, 11 * 256);
+            sheet.SetColumnWidth(14, 11 * 256);
+            sheet.SetColumnWidth(15, 11 * 256);
+            sheet.SetColumnWidth(16, 11 * 256);
+            sheet.SetColumnWidth(17, 11 * 256);
+            sheet.SetColumnWidth(18, 11 * 256);
+            sheet.SetColumnWidth(19, 11 * 256);
+            sheet.SetColumnWidth(20, 11 * 256);
+            sheet.SetColumnWidth(21, 11 * 256);
+            sheet.SetColumnWidth(22, 11 * 256);
+            sheet.SetColumnWidth(23, 11 * 256);
+            sheet.SetColumnWidth(24, 11 * 256);
+            sheet.SetColumnWidth(25, 11 * 256);
+            sheet.SetColumnWidth(26, 11 * 256);
+            sheet.SetColumnWidth(27, 11 * 256);
+            sheet.SetColumnWidth(28, 11 * 256);
+            sheet.SetColumnWidth(29, 15 * 256);
+
+            int rowNumber = 0;
+            IRow r0 = sheet.CreateRow(rowNumber++);
+            ICell c0 = r0.CreateCell(0, CellType.String);
+            c0.SetCellValue("LIBERAÇÕES DE FÉRIAS E INCIDÊNCIAS - SOLL - PERNAMBUCO - " + year);
+
+            IRow r1 = sheet.CreateRow(rowNumber++);
+
+            String[] titles = {
+            "Nº", "NOME COMPLETO", "ADMISSÃO", "PERÍODO DE GOZO", "PERÍODO AQUISITIVO"};
+
+            String[] funds = { "Férias", "Incidência" };
+
+            IRow r2 = sheet.CreateRow(rowNumber++);
+            for (int i = 0; i < titles.Length; i++)
+            {
+                ICell cell = r2.CreateCell(i);
+                cell.SetCellValue(titles[i]);
+                cell.CellStyle = Styles["AllBordersFillGrey"];
+            }
+
+            for (int i = 0; i < 24; i++)
+            {
+                ICell r2Cell = r2.CreateCell(i + titles.Length);
+                r2Cell.CellStyle = Styles["AllBorders"];
+                if (i % 2 == 0)
+                    r2Cell.SetCellValue(funds[0]);
+                else
+                    r2Cell.SetCellValue(funds[1]);
+            }            
+
+            return sheet;
+        }
+
+        private static void _CreateMonthsRow(ISheet sheet, int rowNumber, int titlesLength, int year, Dictionary<string, ICellStyle> Styles)
+        {
+            String[] shortMonths = { "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez" };
+            IRow r3 = sheet.CreateRow(rowNumber++);
+            for (int i = 0; i < shortMonths.Length * 2; i = i + 2)
+            {
+                ICell rCell = r3.CreateCell(i + titlesLength);
+                ICell rOCell = r3.CreateCell(i + 1 + titlesLength);
+
+                rCell.SetCellValue(shortMonths[i / 2] + "-" + year);
+                rOCell.SetCellValue(shortMonths[i / 2] + "-" + year);
+                rCell.CellStyle = Styles["AllBorders"];
+                rOCell.CellStyle = Styles["AllBorders"];
+
             }
         }
     }

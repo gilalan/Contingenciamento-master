@@ -4,25 +4,31 @@ using Contingenciamento.Util;
 using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Contingenciamento.GUI
 {
-    public partial class Frm13SalarySolicit : Form
+    public partial class FrmVacationSolicit : Form
     {
         Facade _facade = new Facade();
         Contract currentContract;
         List<Contract> allContracts;
         List<int> orderedYears;
         Dictionary<int, List<ContingencyPast>> yearListCPsPairs;
-        
-        public Frm13SalarySolicit()
+
+        public FrmVacationSolicit()
         {
             InitializeComponent();
         }
 
-        private void Frm13SalarySolicit_Load(object sender, EventArgs e)
+        private void FrmVacationSolicit_Load(object sender, EventArgs e)
         {
             allContracts = _facade.GetTopContract();
             _FillContractsCB(allContracts);
@@ -31,7 +37,6 @@ namespace Contingenciamento.GUI
         private void _FillContractsCB(List<Contract> contracts)
         {
             var source = new BindingSource();
-            //monetaryFunds.Insert(0, new MonetaryFund());
             source.DataSource = contracts;
             this.cbContracts.DataSource = source;
             this.cbContracts.DisplayMember = "Name";
@@ -101,7 +106,7 @@ namespace Contingenciamento.GUI
         {
             int year = (int)this.cbLowYear.SelectedItem;
             List<ContingencyPast> cpListByYear = this.yearListCPsPairs[year];
-            IWorkbook workbook = DefaultExporterWorksheet.ExportCtgency13SalaryEmployeeList(cpListByYear, year);
+            IWorkbook workbook = DefaultExporterWorksheet.ExportCtgencyVacationEmployeeList(cpListByYear, year);
             _SaveExcelFile(workbook);
         }
 
@@ -112,7 +117,7 @@ namespace Contingenciamento.GUI
             sfDlg.Title = "Salvar Planilha XLSX";
             sfDlg.Filter = "Excel Worksheet File|.xlsx";
             sfDlg.FilterIndex = 0;
-            sfDlg.FileName = "Conting_13Salario_" + this.currentContract.Name + "_" + year;
+            sfDlg.FileName = "Conting_Ferias_" + this.currentContract.Name + "_" + year;
             sfDlg.DefaultExt = ".xlsx";
             sfDlg.InitialDirectory = @"D:\TestContingency";
             sfDlg.RestoreDirectory = true;
@@ -124,7 +129,7 @@ namespace Contingenciamento.GUI
                 FileStream fs = new FileStream(sfDlg.FileName, FileMode.Create, FileAccess.Write);
                 wb.Write(fs);
                 wb.Close();
-                MessageBox.Show("O arquivo \""+sfDlg.FileName+"\" foi criado com sucesso na pasta " + sfDlg.InitialDirectory,
+                MessageBox.Show("O arquivo \"" + sfDlg.FileName + "\" foi criado com sucesso.",
                     "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
         }

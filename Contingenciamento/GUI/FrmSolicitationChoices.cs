@@ -22,5 +22,16 @@ namespace Contingenciamento.GUI
             Frm13SalarySolicit frm13SalarySolicit = new Frm13SalarySolicit();
             frm13SalarySolicit.ShowDialog();
         }
+
+        private void btnVacation_Click(object sender, EventArgs e)
+        {
+            FrmVacationSolicit frmVacationSolicit = new FrmVacationSolicit();
+            frmVacationSolicit.ShowDialog();
+        }
+
+        private void btnPenalty_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

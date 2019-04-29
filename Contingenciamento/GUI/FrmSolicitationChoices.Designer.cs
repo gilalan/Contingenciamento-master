@@ -42,14 +42,15 @@
             this.btnVacation.ForeColor = System.Drawing.Color.Black;
             this.btnVacation.Image = global::Contingenciamento.Properties.Resources.vacation_128;
             this.btnVacation.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnVacation.Location = new System.Drawing.Point(35, 39);
-            this.btnVacation.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnVacation.Location = new System.Drawing.Point(26, 32);
+            this.btnVacation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnVacation.Name = "btnVacation";
-            this.btnVacation.Size = new System.Drawing.Size(185, 185);
+            this.btnVacation.Size = new System.Drawing.Size(139, 150);
             this.btnVacation.TabIndex = 13;
             this.btnVacation.Text = "Solicitação de Férias";
             this.btnVacation.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnVacation.UseVisualStyleBackColor = false;
+            this.btnVacation.Click += new System.EventHandler(this.btnVacation_Click);
             // 
             // btn13Salary
             // 
@@ -60,10 +61,10 @@
             this.btn13Salary.ForeColor = System.Drawing.Color.Black;
             this.btn13Salary.Image = global::Contingenciamento.Properties.Resources.money_128;
             this.btn13Salary.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btn13Salary.Location = new System.Drawing.Point(259, 39);
-            this.btn13Salary.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btn13Salary.Location = new System.Drawing.Point(194, 32);
+            this.btn13Salary.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn13Salary.Name = "btn13Salary";
-            this.btn13Salary.Size = new System.Drawing.Size(185, 185);
+            this.btn13Salary.Size = new System.Drawing.Size(139, 150);
             this.btn13Salary.TabIndex = 11;
             this.btn13Salary.Text = "Solicitação de 13º Salário";
             this.btn13Salary.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -79,25 +80,27 @@
             this.btnPenalty.ForeColor = System.Drawing.Color.Black;
             this.btnPenalty.Image = global::Contingenciamento.Properties.Resources.demission_128;
             this.btnPenalty.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnPenalty.Location = new System.Drawing.Point(481, 39);
-            this.btnPenalty.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnPenalty.Location = new System.Drawing.Point(361, 32);
+            this.btnPenalty.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnPenalty.Name = "btnPenalty";
-            this.btnPenalty.Size = new System.Drawing.Size(185, 185);
+            this.btnPenalty.Size = new System.Drawing.Size(139, 150);
             this.btnPenalty.TabIndex = 12;
             this.btnPenalty.Text = "Solicitação de Rescisão";
             this.btnPenalty.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnPenalty.UseVisualStyleBackColor = false;
+            this.btnPenalty.Click += new System.EventHandler(this.btnPenalty_Click);
             // 
             // FrmSolicitationChoices
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(703, 268);
+            this.ClientSize = new System.Drawing.Size(527, 218);
             this.Controls.Add(this.btnVacation);
             this.Controls.Add(this.btn13Salary);
             this.Controls.Add(this.btnPenalty);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "FrmSolicitationChoices";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Solicitação de Verba";

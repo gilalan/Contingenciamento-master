@@ -1,6 +1,6 @@
 ﻿namespace Contingenciamento.GUI
 {
-    partial class Frm13SalarySolicit
+    partial class FrmVacationSolicit
     {
         /// <summary>
         /// Required designer variable.
@@ -58,12 +58,12 @@
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.cbContracts);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(9, 10);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Location = new System.Drawing.Point(11, 11);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox2.Size = new System.Drawing.Size(761, 109);
-            this.groupBox2.TabIndex = 6;
+            this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Parâmetros de Entrada";
             // 
@@ -72,7 +72,7 @@
             this.cbLowYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbLowYear.FormattingEnabled = true;
             this.cbLowYear.Location = new System.Drawing.Point(206, 43);
-            this.cbLowYear.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbLowYear.Margin = new System.Windows.Forms.Padding(2);
             this.cbLowYear.Name = "cbLowYear";
             this.cbLowYear.Size = new System.Drawing.Size(86, 25);
             this.cbLowYear.TabIndex = 60;
@@ -83,7 +83,7 @@
             this.btnExport.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExport.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btnExport.Location = new System.Drawing.Point(4, 73);
-            this.btnExport.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnExport.Margin = new System.Windows.Forms.Padding(2);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(92, 32);
             this.btnExport.TabIndex = 59;
@@ -95,7 +95,7 @@
             // 
             this.txtEmployeesCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtEmployeesCount.Location = new System.Drawing.Point(553, 83);
-            this.txtEmployeesCount.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtEmployeesCount.Margin = new System.Windows.Forms.Padding(2);
             this.txtEmployeesCount.Name = "txtEmployeesCount";
             this.txtEmployeesCount.ReadOnly = true;
             this.txtEmployeesCount.Size = new System.Drawing.Size(41, 19);
@@ -117,7 +117,7 @@
             // 
             this.txtContractDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtContractDescription.Location = new System.Drawing.Point(553, 35);
-            this.txtContractDescription.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtContractDescription.Margin = new System.Windows.Forms.Padding(2);
             this.txtContractDescription.Multiline = true;
             this.txtContractDescription.Name = "txtContractDescription";
             this.txtContractDescription.ReadOnly = true;
@@ -152,7 +152,7 @@
             // 
             this.txtContractName.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtContractName.Location = new System.Drawing.Point(553, 12);
-            this.txtContractName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtContractName.Margin = new System.Windows.Forms.Padding(2);
             this.txtContractName.Name = "txtContractName";
             this.txtContractName.ReadOnly = true;
             this.txtContractName.Size = new System.Drawing.Size(201, 19);
@@ -186,25 +186,24 @@
             this.cbContracts.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbContracts.FormattingEnabled = true;
             this.cbContracts.Location = new System.Drawing.Point(206, 12);
-            this.cbContracts.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbContracts.Margin = new System.Windows.Forms.Padding(2);
             this.cbContracts.Name = "cbContracts";
             this.cbContracts.Size = new System.Drawing.Size(258, 21);
             this.cbContracts.TabIndex = 4;
             this.cbContracts.SelectedIndexChanged += new System.EventHandler(this.cbContracts_SelectedIndexChanged);
             // 
-            // Frm13SalarySolicit
+            // FrmVacationSolicit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(779, 138);
+            this.ClientSize = new System.Drawing.Size(783, 134);
             this.Controls.Add(this.groupBox2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.Name = "Frm13SalarySolicit";
+            this.Name = "FrmVacationSolicit";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Solicitação de 13º Salário";
-            this.Load += new System.EventHandler(this.Frm13SalarySolicit_Load);
+            this.Text = "Solicitação de Férias";
+            this.Load += new System.EventHandler(this.FrmVacationSolicit_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -214,6 +213,7 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ComboBox cbLowYear;
         private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.TextBox txtEmployeesCount;
         private System.Windows.Forms.Label label5;
@@ -224,7 +224,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cbContracts;
-        private System.Windows.Forms.ComboBox cbLowYear;
         private System.Windows.Forms.SaveFileDialog sfDlg;
     }
 }
