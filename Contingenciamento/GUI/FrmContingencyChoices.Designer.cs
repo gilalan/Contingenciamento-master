@@ -28,9 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.btnRemove = new System.Windows.Forms.Button();
             this.btnProcessCont = new System.Windows.Forms.Button();
             this.btnViewCont = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // btnRemove
+            // 
+            this.btnRemove.BackColor = System.Drawing.Color.Transparent;
+            this.btnRemove.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRemove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRemove.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRemove.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btnRemove.Image = global::Contingenciamento.Properties.Resources.x_button;
+            this.btnRemove.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnRemove.Location = new System.Drawing.Point(486, 41);
+            this.btnRemove.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnRemove.Name = "btnRemove";
+            this.btnRemove.Size = new System.Drawing.Size(185, 185);
+            this.btnRemove.TabIndex = 12;
+            this.btnRemove.Text = "Remover Contingenciamento";
+            this.btnRemove.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnRemove.UseVisualStyleBackColor = false;
+            this.btnRemove.Click += new System.EventHandler(this.BtnRemove_Click);
             // 
             // btnProcessCont
             // 
@@ -75,7 +95,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(500, 271);
+            this.ClientSize = new System.Drawing.Size(704, 271);
+            this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.btnProcessCont);
             this.Controls.Add(this.btnViewCont);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -90,5 +111,6 @@
 
         private System.Windows.Forms.Button btnProcessCont;
         private System.Windows.Forms.Button btnViewCont;
+        private System.Windows.Forms.Button btnRemove;
     }
 }

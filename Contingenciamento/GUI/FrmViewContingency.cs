@@ -13,6 +13,7 @@ namespace Contingenciamento.GUI
     {
         Facade _facade = new Facade();
         Contract currentContract;
+        Contract passedContract;
         List<Contract> allContracts;
         List<int> orderedYears;
         Dictionary<int, List<ContingencyPast>> yearListCPsPairs;
@@ -23,8 +24,9 @@ namespace Contingenciamento.GUI
             InitializeComponent();
         }
 
-        public FrmViewContingency(List<ContingencyPast> contingencyPasts)
+        public FrmViewContingency(List<ContingencyPast> contingencyPasts, Contract passedContract)
         {
+            this.passedContract = passedContract;
             InitializeComponent();
         }
 
@@ -42,6 +44,14 @@ namespace Contingenciamento.GUI
             this.cbContracts.DataSource = source;
             this.cbContracts.DisplayMember = "Name";
             this.cbContracts.ValueMember = "Id";
+            if (this.passedContract != null)
+            {
+                foreach (var item in this.cbContracts.Items)
+                {
+                    if (this.passedContract.Id == (item as Contract).Id)
+                        this.cbContracts.SelectedItem = item;
+                }
+            }
         }
 
         private void cbContracts_SelectedIndexChanged(object sender, EventArgs e)
@@ -72,6 +82,11 @@ namespace Contingenciamento.GUI
         {
             //Pegar a lista de contPasts cujo contrato = idContract selecionado e mostrar na estrutura de visualização que projetei
             List<ContingencyPast> cps = _facade.GetContingencyPastsByContract(this.currentContract);
+            if (cps.Count == 0)
+            {
+                MessageBox.Show("Atenção: não foram encontrados registros de processamento de contingenciamento para o contrato: " + this.currentContract.Name,
+                    "Realizar Contingenciamento antes de visualizar", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+            }
             _CreateDataSet(cps);
         }
 

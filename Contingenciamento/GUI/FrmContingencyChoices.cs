@@ -28,5 +28,11 @@ namespace Contingenciamento.GUI
             FrmViewContingency frmViewContingency = new FrmViewContingency();
             frmViewContingency.ShowDialog();
         }
+
+        private void BtnRemove_Click(object sender, EventArgs e)
+        {
+            FrmRemoveContingency frmRemoveContingency = new FrmRemoveContingency();
+            frmRemoveContingency.ShowDialog();
+        }
     }
 }

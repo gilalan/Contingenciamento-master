@@ -14,6 +14,7 @@ namespace Contingenciamento.BLL
         private ContractDAO _contractDAO;
         private EmployeeHistoryDAO _employeeHistoryDAO;
         private ContingencyPastDAO _contingencyPastDAO;
+        private ContingencyAliquotDAO _contingencyAliquotDAO;
 
         public Facade()
         {
@@ -27,6 +28,7 @@ namespace Contingenciamento.BLL
             _contractDAO = FactoryDAO.CreateContractDAO();
             _employeeHistoryDAO = FactoryDAO.CreateEmployeeHistoryDAO();
             _contingencyPastDAO = FactoryDAO.CreateContigencyPastDAO();
+            _contingencyAliquotDAO = FactoryDAO.createContingencyAliquotDAO();
         }
     }
 }

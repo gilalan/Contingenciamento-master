@@ -22,14 +22,18 @@ namespace Contingenciamento.GUI
         List<Contract> allContracts;
         List<int> orderedYears;
         Dictionary<int, List<ContingencyPast>> yearListCPsPairs;
+        CheckBox headerCheckBox = new CheckBox();
+        List<EmployeeHistory> employeeHistoriesVacation = new List<EmployeeHistory>();
+        bool allSelect = false;
 
         public FrmVacationSolicit()
         {
             InitializeComponent();
+            _SetDatagridSchema();
         }
 
         private void FrmVacationSolicit_Load(object sender, EventArgs e)
-        {
+        {            
             allContracts = _facade.GetTopContract();
             _FillContractsCB(allContracts);
         }
@@ -50,6 +54,7 @@ namespace Contingenciamento.GUI
             _LoadingContractInfo(currentContract);
             _GetEmployeesInContract(currentContract);
             _GetContPastForContract(currentContract);
+            _GetEmployeesInVacationByContract(currentContract);
         }
 
         private void _LoadingContractInfo(Contract ct)
@@ -60,6 +65,100 @@ namespace Contingenciamento.GUI
         private void _GetEmployeesInContract(Contract ct)
         {
             this.txtEmployeesCount.Text = _facade.GetEmployeesCountByContract(ct).ToString();
+        }
+
+        private void _GetEmployeesInVacationByContract(Contract ct)
+        {
+            employeeHistoriesVacation = _facade.GetEmployeesVacationByContract(ct);
+            _SetDatagridEmployees(employeeHistoriesVacation);
+        }
+
+        private void _SetDatagridSchema()
+        {
+            //Add a CheckBox Column to the DataGridView at the first position.
+            DataGridViewCheckBoxColumn checkBoxColumn = new DataGridViewCheckBoxColumn();
+            checkBoxColumn.HeaderText = "";
+            checkBoxColumn.Width = 30;
+            checkBoxColumn.Name = "checkBoxColumn";
+            dgvEmployees.Columns.Insert(0, checkBoxColumn);
+
+            //Assign Click event to the DataGridView Cell.
+            dgvEmployees.CellContentClick += new DataGridViewCellEventHandler(DataGridView_CellClick);
+
+            DataGridViewTextBoxColumn matrCol = new DataGridViewTextBoxColumn();
+            matrCol.HeaderText = "Matrícula";
+            matrCol.Width = 70;
+            matrCol.Name = "matriculaColumn";
+            matrCol.ReadOnly = true;
+            dgvEmployees.Columns.Insert(1, matrCol);
+
+            DataGridViewTextBoxColumn nomeCol = new DataGridViewTextBoxColumn();
+            nomeCol.HeaderText = "Nome";
+            nomeCol.MinimumWidth = 250;
+            nomeCol.Name = "nomeColumn";
+            nomeCol.ReadOnly = true;
+            dgvEmployees.Columns.Insert(2, nomeCol);
+
+            DataGridViewTextBoxColumn perAqCol = new DataGridViewTextBoxColumn();
+            perAqCol.HeaderText = "Período Aquisitivo";
+            perAqCol.MinimumWidth = 300;
+            perAqCol.Name = "perAqColumn";
+            perAqCol.ReadOnly = true;
+            dgvEmployees.Columns.Insert(3, perAqCol);
+
+            //Find the Location of Header Cell.
+            Point headerCellLocation = this.dgvEmployees.GetCellDisplayRectangle(0, -1, true).Location;
+
+            //Place the Header CheckBox in the Location of the Header Cell.
+            headerCheckBox.Location = new Point(headerCellLocation.X + 60, headerCellLocation.Y + 3);
+            headerCheckBox.BackColor = Color.White;
+            headerCheckBox.Size = new Size(18, 18);
+
+            //Assign Click event to the Header CheckBox.
+            headerCheckBox.Click += new EventHandler(HeaderCheckBox_Clicked);
+            dgvEmployees.Controls.Add(headerCheckBox);
+        }
+        private void _SetDatagridEmployees(List<EmployeeHistory> employeeHistoriesVacation)
+        {
+            //DataGridViewRow dgvRow;
+            int rowIndex;
+            foreach (EmployeeHistory eh in employeeHistoriesVacation)
+            {
+                //dgvRow = new DataGridViewRow();
+                //dgvRow.SetValues(false, eh.Employee.Matriculation, eh.Employee.Name, 
+                //    (eh.StartVacationTaken.ToString("dd/MM/yyyy") + " até " + eh.EndVacationTaken.ToString("dd/MM/yyyy")));
+                //this.dgvEmployees.Rows.Add(dgvRow);
+
+                //Create the new row first and get the index of the new row
+                rowIndex = this.dgvEmployees.Rows.Add();
+
+                //Obtain a reference to the newly created DataGridViewRow 
+                var row = this.dgvEmployees.Rows[rowIndex];
+
+                //Now this won't fail since the row and columns exist 
+                row.Cells[0].Value = false;
+                row.Cells[1].Value = eh.Employee.Matriculation;
+                row.Cells[2].Value = eh.Employee.Name;
+                row.Cells[3].Value = eh.StartVacationTaken.ToString("dd/MM/yyyy") + " até " + eh.EndVacationTaken.ToString("dd/MM/yyyy");
+            }
+        }
+
+        private void DataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            
+        }
+
+        private void HeaderCheckBox_Clicked(object sender, EventArgs e)
+        {            
+            allSelect = !allSelect;
+            foreach (DataGridViewRow row in this.dgvEmployees.Rows)
+            {
+                row.Cells[0].Value = allSelect;
+            }
+            //foreach (DataGridViewRow sRow in this.dgvEmployees.SelectedRows)
+            //{
+            //    sRow.Cells[0].Value = allSelect;
+            //}
         }
 
         private void _GetContPastForContract(Contract currentContract)
@@ -92,32 +191,43 @@ namespace Contingenciamento.GUI
             orderedYears = new List<int>(years);
             orderedYears.Sort();
 
-            _FillYearsCB(orderedYears);
-        }
-
-        private void _FillYearsCB(List<int> orderedYears)
-        {
-            var source = new BindingSource();
-            source.DataSource = orderedYears;
-            this.cbLowYear.DataSource = source;
-        }
+            //_FillYearsCB(orderedYears);
+        }        
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            int year = (int)this.cbLowYear.SelectedItem;
-            List<ContingencyPast> cpListByYear = this.yearListCPsPairs[year];
-            IWorkbook workbook = DefaultExporterWorksheet.ExportCtgencyVacationEmployeeList(cpListByYear, year);
+            List<EmployeeHistory> employeeHistoriesChecked = new List<EmployeeHistory>();
+            foreach (DataGridViewRow row in this.dgvEmployees.Rows)
+            {
+                //se tiver marcado com CHECKED o funcionário
+                if (Convert.ToBoolean(row.Cells[0].Value) == true)
+                {
+                    foreach (EmployeeHistory eh in employeeHistoriesVacation)
+                    {
+                        if (eh.Employee.Matriculation == row.Cells["matriculaColumn"].Value.ToString())
+                        {
+                            employeeHistoriesChecked.Add(eh);
+                        }
+                    }
+                }
+            }
+
+            HashSet<ContingencyPast> empHistoryContPast = 
+                _facade.GetContingencyPastsByEmployeeHistoryList(employeeHistoriesChecked, new ContingencyFund("Férias"));
+            //int year = (int)this.cbLowYear.SelectedItem;
+            //List<ContingencyPast> cpListByYear = this.yearListCPsPairs[year];
+            IWorkbook workbook = DefaultExporterWorksheet.ExportCtgencyVacationEmployeeList(empHistoryContPast);
             _SaveExcelFile(workbook);
         }
 
         private void _SaveExcelFile(IWorkbook wb)
         {
-            int year = (int)this.cbLowYear.SelectedItem;
+            //int year = (int)this.cbLowYear.SelectedItem;
 
             sfDlg.Title = "Salvar Planilha XLSX";
             sfDlg.Filter = "Excel Worksheet File|.xlsx";
             sfDlg.FilterIndex = 0;
-            sfDlg.FileName = "Conting_Ferias_" + this.currentContract.Name + "_" + year;
+            //sfDlg.FileName = "Conting_Ferias_" + this.currentContract.Name + "_" + year;
             sfDlg.DefaultExt = ".xlsx";
             sfDlg.InitialDirectory = @"D:\TestContingency";
             sfDlg.RestoreDirectory = true;

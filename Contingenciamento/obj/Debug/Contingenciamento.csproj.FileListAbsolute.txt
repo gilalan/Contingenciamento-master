@@ -106,7 +106,6 @@ D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contin
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmAddDepartment.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmDoContingency.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.FrmInsertHistoryEmployee.resources
-D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.csprojResolveAssemblyReference.cache
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmContingencyChoices.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmViewContingency.resources
 D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.User_Controls.DataGridContingency.resources
@@ -137,3 +136,8 @@ F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciame
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmViewContingency.resources
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.User_Controls.DataGridContingency.resources
 F:\SOLL - Contingenciamento\Codigo fonte\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmVacationSolicit.resources
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmVacationSolicit.resources
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.csprojAssemblyReference.cache
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmQueryEntities.resources
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.User_Controls.EntityPanel.resources
+D:\Contingenciamento .net\Contingenciamento-novo\Contingenciamento-master\Contingenciamento\obj\Debug\Contingenciamento.GUI.FrmRemoveContingency.resources

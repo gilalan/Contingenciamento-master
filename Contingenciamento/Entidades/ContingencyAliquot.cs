@@ -9,6 +9,7 @@ namespace Contingenciamento.Entidades
         public double Value { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public Contract Contract { get; set; }
         public ContingencyFund ContingencyFund { get; set; }
         public double CalculatedValue { get; set; } //usado apenas na exibição dos dados
 

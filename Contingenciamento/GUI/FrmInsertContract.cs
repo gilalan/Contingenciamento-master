@@ -159,7 +159,7 @@ namespace Contingenciamento.GUI
             }
             catch (FormatException)
             {
-                MessageBox.Show("A taxa de alíquota inserida deve ser válida, exemplo: 10,30%", "Erro de Conversão de Taxa", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("A taxa de alíquota inserida deve ser válida, exemplo: 10,30% ou 8,00%", "Erro de Conversão de Taxa", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (OverflowException)
             {
@@ -248,8 +248,10 @@ namespace Contingenciamento.GUI
                 contract.Name = this.txtContractName.Text;
                 contract.StartDate = this.dateTPStart.Value;
                 contract.EndDate = this.dateTPEnd.Value;
+                contract.Description = this.txtDescription.Text;
+                contract.Balance = 0;
                 //contract.Departments = new List<Department>(this.allDeptCodes);
-                contract.ContingencyAliquot = new List<ContingencyAliquot>(this.contingencyFundsAliquots);
+                contract.ContingencyAliquot = _GetContingencyAliquots();//new List<ContingencyAliquot>(this.contingencyFundsAliquots);
                 contract.MonetaryFunds = _GetSelectedMonetaryFunds();
                 return contract;
             } 
@@ -257,7 +259,7 @@ namespace Contingenciamento.GUI
             {
                 return null;
             }
-        }
+        }        
 
         private bool _ValidateContract()
         {
@@ -273,6 +275,27 @@ namespace Contingenciamento.GUI
             }
             
             return true;
+        }
+
+        private List<ContingencyAliquot> _GetContingencyAliquots()
+        {
+            List<ContingencyAliquot> contingencyAliquots = new List<ContingencyAliquot>(this.contingencyFundsAliquots);
+            //bool hasCA = false;
+            //foreach (ContingencyFund cF in this.contingencyFunds)
+            //{
+            //    hasCA = false;
+            //    foreach (ContingencyAliquot cA in contingencyAliquots)
+            //    {
+            //        if (cF.Id == cA.ContingencyFund.Id)
+            //            hasCA = true;
+            //    }
+            //    //if (!hasCA)
+            //    //{
+            //    //    double aliqValue = 0;
+            //    //    contingencyAliquots.Add(new ContingencyAliquot(aliqValue, cF));
+            //    //}
+            //}
+            return contingencyAliquots;
         }
 
         private List<MonetaryFund> _GetSelectedMonetaryFunds()

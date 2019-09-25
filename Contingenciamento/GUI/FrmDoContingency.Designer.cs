@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             this.gbData = new System.Windows.Forms.GroupBox();
+            this.txtBalance = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtOutput = new System.Windows.Forms.TextBox();
             this.txtEmployeesCount = new System.Windows.Forms.TextBox();
             this.txtContractDescription = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -45,17 +49,19 @@
             this.pbContingency = new System.Windows.Forms.ProgressBar();
             this.bgWorkDatabase = new System.ComponentModel.BackgroundWorker();
             this.lblWaiting = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.panelGrid = new System.Windows.Forms.FlowLayoutPanel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cbYears = new System.Windows.Forms.ComboBox();
+            this.gbResult = new System.Windows.Forms.GroupBox();
             this.btnOpenViewContingency = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.gbData.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.gbResult.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbData
             // 
+            this.gbData.Controls.Add(this.txtBalance);
+            this.gbData.Controls.Add(this.label9);
+            this.gbData.Controls.Add(this.label4);
+            this.gbData.Controls.Add(this.txtOutput);
             this.gbData.Controls.Add(this.txtEmployeesCount);
             this.gbData.Controls.Add(this.txtContractDescription);
             this.gbData.Controls.Add(this.label8);
@@ -71,10 +77,53 @@
             this.gbData.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbData.Location = new System.Drawing.Point(12, 12);
             this.gbData.Name = "gbData";
-            this.gbData.Size = new System.Drawing.Size(1293, 292);
+            this.gbData.Size = new System.Drawing.Size(1293, 472);
             this.gbData.TabIndex = 0;
             this.gbData.TabStop = false;
             this.gbData.Text = "Dados de Entrada";
+            // 
+            // txtBalance
+            // 
+            this.txtBalance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBalance.Location = new System.Drawing.Point(747, 259);
+            this.txtBalance.Name = "txtBalance";
+            this.txtBalance.ReadOnly = true;
+            this.txtBalance.Size = new System.Drawing.Size(53, 24);
+            this.txtBalance.TabIndex = 65;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.label9.Location = new System.Drawing.Point(523, 262);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(202, 18);
+            this.label9.TabIndex = 64;
+            this.label9.Text = "Saldo de Contingenciamento:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.label4.Location = new System.Drawing.Point(8, 286);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(250, 18);
+            this.label4.TabIndex = 62;
+            this.label4.Text = "Resumo do Contingenciamento:";
+            // 
+            // txtOutput
+            // 
+            this.txtOutput.BackColor = System.Drawing.SystemColors.Info;
+            this.txtOutput.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOutput.ForeColor = System.Drawing.Color.Indigo;
+            this.txtOutput.Location = new System.Drawing.Point(9, 309);
+            this.txtOutput.Multiline = true;
+            this.txtOutput.Name = "txtOutput";
+            this.txtOutput.ReadOnly = true;
+            this.txtOutput.Size = new System.Drawing.Size(1277, 156);
+            this.txtOutput.TabIndex = 63;
             // 
             // txtEmployeesCount
             // 
@@ -141,7 +190,7 @@
             this.treeMonetaryFunds.Location = new System.Drawing.Point(732, 91);
             this.treeMonetaryFunds.Margin = new System.Windows.Forms.Padding(4);
             this.treeMonetaryFunds.Name = "treeMonetaryFunds";
-            this.treeMonetaryFunds.Size = new System.Drawing.Size(554, 157);
+            this.treeMonetaryFunds.Size = new System.Drawing.Size(554, 156);
             this.treeMonetaryFunds.TabIndex = 42;
             this.treeMonetaryFunds.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeMonetaryFunds_AfterCheck);
             // 
@@ -150,6 +199,7 @@
             this.listContFundsAliquots.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listContFundsAliquots.FullRowSelect = true;
             this.listContFundsAliquots.GridLines = true;
+            this.listContFundsAliquots.HideSelection = false;
             this.listContFundsAliquots.Location = new System.Drawing.Point(362, 90);
             this.listContFundsAliquots.MultiSelect = false;
             this.listContFundsAliquots.Name = "listContFundsAliquots";
@@ -162,6 +212,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.label5.Location = new System.Drawing.Point(6, 262);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(361, 18);
@@ -204,7 +255,7 @@
             this.btnDoConting.BackColor = System.Drawing.Color.SteelBlue;
             this.btnDoConting.Font = new System.Drawing.Font("FontAwesome", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDoConting.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnDoConting.Location = new System.Drawing.Point(12, 309);
+            this.btnDoConting.Location = new System.Drawing.Point(23, 489);
             this.btnDoConting.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDoConting.Name = "btnDoConting";
             this.btnDoConting.Size = new System.Drawing.Size(123, 39);
@@ -215,9 +266,9 @@
             // 
             // pbContingency
             // 
-            this.pbContingency.Location = new System.Drawing.Point(152, 311);
+            this.pbContingency.Location = new System.Drawing.Point(152, 497);
             this.pbContingency.Name = "pbContingency";
-            this.pbContingency.Size = new System.Drawing.Size(227, 37);
+            this.pbContingency.Size = new System.Drawing.Size(1146, 24);
             this.pbContingency.TabIndex = 49;
             // 
             // bgWorkDatabase
@@ -233,71 +284,49 @@
             this.lblWaiting.Size = new System.Drawing.Size(0, 17);
             this.lblWaiting.TabIndex = 50;
             // 
-            // groupBox1
+            // gbResult
             // 
-            this.groupBox1.Controls.Add(this.btnOpenViewContingency);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.cbYears);
-            this.groupBox1.Location = new System.Drawing.Point(12, 354);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1293, 279);
-            this.groupBox1.TabIndex = 51;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Resultado do Contingenciamento";
+            this.gbResult.Controls.Add(this.btnOpenViewContingency);
+            this.gbResult.Controls.Add(this.label3);
+            this.gbResult.Enabled = false;
+            this.gbResult.Location = new System.Drawing.Point(12, 545);
+            this.gbResult.Name = "gbResult";
+            this.gbResult.Size = new System.Drawing.Size(1293, 71);
+            this.gbResult.TabIndex = 51;
+            this.gbResult.TabStop = false;
+            this.gbResult.Text = "Resultado do Contingenciamento";
             // 
-            // panelGrid
+            // btnOpenViewContingency
             // 
-            this.panelGrid.AutoScroll = true;
-            this.panelGrid.BackColor = System.Drawing.Color.Gainsboro;
-            this.panelGrid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelGrid.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panelGrid.Location = new System.Drawing.Point(12, 407);
-            this.panelGrid.Name = "panelGrid";
-            this.panelGrid.Size = new System.Drawing.Size(1286, 220);
-            this.panelGrid.TabIndex = 55;
+            this.btnOpenViewContingency.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(98)))), ((int)(((byte)(120)))), ((int)(((byte)(112)))));
+            this.btnOpenViewContingency.Font = new System.Drawing.Font("FontAwesome", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOpenViewContingency.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnOpenViewContingency.Location = new System.Drawing.Point(11, 24);
+            this.btnOpenViewContingency.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnOpenViewContingency.Name = "btnOpenViewContingency";
+            this.btnOpenViewContingency.Size = new System.Drawing.Size(123, 29);
+            this.btnOpenViewContingency.TabIndex = 56;
+            this.btnOpenViewContingency.Text = "Clique aqui";
+            this.btnOpenViewContingency.UseVisualStyleBackColor = false;
+            this.btnOpenViewContingency.Click += new System.EventHandler(this.btnOpenViewContingency_Click);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(6, 24);
+            this.label3.Location = new System.Drawing.Point(140, 28);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 18);
+            this.label3.Size = new System.Drawing.Size(461, 18);
             this.label3.TabIndex = 54;
-            this.label3.Text = "Ano:";
-            // 
-            // cbYears
-            // 
-            this.cbYears.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbYears.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbYears.FormattingEnabled = true;
-            this.cbYears.Location = new System.Drawing.Point(50, 21);
-            this.cbYears.Name = "cbYears";
-            this.cbYears.Size = new System.Drawing.Size(274, 26);
-            this.cbYears.TabIndex = 53;
-            // 
-            // btnOpenViewContingency
-            // 
-            this.btnOpenViewContingency.BackColor = System.Drawing.Color.SteelBlue;
-            this.btnOpenViewContingency.Font = new System.Drawing.Font("FontAwesome", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOpenViewContingency.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnOpenViewContingency.Location = new System.Drawing.Point(341, 21);
-            this.btnOpenViewContingency.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnOpenViewContingency.Name = "btnOpenViewContingency";
-            this.btnOpenViewContingency.Size = new System.Drawing.Size(123, 26);
-            this.btnOpenViewContingency.TabIndex = 56;
-            this.btnOpenViewContingency.Text = "Visualizar";
-            this.btnOpenViewContingency.UseVisualStyleBackColor = false;
-            this.btnOpenViewContingency.Click += new System.EventHandler(this.btnOpenViewContingency_Click);
+            this.label3.Text = "para visualizar o resultado do Contingenciamento em uma tela cheia.";
             // 
             // FrmDoContingency
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(1317, 645);
-            this.Controls.Add(this.panelGrid);
-            this.Controls.Add(this.groupBox1);
+            this.ClientSize = new System.Drawing.Size(1317, 627);
+            this.Controls.Add(this.gbResult);
             this.Controls.Add(this.lblWaiting);
             this.Controls.Add(this.pbContingency);
             this.Controls.Add(this.btnDoConting);
@@ -309,8 +338,8 @@
             this.Load += new System.EventHandler(this.FrmDoContingency_Load);
             this.gbData.ResumeLayout(false);
             this.gbData.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gbResult.ResumeLayout(false);
+            this.gbResult.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -335,10 +364,12 @@
         private System.Windows.Forms.ProgressBar pbContingency;
         private System.ComponentModel.BackgroundWorker bgWorkDatabase;
         private System.Windows.Forms.Label lblWaiting;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox gbResult;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox cbYears;
-        private System.Windows.Forms.FlowLayoutPanel panelGrid;
         private System.Windows.Forms.Button btnOpenViewContingency;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtOutput;
+        private System.Windows.Forms.TextBox txtBalance;
+        private System.Windows.Forms.Label label9;
     }
 }

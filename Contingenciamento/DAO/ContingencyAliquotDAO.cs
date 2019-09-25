@@ -16,15 +16,28 @@ namespace Contingenciamento.DAO
             NpgsqlDataReader reader = null;
             try
             {
-                string cmdSelect = "SELECT * FROM contingency_aliquot WHERE id = " + id + " ORDER BY code";
+                string selectCMD = "SELECT ca.id as ca_id, ca.value as ca_value, " +                    
+                    "cf.id as cf_id, cf.name as cf_name, ctt.id as ctt_id, ctt.name as ctt_name " +
+                    "FROM (contingency_aliquot ca INNER JOIN contingency_funds cf ON (ca.contingency_fund_id = cf.id)) " +
+                    "INNER JOIN contracts ctt ON (ca.contract_id = ctt.id) " +
+                    "WHERE ca.id = :passedId ORDER BY ca.id";
+
+                NpgsqlCommand cmd = new NpgsqlCommand(selectCMD);
+
+                cmd.Parameters.Add(new NpgsqlParameter("passedId", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters[0].Value = id;
+
                 dal.OpenConnection();
-                reader = dal.ExecuteDataReader(cmdSelect);
+                reader = dal.ExecuteDataReader(cmd);
 
                 if (reader.Read())
                 {
-                    //contingencyAliquot.Id = Convert.ToInt64(reader["id"]);
-                    //contingencyAliquot.Name = reader["name"].ToString();
-                    //contingencyAliquot.Code = reader["code"].ToString();
+                    contingencyAliquot.Id = Convert.ToInt64(reader["ca_id"]);
+                    contingencyAliquot.Value = Convert.ToDouble(reader["ca_value"]);
+                    Contract contract = new Contract(Convert.ToInt64(reader["ctt_id"]), reader["ctt_name"].ToString());
+                    contingencyAliquot.Contract = contract;
+                    ContingencyFund contingencyFund = new ContingencyFund(Convert.ToInt64(reader["cf_id"]), reader["cf_name"].ToString());
+                    contingencyAliquot.ContingencyFund = contingencyFund;
                 }
                 reader.Close();
             }
@@ -40,30 +53,86 @@ namespace Contingenciamento.DAO
             return contingencyAliquot;
         }
 
+        public List<ContingencyAliquot> GetByContract(Contract ct)
+        {
+            List<ContingencyAliquot> contingencyAliquots = new List<ContingencyAliquot>();
+            NpgsqlDataReader reader = null;
+            try
+            {
+                string selectCMD = "SELECT ca.id as ca_id, ca.value as ca_value, " +
+                    "cf.id as cf_id, cf.name as cf_name, ctt.id as ctt_id, ctt.name as ctt_name " +
+                    "FROM (contingency_aliquot ca INNER JOIN contingency_funds cf ON (ca.contingency_fund_id = cf.id)) " +
+                    "INNER JOIN contracts ctt ON (ca.contract_id = ctt.id) " +
+                    "WHERE ca.contract_id = :ctID ORDER BY ca.id";
+
+                NpgsqlCommand cmd = new NpgsqlCommand(selectCMD);
+
+                cmd.Parameters.Add(new NpgsqlParameter("ctID", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters[0].Value = ct.Id;
+
+                Contract contract;
+                ContingencyFund contingencyFund;
+                ContingencyAliquot contingencyAliquot;
+                dal.OpenConnection();
+                reader = dal.ExecuteDataReader(cmd);
+
+                while (reader.Read())
+                {
+                    contingencyAliquot = new ContingencyAliquot();
+                    contingencyAliquot.Id = Convert.ToInt64(reader["ca_id"]);
+                    contingencyAliquot.Value = Convert.ToDouble(reader["ca_value"]);
+                    contract = new Contract(Convert.ToInt64(reader["ctt_id"]), reader["ctt_name"].ToString());
+                    contingencyAliquot.Contract = contract;
+                    contingencyFund = new ContingencyFund(Convert.ToInt64(reader["cf_id"]), reader["cf_name"].ToString());
+                    contingencyAliquot.ContingencyFund = contingencyFund;
+
+                    contingencyAliquots.Add(contingencyAliquot);
+                }
+                reader.Close();
+            }
+
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+                this.dal.CloseConection();
+            }
+            return contingencyAliquots;
+        }
+
         public List<ContingencyAliquot> GetTop()
         {
             List<ContingencyAliquot> contingencyAliquots = new List<ContingencyAliquot>();
             NpgsqlDataReader reader = null;
             try
             {
-                //string query = "SELECT dep.id as dep_id, dep.name as dep_name, dep.code as dep_code, ct.id as ct_id, ct.name as ct_name " +
-                //    "FROM (contingencyAliquots dep INNER JOIN contracts ct ON (dep.contract_id = ct.id)) " +
-                //    "ORDER BY dep.id";
-                //dal.OpenConnection();
-                //reader = dal.ExecuteDataReader(query);
+                string selectCMD = "SELECT ca.id as ca_id, ca.value as ca_value, " +
+                    "cf.id as cf_id, cf.name as cf_name, ctt.id as ctt_id, ctt.name as ctt_name " +
+                    "FROM (contingency_aliquot ca INNER JOIN contingency_funds cf ON (ca.contingency_fund_id = cf.id)) " +
+                    "INNER JOIN contracts ctt ON (ca.contract_id = ctt.id) " +
+                    "ORDER BY ca.id";
 
-                //while (reader.Read())
-                //{
-                //    ContingencyAliquot contingencyAliquot = new ContingencyAliquot();
-                //    contingencyAliquot.Id = Convert.ToInt64(reader["dep_id"]);
-                //    contingencyAliquot.Name = reader["dep_name"].ToString();
-                //    contingencyAliquot.Name = reader["dep_code"].ToString();
-                //    contingencyAliquot.Contract = new Contract(Convert.ToInt64(reader["ct_id"]),
-                //        reader["ct_name"].ToString());
+                Contract contract;
+                ContingencyFund contingencyFund;
+                ContingencyAliquot contingencyAliquot;
+                dal.OpenConnection();
+                reader = dal.ExecuteDataReader(selectCMD);
 
-                //    contingencyAliquots.Add(contingencyAliquot);
-                //}
-                //reader.Close();
+                while (reader.Read())
+                {
+                    contingencyAliquot = new ContingencyAliquot();
+                    contingencyAliquot.Id = Convert.ToInt64(reader["ca_id"]);
+                    contingencyAliquot.Value = Convert.ToDouble(reader["ca_value"]);
+                    contract = new Contract(Convert.ToInt64(reader["ctt_id"]), reader["ctt_name"].ToString());
+                    contingencyAliquot.Contract = contract;
+                    contingencyFund = new ContingencyFund(Convert.ToInt64(reader["cf_id"]), reader["cf_name"].ToString());
+                    contingencyAliquot.ContingencyFund = contingencyFund;
+
+                    contingencyAliquots.Add(contingencyAliquot);
+                }
+                reader.Close();
             }
             finally
             {
@@ -76,7 +145,7 @@ namespace Contingenciamento.DAO
             return contingencyAliquots;
         }
 
-        public long Insert(ContingencyAliquot contingencyAliquot, long contId)
+        public long Insert(ContingencyAliquot contingencyAliquot)
         {
             //int rowsAffected = -1;
             object obj = null;
@@ -105,7 +174,11 @@ namespace Contingenciamento.DAO
                     cmd.Parameters[1].Value = contingencyAliquot.EndDate;
 
                 cmd.Parameters[2].Value = contingencyAliquot.Value;
-                cmd.Parameters[3].Value = contId;
+
+                if (contingencyAliquot.Contract == null)
+                    cmd.Parameters[3].Value = DBNull.Value;
+                else
+                    cmd.Parameters[3].Value = contingencyAliquot.Contract.Id;
 
                 if (contingencyAliquot.ContingencyFund == null)
                     cmd.Parameters[4].Value = DBNull.Value;
@@ -126,7 +199,7 @@ namespace Contingenciamento.DAO
             return returnedId;
         }
 
-        public int BulkInsert(HashSet<ContingencyAliquot> contingencyAliquotList, long contId)
+        public int BulkInsert(HashSet<ContingencyAliquot> contingencyAliquotList)
         {
             int count = 0;
             try
@@ -157,7 +230,11 @@ namespace Contingenciamento.DAO
                         cmd.Parameters[1].Value = contingencyAliquot.EndDate;
 
                     cmd.Parameters[2].Value = contingencyAliquot.Value;
-                    cmd.Parameters[3].Value = contId;
+
+                    if (contingencyAliquot.Contract == null)
+                        cmd.Parameters[3].Value = DBNull.Value;
+                    else
+                        cmd.Parameters[3].Value = contingencyAliquot.Contract.Id;
 
                     if (contingencyAliquot.ContingencyFund == null)
                         cmd.Parameters[4].Value = DBNull.Value;
@@ -176,7 +253,7 @@ namespace Contingenciamento.DAO
             return count;
         }
 
-        public void Update<K>(K id, ContingencyAliquot contingencyAliquot, long contId)
+        public void Update<K>(K id, ContingencyAliquot contingencyAliquot)
         {
             int rowsAffected = -1;
             try
@@ -202,7 +279,11 @@ namespace Contingenciamento.DAO
                     cmd.Parameters[1].Value = contingencyAliquot.EndDate;
 
                 cmd.Parameters[2].Value = contingencyAliquot.Value;
-                cmd.Parameters[3].Value = contId;
+
+                if (contingencyAliquot.Contract == null)
+                    cmd.Parameters[3].Value = DBNull.Value;
+                else
+                    cmd.Parameters[3].Value = contingencyAliquot.Contract.Id;
 
                 if (contingencyAliquot.ContingencyFund == null)
                     cmd.Parameters[4].Value = DBNull.Value;

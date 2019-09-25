@@ -34,7 +34,12 @@ namespace Contingenciamento.BLL
         public long GetEmployeesCountByContract(Contract ct)
         {
             return this._employeeHistoryDAO.GetEmployeesCountByContract(ct);
-        }    
+        } 
+        
+        public List<EmployeeHistory> GetEmployeesVacationByContract(Contract ct)
+        {
+            return this._employeeHistoryDAO.GetEmployeesVacationByContract(ct);
+        }
 
         public List<EmployeeHistory> GetTopEmployeeHistory()
         {
@@ -49,6 +54,11 @@ namespace Contingenciamento.BLL
         public int InsertEmployeeHistoryList(HashSet<EmployeeHistory> employeeHistorys)
         {
             return this._employeeHistoryDAO.BulkInsert(employeeHistorys);
+        }
+
+        public List<long> GetContingencyRowsSum(Contract ct)
+        {
+            return this._employeeHistoryDAO.GetContingencyRowsSum(ct);
         }
     }
 }

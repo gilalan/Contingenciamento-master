@@ -25,6 +25,7 @@ namespace Contingenciamento.DAO
                 NpgsqlCommand cmd;               
 
                 string selectMonetaryFundsCMD = "SELECT c.id as c_id, c.name as c_name, c.start_date as c_start_date, c.end_date as c_end_date, " +
+                "c.description as c_description, c.balance as c_balance " +
                 "cmf.id as cmf_id, cmf.contract_id as cmf_contract_id, cmf.monetary_fund_id as cmf_monetary_fund_id, " +
                 "mf.id as mf_id, mf.name as mf_name, mf.primal as mf_primal, " +
                 "ef.id as ef_id, ef.name as ef_name " +
@@ -50,6 +51,8 @@ namespace Contingenciamento.DAO
                         contract = new Contract();
                         contract.Id = Convert.ToInt64(reader["c_id"]);
                         contract.Name = reader["c_name"].ToString();
+                        contract.Description = reader["c_description"].ToString();
+                        contract.Balance = Convert.ToDouble(reader["c_balance"]);
                         if (reader["start_date"] is DBNull)
                             contract.StartDate = DateTime.MinValue;
                         else
@@ -161,6 +164,8 @@ namespace Contingenciamento.DAO
                     contract = new Contract();
                     contract.Id = Convert.ToInt64(reader["id"]);
                     contract.Name = reader["name"].ToString();
+                    contract.Description = reader["description"].ToString();
+                    contract.Balance = Convert.ToDouble(reader["balance"]);
                     if (reader["start_date"] is DBNull)
                         contract.StartDate = DateTime.MinValue;
                     else
@@ -246,6 +251,8 @@ namespace Contingenciamento.DAO
                     contract = new Contract();
                     contract.Id = Convert.ToInt64(reader["id"]);
                     contract.Name = reader["name"].ToString();
+                    contract.Description = reader["description"].ToString();
+                    contract.Balance = Convert.ToDouble(reader["balance"]);
 
                     if (reader["start_date"] is DBNull)
                         contract.StartDate = DateTime.MinValue;
@@ -284,12 +291,12 @@ namespace Contingenciamento.DAO
                     "LEFT JOIN contingency_funds cf ON (ca.contingency_fund_id = cf.id) " +
                     "WHERE c.id = :passedId ORDER BY c.id";
 
-                //Consultar as verbas monetárias do contrato
-                cmd.CommandText = selectMonetaryFundsCMD;
                 cmd.Parameters.Add(new NpgsqlParameter("passedId", NpgsqlTypes.NpgsqlDbType.Bigint));
 
                 foreach (Contract ct in contracts)
                 {
+                    //Consultar as verbas monetárias do contrato
+                    cmd.CommandText = selectMonetaryFundsCMD;
                     cmd.Parameters[0].Value = ct.Id;
                     monetaryFunds = new HashSet<MonetaryFund>(new MonetaryFundComparer());
                     contingencyAliquots = new List<ContingencyAliquot>();
@@ -365,14 +372,16 @@ namespace Contingenciamento.DAO
             long idReturned = -1;
             try
             {
-                string insertCMD = "INSERT INTO contracts(name,start_date,end_date) " +
-                    "VALUES (:name,:start_date,:end_date) RETURNING id";
+                string insertCMD = "INSERT INTO contracts(name,start_date,end_date,description,balance) " +
+                    "VALUES (:name,:start_date,:end_date,:description,:balance) RETURNING id";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(insertCMD);
 
                 cmd.Parameters.Add(new NpgsqlParameter("name", NpgsqlTypes.NpgsqlDbType.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("start_date", NpgsqlTypes.NpgsqlDbType.Date));
                 cmd.Parameters.Add(new NpgsqlParameter("end_date", NpgsqlTypes.NpgsqlDbType.Date));
+                cmd.Parameters.Add(new NpgsqlParameter("description", NpgsqlTypes.NpgsqlDbType.Text));
+                cmd.Parameters.Add(new NpgsqlParameter("balance", NpgsqlTypes.NpgsqlDbType.Double));
 
                 if (String.IsNullOrEmpty(oContract.Name))
                     cmd.Parameters[0].Value = DBNull.Value;
@@ -389,6 +398,13 @@ namespace Contingenciamento.DAO
                 else
                     cmd.Parameters[2].Value = oContract.EndDate;
 
+                if (String.IsNullOrEmpty(oContract.Description))
+                    cmd.Parameters[3].Value = DBNull.Value;
+                else
+                    cmd.Parameters[3].Value = oContract.Description;
+                
+                cmd.Parameters[4].Value = oContract.Balance;
+
                 dal.OpenConnection();
                 obj = dal.ExecuteScalar(cmd);
                 if (obj != null) //salvar em tabelas extras outras informações relacionadas (contingency_aliquot e monetary_funds)
@@ -403,7 +419,8 @@ namespace Contingenciamento.DAO
                     //Inserir na tabela intermediária de Verbas de Contingência com as Alíquotas
                     foreach (ContingencyAliquot contAliq in oContract.ContingencyAliquot)
                     {
-                        contingencyAliquotDAO.Insert(contAliq, idReturned);
+                        contAliq.Contract = new Contract(idReturned);
+                        contingencyAliquotDAO.Insert(contAliq);
                     }
                     //Inserir na tabela intermediária de Verbas Monetárias com Contratos
                     foreach (MonetaryFund mf in oContract.MonetaryFunds)
@@ -454,13 +471,15 @@ namespace Contingenciamento.DAO
             try
             {
                 string updateCMD = "Update contracts set \"name\" = :name, \"start_date\" = :start_date," +
-                "\"end_date\" = :end_date WHERE \"id\" = '" + id + "' ;";
+                "\"end_date\" = :end_date, \"description\" = :description, \"balance\" = :balance WHERE \"id\" = '" + id + "' ;";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(updateCMD);
 
                 cmd.Parameters.Add(new NpgsqlParameter("name", NpgsqlTypes.NpgsqlDbType.Text));
                 cmd.Parameters.Add(new NpgsqlParameter("start_date", NpgsqlTypes.NpgsqlDbType.Date));
                 cmd.Parameters.Add(new NpgsqlParameter("end_date", NpgsqlTypes.NpgsqlDbType.Date));
+                cmd.Parameters.Add(new NpgsqlParameter("description", NpgsqlTypes.NpgsqlDbType.Text));
+                cmd.Parameters.Add(new NpgsqlParameter("balance", NpgsqlTypes.NpgsqlDbType.Double));
 
                 if (String.IsNullOrEmpty(oContract.Name))
                     cmd.Parameters[0].Value = DBNull.Value;
@@ -476,6 +495,13 @@ namespace Contingenciamento.DAO
                     cmd.Parameters[2].Value = DBNull.Value;
                 else
                     cmd.Parameters[2].Value = oContract.EndDate;
+
+                if (String.IsNullOrEmpty(oContract.Description))
+                    cmd.Parameters[3].Value = DBNull.Value;
+                else
+                    cmd.Parameters[3].Value = oContract.Description;
+
+                cmd.Parameters[4].Value = oContract.Balance;
 
                 dal.OpenConnection();
                 rowsAffected = dal.ExecuteNonQuery(cmd);

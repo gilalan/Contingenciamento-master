@@ -114,6 +114,43 @@ namespace Contingenciamento.DAO
             return employeeHistory;
         }
 
+        public List<long> GetContingencyRowsSum(Contract ct)
+        {
+            NpgsqlDataReader reader = null;
+            List<long> countRowsList = new List<long>();
+            try
+            {
+                string selectCountRowsCMD = "SELECT a.contract_id, " +
+                "(SELECT COUNT(*) FROM public.employee_history WHERE contract_id=:ctId and processed = true) as ProcessedCount, " +
+                "(SELECT COUNT(*) FROM public.employee_history WHERE contract_id=:ctId and processed = false) as NotProcessedCount, " +
+                "(SELECT COUNT(*) FROM public.employee_history WHERE contract_id=:ctId) as TotalCount " +
+                "FROM(SELECT DISTINCT contract_id FROM public.employee_history) a WHERE contract_id=:ctId;";
+
+                NpgsqlCommand cmd = new NpgsqlCommand(selectCountRowsCMD);
+
+                cmd.Parameters.Add(new NpgsqlParameter("ctId", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters[0].Value = ct.Id;
+
+                dal.OpenConnection();
+                reader = dal.ExecuteDataReader(cmd);
+                while (reader.Read())
+                {
+                    countRowsList.Add(Convert.ToInt64(reader["ProcessedCount"]));
+                    countRowsList.Add(Convert.ToInt64(reader["NotProcessedCount"]));
+                    countRowsList.Add(Convert.ToInt64(reader["TotalCount"]));
+                }
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+                this.dal.CloseConection();
+            }
+            return countRowsList;
+        }
+
         public long GetEmployeesCountByContract(Contract ct)
         {
             NpgsqlDataReader reader = null;
@@ -778,6 +815,102 @@ namespace Contingenciamento.DAO
                 this.dal.CloseConection();
             }
             //return rowsAffected;
+        }
+
+        public List<EmployeeHistory> GetEmployeesVacationByContract(Contract ct)
+        {
+            List<EmployeeHistory> employeeHistories = new List<EmployeeHistory>();
+            NpgsqlDataReader reader = null;
+
+            try
+            {
+                string selectCMD = "SELECT eh.id as eh_id, eh.epoch as eh_epoch, eh.base_salary as eh_base_salary, eh.net_salary as eh_net_salary, " +
+                    "eh.total_earnings as eh_total_earnings, eh.in_vacation as eh_in_vacation, eh.start_vacation_taken as eh_start_vacation_taken, " +
+                    "eh.end_vacation_taken as eh_end_vacation_taken, eh.hazard_additional as eh_hazard_additional, " +
+                    "eh.dangerousness_additional as eh_dangerousness_additional, eh.thirteenth_salary as eh_thirteenth_salary, " +
+                    "eh.thirteenth_proportional_salary as eh_thirteenth_proportional_salary, eh.vacation_pay as eh_vacation_pay, " +
+                    "eh.vacation_proportional_pay as eh_vacation_proportional_pay, eh.penalty_rescission as eh_penalty_rescission, " +
+                    "eh.contract_id as eh_contract_id, eh.processed as eh_processed, emp.id as emp_id, emp.name as emp_name, " +
+                    "emp.matriculation as emp_matriculation, emp.admission_date as emp_admission_date, emp.birthday as emp_birthday, " +
+                    "emp.pis as emp_pis, emp.cpf as emp_cpf, emp.demission_date as emp_demission_date, " +
+                    "rol.id as rol_id, rol.name as rol_name, dep.id as dep_id, dep.name as dep_name, dep.code as dep_code " +
+                    "FROM (employee_history eh INNER JOIN employees emp ON (eh.employee_id = emp.id)) " +
+                    "LEFT JOIN roles rol ON (emp.role_id = rol.id) " +
+                    "LEFT JOIN departments dep ON (eh.department_id = dep.id) " +
+                    "WHERE (eh.contract_id = :ctId AND eh.in_vacation = true AND eh.processed = true) ORDER BY emp.name ASC, eh.start_vacation_taken;";
+
+                NpgsqlCommand cmd = new NpgsqlCommand(selectCMD);
+                cmd.Parameters.Add(new NpgsqlParameter("ctId", NpgsqlTypes.NpgsqlDbType.Bigint));
+                cmd.Parameters[0].Value = ct.Id;
+
+                EmployeeHistory employeeHistory;
+                dal.OpenConnection();
+                reader = dal.ExecuteDataReader(cmd);
+                while (reader.Read())
+                {
+                    employeeHistory = new EmployeeHistory();
+                    employeeHistory.Id = Convert.ToInt64(reader["eh_id"]);
+                    employeeHistory.Epoch = Convert.ToDateTime(reader["eh_epoch"]);
+                    employeeHistory.StartVacationTaken = Convert.ToDateTime(reader["eh_start_vacation_taken"]);
+                    employeeHistory.EndVacationTaken = Convert.ToDateTime(reader["eh_end_vacation_taken"]);
+                    employeeHistory.InVacation = Convert.ToBoolean(reader["eh_in_vacation"]);
+                    employeeHistory.BaseSalary = Convert.ToDouble(reader["eh_base_salary"]);
+                    employeeHistory.NetSalary = Convert.ToDouble(reader["eh_net_salary"]);
+                    employeeHistory.TotalEarnings = Convert.ToDouble(reader["eh_total_earnings"]);
+                    employeeHistory.HazardAdditional = Convert.ToDouble(reader["eh_hazard_additional"]);
+                    employeeHistory.DangerousnessAdditional = Convert.ToDouble(reader["eh_dangerousness_additional"]);
+                    employeeHistory.ThirteenthSalary = Convert.ToDouble(reader["eh_thirteenth_salary"]);
+                    employeeHistory.ThirteenthProportionalSalary = Convert.ToDouble(reader["eh_thirteenth_proportional_salary"]);
+                    employeeHistory.VacationPay = Convert.ToDouble(reader["eh_vacation_pay"]);
+                    employeeHistory.VacationProportionalPay = Convert.ToDouble(reader["eh_vacation_proportional_pay"]);
+                    employeeHistory.PenaltyRescission = Convert.ToDouble(reader["eh_penalty_rescission"]);
+                    employeeHistory.Processed = Convert.ToBoolean(reader["eh_processed"]);
+
+                    if (!(reader["emp_id"] is DBNull))
+                    {
+                        Employee employee = new Employee();
+                        employee.Id = Convert.ToInt64(reader["emp_id"]);
+                        employee.Name = reader["emp_name"].ToString();
+                        employee.Matriculation = reader["emp_matriculation"].ToString();
+                        employee.Birthday = Convert.ToDateTime(reader["emp_birthday"]);
+                        employee.CurrentAdmissionDate = Convert.ToDateTime(reader["emp_admission_date"]);
+                        employee.CurrentDemissionDate = Convert.ToDateTime(reader["emp_demission_date"]);
+                        employee.PIS = reader["emp_pis"].ToString();
+                        employee.CPF = reader["emp_cpf"].ToString();
+                        if (!(reader["rol_id"] is DBNull))
+                        {
+                            Role role = new Role();
+                            role.Id = Convert.ToInt64(reader["rol_id"]);
+                            role.Name = reader["rol_name"].ToString();
+                            employee.Role = role;
+                        }
+                        employeeHistory.Employee = employee;
+                    }
+
+                    if (!(reader["dep_id"] is DBNull))
+                    {
+                        Department department = new Department();
+                        department.Id = Convert.ToInt64(reader["dep_id"]);
+                        department.Name = reader["dep_name"].ToString();
+                        department.Code = reader["dep_code"].ToString();
+                        employeeHistory.Department = department;
+                    }
+
+                    employeeHistories.Add(employeeHistory);
+                }
+                reader.Close();
+            }
+
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+                this.dal.CloseConection();
+            }
+
+            return employeeHistories;
         }
     }
 }

@@ -30,34 +30,34 @@
         {
             this.btnSaveContract = new System.Windows.Forms.Button();
             this.gBoxDados = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.label12 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.cbContigencyFunds = new System.Windows.Forms.ComboBox();
             this.txtAliquotValue = new System.Windows.Forms.TextBox();
+            this.listContFundsAliquots = new System.Windows.Forms.ListView();
             this.label11 = new System.Windows.Forms.Label();
             this.btnAddAliquot = new System.Windows.Forms.Button();
-            this.listContFundsAliquots = new System.Windows.Forms.ListView();
-            this.cbContigencyFunds = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.treeView1 = new System.Windows.Forms.TreeView();
-            this.label8 = new System.Windows.Forms.Label();
-            this.dateTPEnd = new System.Windows.Forms.DateTimePicker();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.dateTPStart = new System.Windows.Forms.DateTimePicker();
-            this.txtContractName = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtDescription = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtContractName = new System.Windows.Forms.TextBox();
+            this.dateTPStart = new System.Windows.Forms.DateTimePicker();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.dateTPEnd = new System.Windows.Forms.DateTimePicker();
             this.bgWorkerDatabase = new System.ComponentModel.BackgroundWorker();
             this.pbSaveDatabase = new System.Windows.Forms.ProgressBar();
             this.lblWaiting = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtDescription = new System.Windows.Forms.TextBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.gBoxDados.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSaveContract
@@ -88,6 +88,70 @@
             this.gBoxDados.TabStop = false;
             this.gBoxDados.Text = "Novo Contrato";
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Controls.Add(this.treeView1);
+            this.groupBox2.Controls.Add(this.label12);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.cbContigencyFunds);
+            this.groupBox2.Controls.Add(this.txtAliquotValue);
+            this.groupBox2.Controls.Add(this.listContFundsAliquots);
+            this.groupBox2.Controls.Add(this.label11);
+            this.groupBox2.Controls.Add(this.btnAddAliquot);
+            this.groupBox2.Location = new System.Drawing.Point(572, 25);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(586, 511);
+            this.groupBox2.TabIndex = 49;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Verbas e Alíquotas";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.CornflowerBlue;
+            this.label5.Location = new System.Drawing.Point(6, 23);
+            this.label5.MaximumSize = new System.Drawing.Size(575, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(567, 20);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Informe quais verbas de contingenciamento são relacionadas ao Contrato:";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Georgia", 8.2F);
+            this.label9.ForeColor = System.Drawing.Color.DarkCyan;
+            this.label9.Location = new System.Drawing.Point(6, 44);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(105, 17);
+            this.label9.TabIndex = 32;
+            this.label9.Text = "Nome da Verba";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Georgia", 8.2F);
+            this.label10.ForeColor = System.Drawing.Color.DarkCyan;
+            this.label10.Location = new System.Drawing.Point(7, 111);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(308, 17);
+            this.label10.TabIndex = 33;
+            this.label10.Text = "Lista de Verbas e Alíquotas a serem adicionadas:";
+            // 
+            // treeView1
+            // 
+            this.treeView1.CheckBoxes = true;
+            this.treeView1.Location = new System.Drawing.Point(9, 344);
+            this.treeView1.Margin = new System.Windows.Forms.Padding(4);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(563, 157);
+            this.treeView1.TabIndex = 30;
+            this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
+            // 
             // label12
             // 
             this.label12.AutoSize = true;
@@ -98,6 +162,30 @@
             this.label12.Size = new System.Drawing.Size(23, 20);
             this.label12.TabIndex = 46;
             this.label12.Text = "%";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.CornflowerBlue;
+            this.label8.Location = new System.Drawing.Point(6, 297);
+            this.label8.MaximumSize = new System.Drawing.Size(575, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(517, 40);
+            this.label8.TabIndex = 29;
+            this.label8.Text = "Informe quais verbas monetárias serão utilizadas para o cálculo do contingenciame" +
+    "nto:";
+            // 
+            // cbContigencyFunds
+            // 
+            this.cbContigencyFunds.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbContigencyFunds.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbContigencyFunds.FormattingEnabled = true;
+            this.cbContigencyFunds.Location = new System.Drawing.Point(9, 65);
+            this.cbContigencyFunds.Margin = new System.Windows.Forms.Padding(4);
+            this.cbContigencyFunds.Name = "cbContigencyFunds";
+            this.cbContigencyFunds.Size = new System.Drawing.Size(311, 28);
+            this.cbContigencyFunds.TabIndex = 39;
             // 
             // txtAliquotValue
             // 
@@ -111,6 +199,20 @@
             this.txtAliquotValue.Size = new System.Drawing.Size(56, 27);
             this.txtAliquotValue.TabIndex = 45;
             this.txtAliquotValue.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAliquotValue_KeyPress);
+            // 
+            // listContFundsAliquots
+            // 
+            this.listContFundsAliquots.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listContFundsAliquots.FullRowSelect = true;
+            this.listContFundsAliquots.GridLines = true;
+            this.listContFundsAliquots.HideSelection = false;
+            this.listContFundsAliquots.Location = new System.Drawing.Point(9, 132);
+            this.listContFundsAliquots.MultiSelect = false;
+            this.listContFundsAliquots.Name = "listContFundsAliquots";
+            this.listContFundsAliquots.Size = new System.Drawing.Size(564, 148);
+            this.listContFundsAliquots.TabIndex = 40;
+            this.listContFundsAliquots.UseCompatibleStateImageBehavior = false;
+            this.listContFundsAliquots.View = System.Windows.Forms.View.Details;
             // 
             // label11
             // 
@@ -137,140 +239,43 @@
             this.btnAddAliquot.UseVisualStyleBackColor = false;
             this.btnAddAliquot.Click += new System.EventHandler(this.btnAddAliquot_Click);
             // 
-            // listContFundsAliquots
+            // groupBox1
             // 
-            this.listContFundsAliquots.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listContFundsAliquots.FullRowSelect = true;
-            this.listContFundsAliquots.GridLines = true;
-            this.listContFundsAliquots.Location = new System.Drawing.Point(9, 132);
-            this.listContFundsAliquots.MultiSelect = false;
-            this.listContFundsAliquots.Name = "listContFundsAliquots";
-            this.listContFundsAliquots.Size = new System.Drawing.Size(564, 148);
-            this.listContFundsAliquots.TabIndex = 40;
-            this.listContFundsAliquots.UseCompatibleStateImageBehavior = false;
-            this.listContFundsAliquots.View = System.Windows.Forms.View.Details;
+            this.groupBox1.Controls.Add(this.txtDescription);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.txtContractName);
+            this.groupBox1.Controls.Add(this.dateTPStart);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.dateTPEnd);
+            this.groupBox1.Location = new System.Drawing.Point(6, 25);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(560, 305);
+            this.groupBox1.TabIndex = 48;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Informações Básicas";
             // 
-            // cbContigencyFunds
+            // txtDescription
             // 
-            this.cbContigencyFunds.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbContigencyFunds.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbContigencyFunds.FormattingEnabled = true;
-            this.cbContigencyFunds.Location = new System.Drawing.Point(9, 65);
-            this.cbContigencyFunds.Margin = new System.Windows.Forms.Padding(4);
-            this.cbContigencyFunds.Name = "cbContigencyFunds";
-            this.cbContigencyFunds.Size = new System.Drawing.Size(311, 28);
-            this.cbContigencyFunds.TabIndex = 39;
+            this.txtDescription.Location = new System.Drawing.Point(10, 120);
+            this.txtDescription.MaxLength = 256;
+            this.txtDescription.Multiline = true;
+            this.txtDescription.Name = "txtDescription";
+            this.txtDescription.Size = new System.Drawing.Size(544, 86);
+            this.txtDescription.TabIndex = 28;
             // 
-            // label10
+            // label1
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Georgia", 8.2F);
-            this.label10.ForeColor = System.Drawing.Color.DarkCyan;
-            this.label10.Location = new System.Drawing.Point(7, 111);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(308, 17);
-            this.label10.TabIndex = 33;
-            this.label10.Text = "Lista de Verbas e Alíquotas a serem adicionadas:";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Georgia", 8.2F);
-            this.label9.ForeColor = System.Drawing.Color.DarkCyan;
-            this.label9.Location = new System.Drawing.Point(6, 44);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(105, 17);
-            this.label9.TabIndex = 32;
-            this.label9.Text = "Nome da Verba";
-            // 
-            // treeView1
-            // 
-            this.treeView1.CheckBoxes = true;
-            this.treeView1.Location = new System.Drawing.Point(9, 344);
-            this.treeView1.Margin = new System.Windows.Forms.Padding(4);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(563, 157);
-            this.treeView1.TabIndex = 30;
-            this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.ForeColor = System.Drawing.Color.CornflowerBlue;
-            this.label8.Location = new System.Drawing.Point(6, 297);
-            this.label8.MaximumSize = new System.Drawing.Size(575, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(517, 40);
-            this.label8.TabIndex = 29;
-            this.label8.Text = "Informe quais verbas monetárias serão utilizadas para o cálculo do contingenciame" +
-    "nto:";
-            // 
-            // dateTPEnd
-            // 
-            this.dateTPEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTPEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTPEnd.Location = new System.Drawing.Point(217, 267);
-            this.dateTPEnd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.dateTPEnd.Name = "dateTPEnd";
-            this.dateTPEnd.Size = new System.Drawing.Size(159, 28);
-            this.dateTPEnd.TabIndex = 26;
-            this.dateTPEnd.ValueChanged += new System.EventHandler(this.dateTPEnd_ValueChanged);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Georgia", 8.2F);
-            this.label7.ForeColor = System.Drawing.Color.DarkCyan;
-            this.label7.Location = new System.Drawing.Point(220, 247);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(39, 17);
-            this.label7.TabIndex = 25;
-            this.label7.Text = "Final";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Georgia", 8.2F);
-            this.label6.ForeColor = System.Drawing.Color.DarkCyan;
-            this.label6.Location = new System.Drawing.Point(6, 247);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(45, 17);
-            this.label6.TabIndex = 24;
-            this.label6.Text = "Início";
-            // 
-            // dateTPStart
-            // 
-            this.dateTPStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTPStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTPStart.Location = new System.Drawing.Point(10, 267);
-            this.dateTPStart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.dateTPStart.Name = "dateTPStart";
-            this.dateTPStart.Size = new System.Drawing.Size(159, 28);
-            this.dateTPStart.TabIndex = 23;
-            this.dateTPStart.ValueChanged += new System.EventHandler(this.dateTPStart_ValueChanged);
-            // 
-            // txtContractName
-            // 
-            this.txtContractName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtContractName.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtContractName.ForeColor = System.Drawing.Color.Maroon;
-            this.txtContractName.Location = new System.Drawing.Point(10, 53);
-            this.txtContractName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtContractName.Name = "txtContractName";
-            this.txtContractName.Size = new System.Drawing.Size(544, 27);
-            this.txtContractName.TabIndex = 22;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.CornflowerBlue;
-            this.label3.Location = new System.Drawing.Point(6, 229);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(333, 20);
-            this.label3.TabIndex = 19;
-            this.label3.Text = "Informe o período de vigência do Contrato:";
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.CornflowerBlue;
+            this.label1.Location = new System.Drawing.Point(6, 97);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(326, 20);
+            this.label1.TabIndex = 27;
+            this.label1.Text = "Informe o objetivo/descrição do Contrato:";
             // 
             // label2
             // 
@@ -283,17 +288,71 @@
             this.label2.TabIndex = 17;
             this.label2.Text = "Informe o nome para o Contrato:";
             // 
-            // label5
+            // label3
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.CornflowerBlue;
-            this.label5.Location = new System.Drawing.Point(6, 23);
-            this.label5.MaximumSize = new System.Drawing.Size(575, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(567, 20);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Informe quais verbas de contingenciamento são relacionadas ao Contrato:";
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.CornflowerBlue;
+            this.label3.Location = new System.Drawing.Point(6, 229);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(333, 20);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "Informe o período de vigência do Contrato:";
+            // 
+            // txtContractName
+            // 
+            this.txtContractName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtContractName.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtContractName.ForeColor = System.Drawing.Color.Maroon;
+            this.txtContractName.Location = new System.Drawing.Point(10, 53);
+            this.txtContractName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtContractName.Name = "txtContractName";
+            this.txtContractName.Size = new System.Drawing.Size(544, 27);
+            this.txtContractName.TabIndex = 22;
+            // 
+            // dateTPStart
+            // 
+            this.dateTPStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTPStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTPStart.Location = new System.Drawing.Point(10, 267);
+            this.dateTPStart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dateTPStart.Name = "dateTPStart";
+            this.dateTPStart.Size = new System.Drawing.Size(159, 28);
+            this.dateTPStart.TabIndex = 23;
+            this.dateTPStart.ValueChanged += new System.EventHandler(this.dateTPStart_ValueChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Georgia", 8.2F);
+            this.label6.ForeColor = System.Drawing.Color.DarkCyan;
+            this.label6.Location = new System.Drawing.Point(6, 247);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(45, 17);
+            this.label6.TabIndex = 24;
+            this.label6.Text = "Início";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Georgia", 8.2F);
+            this.label7.ForeColor = System.Drawing.Color.DarkCyan;
+            this.label7.Location = new System.Drawing.Point(220, 247);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(39, 17);
+            this.label7.TabIndex = 25;
+            this.label7.Text = "Final";
+            // 
+            // dateTPEnd
+            // 
+            this.dateTPEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTPEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTPEnd.Location = new System.Drawing.Point(217, 267);
+            this.dateTPEnd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dateTPEnd.Name = "dateTPEnd";
+            this.dateTPEnd.Size = new System.Drawing.Size(159, 28);
+            this.dateTPEnd.TabIndex = 26;
+            this.dateTPEnd.ValueChanged += new System.EventHandler(this.dateTPEnd_ValueChanged);
             // 
             // bgWorkerDatabase
             // 
@@ -317,63 +376,6 @@
             this.lblWaiting.Size = new System.Drawing.Size(0, 17);
             this.lblWaiting.TabIndex = 48;
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.txtDescription);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.txtContractName);
-            this.groupBox1.Controls.Add(this.dateTPStart);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.dateTPEnd);
-            this.groupBox1.Location = new System.Drawing.Point(6, 25);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(560, 305);
-            this.groupBox1.TabIndex = 48;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Informações Básicas";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.CornflowerBlue;
-            this.label1.Location = new System.Drawing.Point(6, 97);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(326, 20);
-            this.label1.TabIndex = 27;
-            this.label1.Text = "Informe o objetivo/descrição do Contrato:";
-            // 
-            // txtDescription
-            // 
-            this.txtDescription.Location = new System.Drawing.Point(10, 120);
-            this.txtDescription.Multiline = true;
-            this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(544, 86);
-            this.txtDescription.TabIndex = 28;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.label9);
-            this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Controls.Add(this.treeView1);
-            this.groupBox2.Controls.Add(this.label12);
-            this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.cbContigencyFunds);
-            this.groupBox2.Controls.Add(this.txtAliquotValue);
-            this.groupBox2.Controls.Add(this.listContFundsAliquots);
-            this.groupBox2.Controls.Add(this.label11);
-            this.groupBox2.Controls.Add(this.btnAddAliquot);
-            this.groupBox2.Location = new System.Drawing.Point(572, 25);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(586, 511);
-            this.groupBox2.TabIndex = 49;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Verbas e Alíquotas";
-            // 
             // FrmInsertContract
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -391,10 +393,10 @@
             this.Text = "Cadastrar Contrato";
             this.Load += new System.EventHandler(this.FrmInsertContract_Load);
             this.gBoxDados.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

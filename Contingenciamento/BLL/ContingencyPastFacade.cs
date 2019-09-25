@@ -1,4 +1,5 @@
 ﻿using Contingenciamento.Entidades;
+using System;
 using System.Collections.Generic;
 
 namespace Contingenciamento.BLL
@@ -39,6 +40,42 @@ namespace Contingenciamento.BLL
         public int InsertContingencyPastList(List<ContingencyPast> contingencyPasts)
         {
             return this._contingencyPastDAO.BulkInsert(contingencyPasts);
+        }
+
+        public int DeleteContingencyByContractAndDateRange(Contract ct, DateTime start, DateTime end)
+        {
+            return this._contingencyPastDAO.DeleteContingencyByContractAndDateRange(ct, start, end);
+        }
+
+        public int DeleteContingencyByContract(Contract ct)
+        {
+            return this._contingencyPastDAO.DeleteContingencyByContract(ct);
+        }
+
+        public HashSet<ContingencyPast> GetContingencyPastsByEmployeeHistoryList(List<EmployeeHistory> employeeHistories, ContingencyFund cf)
+        {
+            HashSet<ContingencyPast> hsContingencyPasts = new HashSet<ContingencyPast>();
+            HashSet<ContingencyPast> allContingencyPasts = this._contingencyPastDAO.GetContingencyPastsByEmployeeHistoryList(employeeHistories, cf);
+            DateTime dtEpoch;
+            int value1;
+            int value2;
+            foreach (ContingencyPast cp in allContingencyPasts)
+            {
+                dtEpoch = cp.EmployeeHistory.Epoch;
+                foreach (EmployeeHistory eh in employeeHistories)
+                {
+                    if (cp.EmployeeHistory.Employee.Id == eh.Employee.Id)
+                    {
+                        value1 = DateTime.Compare(dtEpoch, eh.StartVacationTaken);
+                        value2 = DateTime.Compare(dtEpoch, eh.EndVacationTaken);
+                        if (value1 >= 0 && value2 <= 0)
+                        {
+                            hsContingencyPasts.Add(cp);
+                        }
+                    }
+                }
+            }
+            return hsContingencyPasts;
         }
     }
 }

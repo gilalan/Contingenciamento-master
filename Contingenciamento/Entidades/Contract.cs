@@ -13,6 +13,7 @@ namespace Contingenciamento.Entidades
         //public List<Department> Departments { get; set; }
         public List<ContingencyAliquot> ContingencyAliquot { get; set; }
         public List<MonetaryFund> MonetaryFunds { get; set; }
+        public double Balance { get; set; }
 
         public Contract(string name, string description, DateTime startDate, DateTime endDate, List<ContingencyAliquot> contingencyAliquot, List<MonetaryFund> monetaryFunds)
         {
@@ -23,6 +24,7 @@ namespace Contingenciamento.Entidades
             //Departments = departments;
             ContingencyAliquot = contingencyAliquot;
             MonetaryFunds = monetaryFunds;
+            Balance = 0;
         }
 
         public Contract(long id, string name)

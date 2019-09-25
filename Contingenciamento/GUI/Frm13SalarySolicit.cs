@@ -124,7 +124,7 @@ namespace Contingenciamento.GUI
                 FileStream fs = new FileStream(sfDlg.FileName, FileMode.Create, FileAccess.Write);
                 wb.Write(fs);
                 wb.Close();
-                MessageBox.Show("O arquivo \""+sfDlg.FileName+"\" foi criado com sucesso na pasta " + sfDlg.InitialDirectory,
+                MessageBox.Show("O arquivo \""+sfDlg.FileName+"\" foi criado com sucesso.",
                     "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
         }

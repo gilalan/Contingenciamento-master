@@ -60,8 +60,8 @@ namespace Contingenciamento.BLL
                     caToAdd.Value = ca.Value;
                     //essa parte tá horrorosa (calculando para cada Mês) 
                     if (monetaryFund.Name.ToUpper().Equals("SALÁRIO BASE"))
-                    {
-                        caToAdd.CalculatedValue = Math.Round((ca.Value/100) * eh.BaseSalary, 2); 
+                    {                                               
+                        caToAdd.CalculatedValue = Math.Round((ca.Value / 100) * eh.BaseSalary, 2);
                     }
                     else if (monetaryFund.Name.ToUpper().Equals("PROVENTOS TOTAIS"))
                     {

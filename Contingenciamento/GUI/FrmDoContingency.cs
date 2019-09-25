@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Contingenciamento.GUI
@@ -71,6 +72,7 @@ namespace Contingenciamento.GUI
         {
             this.txtContractName.Text = ct.Name;
             this.txtContractDescription.Text = ct.Description;
+            this.txtBalance.Text = ct.Balance.ToString();
             foreach (ContingencyAliquot ca in ct.ContingencyAliquot)
             {
                 ListViewItem item;
@@ -80,6 +82,7 @@ namespace Contingenciamento.GUI
                 this.listContFundsAliquots.Items.Add(item);
             }
             _StylingTreeView(ct.MonetaryFunds);
+            _FillOutputInfo(ct);
         }
 
         private void _StylingTreeView(List<MonetaryFund> monetaryFunds)
@@ -114,6 +117,25 @@ namespace Contingenciamento.GUI
         private void _GetEmployeesInContract(Contract ct)
         {
             this.txtEmployeesCount.Text =  _facade.GetEmployeesCountByContract(ct).ToString();
+        }
+
+        private void _FillOutputInfo(Contract ct)
+        {
+            List<long> contRowsSum = _facade.GetContingencyRowsSum(ct);
+            if (contRowsSum.Count > 2)
+            {
+                StringBuilder strBuilder = new StringBuilder();
+                strBuilder.AppendLine("## Informação do histórico de Contingenciamento para o Contrato " + ct.Name + " ##");
+                strBuilder.AppendLine("Total de registros armazenados na Base: " + contRowsSum[2]);
+                strBuilder.AppendLine("Total de registros já processados e calculados para o Contingenciamento: " + contRowsSum[0]);
+                strBuilder.AppendLine("Total de registros não processados/calculados: " + contRowsSum[1]);
+                strBuilder.AppendLine("ATENÇÃO: Ao clicar em Contingenciar (botão abaixo), o software irá coletar os registros ainda não processados e realizará o cálculo do Contingenciamento apenas sobre eles." );
+                this.txtOutput.Text = strBuilder.ToString();
+            }
+            else
+            {
+                this.txtOutput.Text = "Não foi possível obter o histórico de Contingenciamento para o Contrato " +ct.Name;
+            }
         }
 
         private void btnDoConting_Click(object sender, EventArgs e)
@@ -169,27 +191,8 @@ namespace Contingenciamento.GUI
                 }
                 //limitedCPList.Sort()
                 this.yearListCPsPairs.Add(year, limitedCPList);
-            }
-
-            _FillYearsCB(years);
+            }            
         }
-
-        private void _FillYearsCB(HashSet<int> years)
-        {
-            var source = new BindingSource();
-            source.DataSource = years;
-            this.cbYears.DataSource = source;
-            //this.cbContracts.DisplayMember = "Name";
-            //this.cbContracts.ValueMember = "Id";
-        }
-
-        private void cbYears_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int year = (int) this.cbYears.SelectedItem;
-            this.panelGrid.Controls.Clear();
-            _FillDataGridView(year);
-        }
-
         private void _FillDataGridView(int year)
         {
             //DataTable table1 = new DataTable("Janeiro");
@@ -265,8 +268,6 @@ namespace Contingenciamento.GUI
                             dt.Rows.Add(row);
                         }
                     }
-                    dataGridContingency = new DataGridContingency(dt, this.panelGrid.Size);
-                    this.panelGrid.Controls.Add(dataGridContingency);
                 }
             }
         }
@@ -301,6 +302,35 @@ namespace Contingenciamento.GUI
                 }
                 else
                 {
+                    double calcFerias = -1;
+                    double calc13Sal = -1;
+                    foreach (ContingencyPast cp in contPasts)
+                    {
+                        calcFerias = -1;
+                        calc13Sal = -1;
+                        foreach (ContingencyAliquot ca in cp.ContingencyAliquots)
+                        {
+                            if (ca.ContingencyFund.Name.ToUpper().Equals("FÉRIAS")) //TERIA QUE FAZER DINAMICO!
+                            {
+                                calcFerias = ca.CalculatedValue;
+                            }
+                            else if (ca.ContingencyFund.Name.ToUpper().Equals("13º SALÁRIO"))
+                            {
+                                calc13Sal = ca.CalculatedValue;
+                            }
+                        }
+                        if (calcFerias != -1 && calc13Sal != -1)
+                        {
+                            foreach (ContingencyAliquot ca in cp.ContingencyAliquots)
+                            {
+                                if (ca.ContingencyFund.Name.ToUpper().Equals("INCIDÊNCIA")) //TERIA QUE FAZER DINAMICO!
+                                {
+                                    ca.CalculatedValue = Math.Round((ca.Value / 100) * (calcFerias + calc13Sal), 2);
+                                    break;
+                                }
+                            }
+                        }
+                    }
                     int countRows = _facade.InsertContingencyPastList(contPasts);
                     this.selectedMFToContingency = selectedMF.Name;
                     _CreateDataSet(contPasts);
@@ -343,7 +373,8 @@ namespace Contingenciamento.GUI
         {
             this.cbContracts.Enabled = v;
             this.btnDoConting.Enabled = v;
-            this.cbYears.Enabled = v;
+            this.btnOpenViewContingency.Enabled = v;
+            this.gbResult.Enabled = v;
         }
 
         private void treeMonetaryFunds_AfterCheck(object sender, TreeViewEventArgs e)
@@ -389,7 +420,7 @@ namespace Contingenciamento.GUI
 
         private void btnOpenViewContingency_Click(object sender, EventArgs e)
         {
-            FrmViewContingency frmViewContingency = new FrmViewContingency(contPasts);
+            FrmViewContingency frmViewContingency = new FrmViewContingency(contPasts, this.currentContract);
             frmViewContingency.ShowDialog();
         }
     }

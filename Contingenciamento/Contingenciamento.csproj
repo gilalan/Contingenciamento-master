@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\BankFacade.cs" />
+    <Compile Include="BLL\ContingencyAliquotFacade.cs" />
     <Compile Include="BLL\ContingencyFundFacade.cs" />
     <Compile Include="BLL\ContingencyPastFacade.cs" />
     <Compile Include="BLL\ContractFacade.cs" />
@@ -235,11 +236,23 @@
     <Compile Include="GUI\FrmInsertMonetaryFunds.Designer.cs">
       <DependentUpon>FrmInsertMonetaryFunds.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FrmQueryEntities.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FrmQueryEntities.Designer.cs">
+      <DependentUpon>FrmQueryEntities.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FrmRelatorios.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI\FrmRelatorios.Designer.cs">
       <DependentUpon>FrmRelatorios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FrmRemoveContingency.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FrmRemoveContingency.Designer.cs">
+      <DependentUpon>FrmRemoveContingency.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\FrmSolicitationChoices.cs">
       <SubType>Form</SubType>
@@ -272,6 +285,12 @@
     </Compile>
     <Compile Include="User Controls\DataGridContingency.Designer.cs">
       <DependentUpon>DataGridContingency.cs</DependentUpon>
+    </Compile>
+    <Compile Include="User Controls\EntityPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="User Controls\EntityPanel.Designer.cs">
+      <DependentUpon>EntityPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Util\DefaultExporterWorksheet.cs" />
     <Compile Include="Util\DefaultWorksheetReader.cs" />
@@ -321,8 +340,14 @@
     <EmbeddedResource Include="GUI\FrmInsertMonetaryFunds.resx">
       <DependentUpon>FrmInsertMonetaryFunds.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FrmQueryEntities.resx">
+      <DependentUpon>FrmQueryEntities.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmRelatorios.resx">
       <DependentUpon>FrmRelatorios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FrmRemoveContingency.resx">
+      <DependentUpon>FrmRemoveContingency.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FrmSolicitationChoices.resx">
       <DependentUpon>FrmSolicitationChoices.cs</DependentUpon>
@@ -348,6 +373,9 @@
     </Compile>
     <EmbeddedResource Include="User Controls\DataGridContingency.resx">
       <DependentUpon>DataGridContingency.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User Controls\EntityPanel.resx">
+      <DependentUpon>EntityPanel.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
@@ -444,6 +472,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="images\demission_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\x-button.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

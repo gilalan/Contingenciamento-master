@@ -1,4 +1,5 @@
-﻿using Contingenciamento.DAO;
+﻿using System;
+using Contingenciamento.DAO;
 
 namespace Contingenciamento.BLL
 {
@@ -52,6 +53,11 @@ namespace Contingenciamento.BLL
         public static ContingencyPastDAO CreateContigencyPastDAO()
         {
             return new ContingencyPastDAO();
+        }
+
+        public static ContingencyAliquotDAO createContingencyAliquotDAO()
+        {
+            return new ContingencyAliquotDAO();
         }
     }
 }

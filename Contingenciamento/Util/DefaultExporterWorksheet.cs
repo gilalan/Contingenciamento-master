@@ -8,19 +8,24 @@ namespace Contingenciamento.Util
 {
     public static class DefaultExporterWorksheet
     {
-        public static IWorkbook ExportCtgencyEmployeeList(List<ContingencyPast> cpListByMonthYear)
+        private static List<ContingencyFund> ContingencyFundsContract { get; set; }
+        public static IWorkbook ExportCtgencyEmployeeList(List<ContingencyPast> cpListByMonthYear, List<ContingencyFund> contFunds, List<ContingencyAliquot> contAliquots) 
         {
 
+            ContingencyFundsContract = new List<ContingencyFund>();
             IWorkbook wb = new XSSFWorkbook();
             ISheet sheet = wb.CreateSheet("Relação de Colaboradores");
             ICreationHelper cH = wb.GetCreationHelper();
             Dictionary<string, ICellStyle> Styles = _CreateStyles(wb);
+            Dictionary<int, ContingencyAliquot> IndexCellFundsPair = new Dictionary<int, ContingencyAliquot>();
 
             //Parte do cabeçalho
-            sheet = _CreateDefaultHeader(sheet, wb);
+            sheet = _CreateDefaultHeader(sheet, wb, contFunds, contAliquots);
             int rowNumber = sheet.LastRowNum + 1;
             int countBodyRows = 1;
-            int staticHeaderRows = 9;
+            //int staticHeaderRows = 9;
+            int startDinamicCellIndex = 16; //Quando começa as colunas dinâmicas das verbas calculadas.
+            int currentCellIndex = startDinamicCellIndex; //Vai aumentando o indice a medida que são incorporadas novas colunas
             //int colsNumber = 21; //Representa estaticamente o número de colunas dessa planilha (quero fazer dinâmico no futuro)
 
             foreach (ContingencyPast cp in cpListByMonthYear)
@@ -84,6 +89,9 @@ namespace Contingenciamento.Util
                 c15.SetCellType(CellType.Numeric);
                 c15.SetCellValue(cp.EmployeeHistory.BaseSalary);
                 c15.CellStyle = Styles["AllBordersCurrency"];
+
+                //MODO ANTIGO: MANUAL
+                /*
                 ICell c16 = row.CreateCell(16);
                 c16.SetCellType(CellType.Numeric);
                 c16.SetCellValue(cp.ContingencyAliquots[1].CalculatedValue);
@@ -100,76 +108,92 @@ namespace Contingenciamento.Util
                 c19.SetCellType(CellType.Numeric);
                 c19.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
                 c19.CellStyle = Styles["AllBordersCurrency"];
-                
+                */
+
+                //MODO NOVO: DINÂMICO
+                ICell cellFund;
+                double accTotal = 0;
+                currentCellIndex = startDinamicCellIndex;
+                foreach (ContingencyFund cFund in ContingencyFundsContract)
+                {
+                    foreach (ContingencyAliquot caEmployee in cp.ContingencyAliquots)
+                    {
+                        if (cFund.Id == caEmployee.ContingencyFund.Id)
+                        {
+                            cellFund = row.CreateCell(currentCellIndex);
+                            cellFund.SetCellType(CellType.Numeric);
+                            cellFund.SetCellValue(caEmployee.CalculatedValue);
+                            cellFund.CellStyle = Styles["AllBordersCurrency"];
+                            ContingencyAliquot mapValue;
+                            if (IndexCellFundsPair.TryGetValue(currentCellIndex, out mapValue))
+                            {
+                                mapValue.Value += caEmployee.CalculatedValue;
+                            }
+                            else
+                            {
+                                IndexCellFundsPair.Add(currentCellIndex,
+                                    new ContingencyAliquot(caEmployee.CalculatedValue, new ContingencyFund(cFund.Id, cFund.Name)));
+                            }
+
+                            accTotal += caEmployee.CalculatedValue;
+                            currentCellIndex++;
+
+                        }
+                    }                    
+                }
+
+                //Não vou mais usar Fórmulas pois está dando erros (a tabela deve ser dinâmica e as letras mudam, isso fica complicado)
+                /*
                 int fixedFormulaCell = staticHeaderRows + countBodyRows;
                 ICell c20 = row.CreateCell(20);
                 c20.SetCellType(CellType.Numeric);
                 c20.SetCellFormula("SUM(Q"+fixedFormulaCell+":T"+fixedFormulaCell+")");
                 c20.CellStyle = Styles["AllBordersCurrency"];
+                */
 
+                //Somatório MANUAL
                 //double total = cp.ContingencyAliquots[0].CalculatedValue + cp.ContingencyAliquots[1].CalculatedValue + cp.ContingencyAliquots[2].CalculatedValue + cp.ContingencyAliquots[3].CalculatedValue;
-                //ICell c20 = row.CreateCell(20);
-                //c20.SetCellValue(total);
-                //c20.SetCellType(CellType.Numeric);
-                //c20.CellStyle = Styles["AllBordersCurrency"];
-                //CellStyle cellStyle = wb.createCellStyle();
-                //cellStyle.setDataFormat(
-                //    createHelper.createDataFormat().getFormat("m/d/yy h:mm"));
-                //cell = row.createCell(1);
-                //cell.setCellValue(new Date());
-                //cell.setCellStyle(cellStyle);
-                //for (int j = 0; j < colsNumber; j++)
-                //{
-                //    ICell cell = row.CreateCell(j);
-                //    cell.SetCellValue(cH.CreateRichTextString());
-                //}
+                ICell totalCell = row.CreateCell(currentCellIndex);
+                totalCell.SetCellValue(accTotal);
+                totalCell.SetCellType(CellType.Numeric);
+                totalCell.CellStyle = Styles["AllBordersCurrency"];
+                ContingencyAliquot mapValueTotal;
+                if (IndexCellFundsPair.TryGetValue(currentCellIndex, out mapValueTotal))
+                {
+                    mapValueTotal.Value += accTotal;
+                }
+                else
+                {
+                    IndexCellFundsPair.Add(currentCellIndex,
+                        new ContingencyAliquot(accTotal, new ContingencyFund(-1, "TOTAL")));
+                }
+
                 rowNumber++;
                 countBodyRows++;
             }
 
             IRow lastRow = sheet.CreateRow(rowNumber);
-            int fixedRange1 = staticHeaderRows + 1;
-            int fixedRange2 = staticHeaderRows + (countBodyRows-1);
-            _CreateLastRowBasicSheet(lastRow, fixedRange1, fixedRange2, Styles);
+            //int fixedRange1 = staticHeaderRows + 1;
+            //int fixedRange2 = staticHeaderRows + (countBodyRows-1);
+            _CreateLastRowBasicSheet(lastRow, IndexCellFundsPair, Styles);
 
             //wb.Write(stream);
             return wb;
         }
 
-        private static void _CreateLastRowBasicSheet(IRow lastRow, int fixedRange1, int fixedRange2, Dictionary<string, ICellStyle> Styles)
+        private static void _CreateLastRowBasicSheet(IRow lastRow, Dictionary<int, ContingencyAliquot> IndexCellFundsPair, Dictionary<string, ICellStyle> Styles)
         {
-            ICell lc15 = lastRow.CreateCell(15);
-            lc15.SetCellType(CellType.Numeric);
-            lc15.SetCellFormula("SUM(P" + fixedRange1 + ":P" + fixedRange2 + ")");
-            lc15.CellStyle = Styles["AllBordersCurrencyBoldYellow"];
-
-            ICell lc16 = lastRow.CreateCell(16);
-            lc16.SetCellType(CellType.Numeric);
-            lc16.SetCellFormula("SUM(Q" + fixedRange1 + ":Q" + fixedRange2 + ")");
-            lc16.CellStyle = Styles["AllBordersCurrencyBoldYellow"];
-
-            ICell lc17 = lastRow.CreateCell(17);
-            lc17.SetCellType(CellType.Numeric);
-            lc17.SetCellFormula("SUM(R" + fixedRange1 + ":R" + fixedRange2 + ")");
-            lc17.CellStyle = Styles["AllBordersCurrencyBoldYellow"];
-
-            ICell lc18 = lastRow.CreateCell(18);
-            lc18.SetCellType(CellType.Numeric);
-            lc18.SetCellFormula("SUM(S" + fixedRange1 + ":S" + fixedRange2 + ")");
-            lc18.CellStyle = Styles["AllBordersCurrencyBoldYellow"];
-
-            ICell lc19 = lastRow.CreateCell(19);
-            lc19.SetCellType(CellType.Numeric);
-            lc19.SetCellFormula("SUM(T" + fixedRange1 + ":T" + fixedRange2 + ")");
-            lc19.CellStyle = Styles["AllBordersCurrencyBoldYellow"];
-
-            ICell lc20 = lastRow.CreateCell(20);
-            lc20.SetCellType(CellType.Numeric);
-            lc20.SetCellFormula("SUM(U" + fixedRange1 + ":U" + fixedRange2 + ")");
-            lc20.CellStyle = Styles["AllBordersCurrencyBoldYellow"];
+            ICell cell;
+            foreach (var pair in IndexCellFundsPair)
+            {
+                cell = lastRow.CreateCell(pair.Key);
+                cell.SetCellType(CellType.Numeric);
+                cell.SetCellValue(pair.Value.Value);
+                cell.CellStyle = Styles["AllBordersCurrencyBoldYellow"];
+            }
         }
 
-        private static ISheet _CreateDefaultHeader(ISheet sheet, IWorkbook wb)
+        private static ISheet _CreateDefaultHeader(ISheet sheet, IWorkbook wb, List<ContingencyFund> contFunds, List<ContingencyAliquot> contAliquots)
         {
             Dictionary<string, ICellStyle> Styles = _CreateStyles(wb);
 
@@ -189,11 +213,7 @@ namespace Contingenciamento.Util
             sheet.SetColumnWidth(13, 15 * 256);
             sheet.SetColumnWidth(14, 15 * 256);
             sheet.SetColumnWidth(15, 15 * 256);
-            sheet.SetColumnWidth(16, 15 * 256);
-            sheet.SetColumnWidth(17, 15 * 256);
-            sheet.SetColumnWidth(18, 15 * 256);
-            sheet.SetColumnWidth(19, 15 * 256);
-            sheet.SetColumnWidth(20, 12 * 256);
+            //as demais colunas são dinâmicas
 
             int rowNumber = 0;
             IRow r1 = sheet.CreateRow(rowNumber);
@@ -262,22 +282,51 @@ namespace Contingenciamento.Util
                 cell.CellStyle = Styles["AllBordersFillRed"];
             }
 
-            //Essa parte deveria ser dinâmica...
-            ICell c35 = r9.CreateCell(16, CellType.String);
-            c35.SetCellValue("FÉRIAS");
-            c35.CellStyle = Styles["AllBordersFillRed"];
-            ICell c36 = r9.CreateCell(17, CellType.String);
-            c36.SetCellValue("13º SALÁRIO");
-            c36.CellStyle = Styles["AllBordersFillRed"];
-            ICell c37 = r9.CreateCell(18, CellType.String);
-            c37.SetCellValue("FGTS + MULTA");
-            c37.CellStyle = Styles["AllBordersFillRed"];
-            ICell c38 = r9.CreateCell(19, CellType.String);
-            c38.SetCellValue("INCIDÊNCIA");
-            c38.CellStyle = Styles["AllBordersFillRed"];
-            ICell c39 = r9.CreateCell(20, CellType.String);
-            c39.SetCellValue("TOTAL");
-            c39.CellStyle = Styles["AllBordersFillRed"];
+            //Modo antigo - manual, ia quebrar se o contrato não tivesse esse tipo de verba
+            //ICell c35 = r9.CreateCell(16, CellType.String);
+            //c35.SetCellValue("FÉRIAS");
+            //c35.CellStyle = Styles["AllBordersFillRed"];
+            //ICell c36 = r9.CreateCell(17, CellType.String);
+            //c36.SetCellValue("13º SALÁRIO");
+            //c36.CellStyle = Styles["AllBordersFillRed"];
+            //ICell c37 = r9.CreateCell(18, CellType.String);
+            //c37.SetCellValue("FGTS + MULTA");
+            //c37.CellStyle = Styles["AllBordersFillRed"];
+            //ICell c38 = r9.CreateCell(19, CellType.String);
+            //c38.SetCellValue("INCIDÊNCIA");
+            //c38.CellStyle = Styles["AllBordersFillRed"];
+
+            //Modo dinâmico de obter as verbas participantes do contrato
+            int indexCell = titles.Length;
+            bool hasCF = false;
+            ICell cfCell;
+            foreach (ContingencyFund cf in contFunds)
+            {
+                hasCF = false;
+                foreach (ContingencyAliquot ca in contAliquots)
+                {
+                    if (cf.Id == ca.ContingencyFund.Id)
+                    {
+                        hasCF = true;
+                        break;
+                    }
+                }
+                if (hasCF)
+                {
+                    cfCell = r9.CreateCell(indexCell, CellType.String);
+                    cfCell.SetCellValue(cf.Name.ToUpper());
+                    //cfCell.SetCellValue(cf.Name);
+                    cfCell.CellStyle = Styles["AllBordersFillRed"];
+                    sheet.SetColumnWidth(indexCell, 15 * 256);
+                    indexCell++;
+                    ContingencyFundsContract.Add(cf);
+                }
+            }
+
+            ICell totalCell = r9.CreateCell(indexCell, CellType.String);
+            totalCell.SetCellValue("TOTAL");
+            totalCell.CellStyle = Styles["AllBordersFillRed"];
+            sheet.SetColumnWidth(indexCell, 15 * 256);
 
             return sheet;
         }
@@ -671,7 +720,7 @@ namespace Contingenciamento.Util
             }
         }
 
-        public static IWorkbook ExportCtgencyVacationEmployeeList(List<ContingencyPast> cpListByYear, int year)
+        public static IWorkbook ExportCtgencyVacationEmployeeList(HashSet<ContingencyPast> contingencyPasts)
         {
             IWorkbook wb = new XSSFWorkbook();
             ISheet sheet = wb.CreateSheet("Relação de Colaboradores");
@@ -679,7 +728,7 @@ namespace Contingenciamento.Util
             Dictionary<string, ICellStyle> Styles = _CreateStyles(wb);
 
             //Parte do cabeçalho
-            sheet = _CreateVacationDefaultHeader(sheet, wb, year);
+            sheet = _CreateVacationDefaultHeader(sheet, wb);
             int titlesLength = 5; //Quantidade de colunas do cabeçalho fixo (criado no método anterior)
             int rowNumber = sheet.LastRowNum + 1;
             int countBodyRows = 1;
@@ -690,7 +739,7 @@ namespace Contingenciamento.Util
             kvpMonths.Add(7, "Jul"); kvpMonths.Add(8, "Ago"); kvpMonths.Add(9, "Set"); kvpMonths.Add(10, "Out"); kvpMonths.Add(11, "Nov"); kvpMonths.Add(12, "Dez");
             String[] orderedShortMonths = { "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez" };
 
-            Dictionary<Employee, List<ContingencyPast>> contPastsByMonth = _ProcessEmployeeHistoryByMonth(cpListByYear);
+            Dictionary<Employee, List<ContingencyPast>> contPastsByMonth = _ProcessEmployeeHistoryByMonth(contingencyPasts);
 
             foreach (KeyValuePair<Employee, List<ContingencyPast>> kvpEmpCP in contPastsByMonth)
             {
@@ -738,161 +787,161 @@ namespace Contingenciamento.Util
 
                         IRow r3 = sheet.CreateRow(rowNumber++);
 
-                        if (cp.EmployeeHistory.Epoch.Month == 12)
-                        {
-                            ICell c2 = row.CreateCell(2);
-                            c2.SetCellType(CellType.Numeric);
-                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
-                            c2.CellStyle = Styles["AllBordersCurrency"];
+                        //if (cp.EmployeeHistory.Epoch.Month == 12)
+                        //{
+                        //    ICell c2 = row.CreateCell(2);
+                        //    c2.SetCellType(CellType.Numeric);
+                        //    c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                        //    c2.CellStyle = Styles["AllBordersCurrency"];
 
-                            ICell c3 = row.CreateCell(3);
-                            c3.SetCellType(CellType.Numeric);
-                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
-                            c3.CellStyle = Styles["AllBordersCurrency"];
-                        }
+                        //    ICell c3 = row.CreateCell(3);
+                        //    c3.SetCellType(CellType.Numeric);
+                        //    c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                        //    c3.CellStyle = Styles["AllBordersCurrency"];
+                        //}
 
-                        else if (cp.EmployeeHistory.Epoch.Month == 11)
-                        {
-                            ICell c2 = row.CreateCell(4);
-                            c2.SetCellType(CellType.Numeric);
-                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
-                            c2.CellStyle = Styles["AllBordersCurrency"];
+                        //else if (cp.EmployeeHistory.Epoch.Month == 11)
+                        //{
+                        //    ICell c2 = row.CreateCell(4);
+                        //    c2.SetCellType(CellType.Numeric);
+                        //    c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                        //    c2.CellStyle = Styles["AllBordersCurrency"];
 
-                            ICell c3 = row.CreateCell(5);
-                            c3.SetCellType(CellType.Numeric);
-                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
-                            c3.CellStyle = Styles["AllBordersCurrency"];
-                        }
+                        //    ICell c3 = row.CreateCell(5);
+                        //    c3.SetCellType(CellType.Numeric);
+                        //    c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                        //    c3.CellStyle = Styles["AllBordersCurrency"];
+                        //}
 
-                        else if (cp.EmployeeHistory.Epoch.Month == 10)
-                        {
-                            ICell c2 = row.CreateCell(6);
-                            c2.SetCellType(CellType.Numeric);
-                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
-                            c2.CellStyle = Styles["AllBordersCurrency"];
+                        //else if (cp.EmployeeHistory.Epoch.Month == 10)
+                        //{
+                        //    ICell c2 = row.CreateCell(6);
+                        //    c2.SetCellType(CellType.Numeric);
+                        //    c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                        //    c2.CellStyle = Styles["AllBordersCurrency"];
 
-                            ICell c3 = row.CreateCell(7);
-                            c3.SetCellType(CellType.Numeric);
-                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
-                            c3.CellStyle = Styles["AllBordersCurrency"];
-                        }
+                        //    ICell c3 = row.CreateCell(7);
+                        //    c3.SetCellType(CellType.Numeric);
+                        //    c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                        //    c3.CellStyle = Styles["AllBordersCurrency"];
+                        //}
 
-                        else if (cp.EmployeeHistory.Epoch.Month == 9)
-                        {
-                            ICell c2 = row.CreateCell(8);
-                            c2.SetCellType(CellType.Numeric);
-                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
-                            c2.CellStyle = Styles["AllBordersCurrency"];
+                        //else if (cp.EmployeeHistory.Epoch.Month == 9)
+                        //{
+                        //    ICell c2 = row.CreateCell(8);
+                        //    c2.SetCellType(CellType.Numeric);
+                        //    c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                        //    c2.CellStyle = Styles["AllBordersCurrency"];
 
-                            ICell c3 = row.CreateCell(9);
-                            c3.SetCellType(CellType.Numeric);
-                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
-                            c3.CellStyle = Styles["AllBordersCurrency"];
-                        }
+                        //    ICell c3 = row.CreateCell(9);
+                        //    c3.SetCellType(CellType.Numeric);
+                        //    c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                        //    c3.CellStyle = Styles["AllBordersCurrency"];
+                        //}
 
-                        else if (cp.EmployeeHistory.Epoch.Month == 8)
-                        {
-                            ICell c2 = row.CreateCell(10);
-                            c2.SetCellType(CellType.Numeric);
-                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
-                            c2.CellStyle = Styles["AllBordersCurrency"];
+                        //else if (cp.EmployeeHistory.Epoch.Month == 8)
+                        //{
+                        //    ICell c2 = row.CreateCell(10);
+                        //    c2.SetCellType(CellType.Numeric);
+                        //    c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                        //    c2.CellStyle = Styles["AllBordersCurrency"];
 
-                            ICell c3 = row.CreateCell(11);
-                            c3.SetCellType(CellType.Numeric);
-                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
-                            c3.CellStyle = Styles["AllBordersCurrency"];
-                        }
+                        //    ICell c3 = row.CreateCell(11);
+                        //    c3.SetCellType(CellType.Numeric);
+                        //    c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                        //    c3.CellStyle = Styles["AllBordersCurrency"];
+                        //}
 
-                        else if (cp.EmployeeHistory.Epoch.Month == 7)
-                        {
-                            ICell c2 = row.CreateCell(12);
-                            c2.SetCellType(CellType.Numeric);
-                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
-                            c2.CellStyle = Styles["AllBordersCurrency"];
+                        //else if (cp.EmployeeHistory.Epoch.Month == 7)
+                        //{
+                        //    ICell c2 = row.CreateCell(12);
+                        //    c2.SetCellType(CellType.Numeric);
+                        //    c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                        //    c2.CellStyle = Styles["AllBordersCurrency"];
 
-                            ICell c3 = row.CreateCell(13);
-                            c3.SetCellType(CellType.Numeric);
-                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
-                            c3.CellStyle = Styles["AllBordersCurrency"];
-                        }
+                        //    ICell c3 = row.CreateCell(13);
+                        //    c3.SetCellType(CellType.Numeric);
+                        //    c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                        //    c3.CellStyle = Styles["AllBordersCurrency"];
+                        //}
 
-                        else if (cp.EmployeeHistory.Epoch.Month == 6)
-                        {
-                            ICell c2 = row.CreateCell(14);
-                            c2.SetCellType(CellType.Numeric);
-                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
-                            c2.CellStyle = Styles["AllBordersCurrency"];
+                        //else if (cp.EmployeeHistory.Epoch.Month == 6)
+                        //{
+                        //    ICell c2 = row.CreateCell(14);
+                        //    c2.SetCellType(CellType.Numeric);
+                        //    c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                        //    c2.CellStyle = Styles["AllBordersCurrency"];
 
-                            ICell c3 = row.CreateCell(15);
-                            c3.SetCellType(CellType.Numeric);
-                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
-                            c3.CellStyle = Styles["AllBordersCurrency"];
-                        }
+                        //    ICell c3 = row.CreateCell(15);
+                        //    c3.SetCellType(CellType.Numeric);
+                        //    c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                        //    c3.CellStyle = Styles["AllBordersCurrency"];
+                        //}
 
-                        else if (cp.EmployeeHistory.Epoch.Month == 5)
-                        {
-                            ICell c2 = row.CreateCell(16);
-                            c2.SetCellType(CellType.Numeric);
-                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
-                            c2.CellStyle = Styles["AllBordersCurrency"];
+                        //else if (cp.EmployeeHistory.Epoch.Month == 5)
+                        //{
+                        //    ICell c2 = row.CreateCell(16);
+                        //    c2.SetCellType(CellType.Numeric);
+                        //    c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                        //    c2.CellStyle = Styles["AllBordersCurrency"];
 
-                            ICell c3 = row.CreateCell(17);
-                            c3.SetCellType(CellType.Numeric);
-                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
-                            c3.CellStyle = Styles["AllBordersCurrency"];
-                        }
+                        //    ICell c3 = row.CreateCell(17);
+                        //    c3.SetCellType(CellType.Numeric);
+                        //    c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                        //    c3.CellStyle = Styles["AllBordersCurrency"];
+                        //}
 
-                        else if (cp.EmployeeHistory.Epoch.Month == 4)
-                        {
-                            ICell c2 = row.CreateCell(18);
-                            c2.SetCellType(CellType.Numeric);
-                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
-                            c2.CellStyle = Styles["AllBordersCurrency"];
+                        //else if (cp.EmployeeHistory.Epoch.Month == 4)
+                        //{
+                        //    ICell c2 = row.CreateCell(18);
+                        //    c2.SetCellType(CellType.Numeric);
+                        //    c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                        //    c2.CellStyle = Styles["AllBordersCurrency"];
 
-                            ICell c3 = row.CreateCell(19);
-                            c3.SetCellType(CellType.Numeric);
-                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
-                            c3.CellStyle = Styles["AllBordersCurrency"];
-                        }
+                        //    ICell c3 = row.CreateCell(19);
+                        //    c3.SetCellType(CellType.Numeric);
+                        //    c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                        //    c3.CellStyle = Styles["AllBordersCurrency"];
+                        //}
 
-                        else if (cp.EmployeeHistory.Epoch.Month == 3)
-                        {
-                            ICell c2 = row.CreateCell(20);
-                            c2.SetCellType(CellType.Numeric);
-                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
-                            c2.CellStyle = Styles["AllBordersCurrency"];
+                        //else if (cp.EmployeeHistory.Epoch.Month == 3)
+                        //{
+                        //    ICell c2 = row.CreateCell(20);
+                        //    c2.SetCellType(CellType.Numeric);
+                        //    c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                        //    c2.CellStyle = Styles["AllBordersCurrency"];
 
-                            ICell c3 = row.CreateCell(21);
-                            c3.SetCellType(CellType.Numeric);
-                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
-                            c3.CellStyle = Styles["AllBordersCurrency"];
-                        }
+                        //    ICell c3 = row.CreateCell(21);
+                        //    c3.SetCellType(CellType.Numeric);
+                        //    c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                        //    c3.CellStyle = Styles["AllBordersCurrency"];
+                        //}
 
-                        else if (cp.EmployeeHistory.Epoch.Month == 2)
-                        {
-                            ICell c2 = row.CreateCell(22);
-                            c2.SetCellType(CellType.Numeric);
-                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
-                            c2.CellStyle = Styles["AllBordersCurrency"];
+                        //else if (cp.EmployeeHistory.Epoch.Month == 2)
+                        //{
+                        //    ICell c2 = row.CreateCell(22);
+                        //    c2.SetCellType(CellType.Numeric);
+                        //    c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                        //    c2.CellStyle = Styles["AllBordersCurrency"];
 
-                            ICell c3 = row.CreateCell(23);
-                            c3.SetCellType(CellType.Numeric);
-                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
-                            c3.CellStyle = Styles["AllBordersCurrency"];
-                        }
+                        //    ICell c3 = row.CreateCell(23);
+                        //    c3.SetCellType(CellType.Numeric);
+                        //    c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                        //    c3.CellStyle = Styles["AllBordersCurrency"];
+                        //}
 
-                        else if (cp.EmployeeHistory.Epoch.Month == 1)
-                        {
-                            ICell c2 = row.CreateCell(24);
-                            c2.SetCellType(CellType.Numeric);
-                            c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
-                            c2.CellStyle = Styles["AllBordersCurrency"];
+                        //else if (cp.EmployeeHistory.Epoch.Month == 1)
+                        //{
+                        //    ICell c2 = row.CreateCell(24);
+                        //    c2.SetCellType(CellType.Numeric);
+                        //    c2.SetCellValue(cp.ContingencyAliquots[0].CalculatedValue);
+                        //    c2.CellStyle = Styles["AllBordersCurrency"];
 
-                            ICell c3 = row.CreateCell(25);
-                            c3.SetCellType(CellType.Numeric);
-                            c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
-                            c3.CellStyle = Styles["AllBordersCurrency"];
-                        }
+                        //    ICell c3 = row.CreateCell(25);
+                        //    c3.SetCellType(CellType.Numeric);
+                        //    c3.SetCellValue(cp.ContingencyAliquots[3].CalculatedValue);
+                        //    c3.CellStyle = Styles["AllBordersCurrency"];
+                        //}
                     }
                 }
 
@@ -913,7 +962,7 @@ namespace Contingenciamento.Util
             return wb;
         }
 
-        private static ISheet _CreateVacationDefaultHeader(ISheet sheet, IWorkbook wb, int year)
+        private static ISheet _CreateVacationDefaultHeader(ISheet sheet, IWorkbook wb)
         {
             Dictionary<string, ICellStyle> Styles = _CreateStyles(wb);
 
@@ -951,7 +1000,7 @@ namespace Contingenciamento.Util
             int rowNumber = 0;
             IRow r0 = sheet.CreateRow(rowNumber++);
             ICell c0 = r0.CreateCell(0, CellType.String);
-            c0.SetCellValue("LIBERAÇÕES DE FÉRIAS E INCIDÊNCIAS - SOLL - PERNAMBUCO - " + year);
+            c0.SetCellValue("LIBERAÇÕES DE FÉRIAS E INCIDÊNCIAS - SOLL - PERNAMBUCO");
 
             IRow r1 = sheet.CreateRow(rowNumber++);
 

@@ -33,5 +33,11 @@ namespace Contingenciamento.GUI
             FrmInsertEntities frmInsertEntities = new FrmInsertEntities();
             frmInsertEntities.ShowDialog();
         }
+
+        private void BtnConsultas_Click(object sender, EventArgs e)
+        {
+            FrmQueryEntities frmQueryEntities = new FrmQueryEntities();
+            frmQueryEntities.ShowDialog();
+        }
     }
 }

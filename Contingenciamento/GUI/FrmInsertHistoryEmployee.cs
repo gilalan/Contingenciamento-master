@@ -27,8 +27,8 @@ namespace Contingenciamento
         List<EmployeeHistory> allEmployeeHistory;
 
         //Novas entidades a serem cadastradas
-        HashSet<Department> newDepartments;
-        HashSet<Employee> newEmployees;
+        //HashSet<Department> newDepartments;
+        //HashSet<Employee> newEmployees;
 
 
         public FrmInsertHistoryEmployee()

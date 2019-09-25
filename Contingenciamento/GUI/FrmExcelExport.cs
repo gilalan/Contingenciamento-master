@@ -1,4 +1,5 @@
-﻿using Contingenciamento.Entidades;
+﻿using Contingenciamento.BLL;
+using Contingenciamento.Entidades;
 using Contingenciamento.Util;
 using NPOI.SS.UserModel;
 using System;
@@ -10,8 +11,11 @@ namespace Contingenciamento.GUI
 {
     public partial class FrmExcelExport : Form
     {
+        Facade _facade = new Facade();
         int SelectedYear;
         List<int> Years;
+        List<ContingencyFund> contFunds;
+        List<ContingencyAliquot> contAliquots;
         Dictionary<KeyValuePair<int,int>, List<ContingencyPast>> YearMonthCPsList;
         Contract Contract;
 
@@ -33,6 +37,8 @@ namespace Contingenciamento.GUI
         {
             _FillMonthsCB();
             _FillYearsCB();
+            contFunds = _facade.GetTopContigencyFund();
+            contAliquots = _facade.GetContingencyAliquotsByContract(this.Contract);
         }
 
         private void _FillMonthsCB()
@@ -62,7 +68,7 @@ namespace Contingenciamento.GUI
             int month = (int)this.cbMonths.SelectedIndex;
             KeyValuePair<int, int> kvp = new KeyValuePair<int, int>(year, month+1);
             List<ContingencyPast> cpListByMonthYear = this.YearMonthCPsList[kvp];
-            IWorkbook workbook = DefaultExporterWorksheet.ExportCtgencyEmployeeList(cpListByMonthYear);
+            IWorkbook workbook = DefaultExporterWorksheet.ExportCtgencyEmployeeList(cpListByMonthYear, contFunds, contAliquots);
             _SaveExcelFile(workbook);
         }
 
