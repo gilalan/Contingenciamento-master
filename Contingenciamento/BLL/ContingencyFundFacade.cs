@@ -33,6 +33,6 @@ namespace Contingenciamento.BLL
         public void InsertContigencyFundList(HashSet<ContingencyFund> contFundList)
         {
             this._contingencyFundDAO.BulkInsert(contFundList);
-        }
+        }        
     }
 }

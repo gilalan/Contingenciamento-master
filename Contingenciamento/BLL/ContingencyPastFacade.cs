@@ -54,8 +54,8 @@ namespace Contingenciamento.BLL
 
         public HashSet<ContingencyPast> GetContingencyPastsByEmployeeHistoryList(List<EmployeeHistory> employeeHistories, ContingencyFund cf)
         {
-            HashSet<ContingencyPast> hsContingencyPasts = new HashSet<ContingencyPast>();
             HashSet<ContingencyPast> allContingencyPasts = this._contingencyPastDAO.GetContingencyPastsByEmployeeHistoryList(employeeHistories, cf);
+            HashSet<ContingencyPast> hsContingencyPasts = new HashSet<ContingencyPast>();
             DateTime dtEpoch;
             int value1;
             int value2;
@@ -75,7 +75,42 @@ namespace Contingenciamento.BLL
                     }
                 }
             }
+            
+           // List<ContingencyPast> hsContingencyPastsCopy = new List<ContingencyPast>(hsContingencyPasts);
+            HashSet<ContingencyPast> toRemove = new HashSet<ContingencyPast>();
+            foreach (ContingencyPast contPast in hsContingencyPasts)
+            {
+                foreach (ContingencyPast contPast2 in hsContingencyPasts)
+                {
+                    if (contPast.EmployeeHistory.Employee.Id == contPast2.EmployeeHistory.Employee.Id)
+                    {
+                        if (contPast.EmployeeHistory.Epoch.CompareTo(contPast2.EmployeeHistory.Epoch) == 0)
+                        {
+                            if (contPast.EmployeeHistory.InVacation != contPast.EmployeeHistory.InVacation)
+                            {
+                                bool had = false;
+                                foreach (ContingencyPast cpR in toRemove)
+                                {
+                                    if (contPast.EmployeeHistory.Employee.Id == cpR.EmployeeHistory.Id && contPast.EmployeeHistory.Epoch.CompareTo(cpR.EmployeeHistory.Epoch) == 0)
+                                    {
+                                        had = true;
+                                        break;
+                                    }
+                                }
+                                if (!had)
+                                    toRemove.Add(contPast);
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (ContingencyPast cp in toRemove)
+            {
+                hsContingencyPasts.Remove(cp);
+            }
             return hsContingencyPasts;
         }
+
     }
 }

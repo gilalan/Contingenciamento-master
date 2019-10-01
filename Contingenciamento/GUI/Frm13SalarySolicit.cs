@@ -100,7 +100,8 @@ namespace Contingenciamento.GUI
         private void btnExport_Click(object sender, EventArgs e)
         {
             int year = (int)this.cbLowYear.SelectedItem;
-            List<ContingencyPast> cpListByYear = this.yearListCPsPairs[year];
+            //List<ContingencyPast> cpListByYear = this.yearListCPsPairs[year];
+            HashSet<ContingencyPast> cpListByYear = new HashSet<ContingencyPast>();
             IWorkbook workbook = DefaultExporterWorksheet.ExportCtgency13SalaryEmployeeList(cpListByYear, year);
             _SaveExcelFile(workbook);
         }

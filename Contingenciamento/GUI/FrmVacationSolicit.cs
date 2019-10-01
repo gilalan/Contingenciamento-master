@@ -21,6 +21,7 @@ namespace Contingenciamento.GUI
         Contract currentContract;
         List<Contract> allContracts;
         List<int> orderedYears;
+        List<ContingencyAliquot> taxFunds;
         Dictionary<int, List<ContingencyPast>> yearListCPsPairs;
         CheckBox headerCheckBox = new CheckBox();
         List<EmployeeHistory> employeeHistoriesVacation = new List<EmployeeHistory>();
@@ -51,10 +52,12 @@ namespace Contingenciamento.GUI
         {
             currentContract = this.cbContracts.SelectedItem as Contract;
             //_RemoveElements();
+            //PEGAR VERBA DE INCIDENCIA!
             _LoadingContractInfo(currentContract);
             _GetEmployeesInContract(currentContract);
             _GetContPastForContract(currentContract);
             _GetEmployeesInVacationByContract(currentContract);
+            taxFunds = _facade.GetContingencyAliquotsByContract(this.currentContract);
         }
 
         private void _LoadingContractInfo(Contract ct)
@@ -139,7 +142,9 @@ namespace Contingenciamento.GUI
                 row.Cells[0].Value = false;
                 row.Cells[1].Value = eh.Employee.Matriculation;
                 row.Cells[2].Value = eh.Employee.Name;
+                List<DateTime> dateTimes = new List<DateTime>() { eh.StartVacationTaken , eh.EndVacationTaken};
                 row.Cells[3].Value = eh.StartVacationTaken.ToString("dd/MM/yyyy") + " até " + eh.EndVacationTaken.ToString("dd/MM/yyyy");
+                row.Cells[3].Tag = dateTimes;
             }
         }
 
@@ -206,7 +211,22 @@ namespace Contingenciamento.GUI
                     {
                         if (eh.Employee.Matriculation == row.Cells["matriculaColumn"].Value.ToString())
                         {
-                            employeeHistoriesChecked.Add(eh);
+                            List<DateTime> dateTimes = (List<DateTime>) row.Cells["perAqColumn"].Tag;
+                            DateTime dt1, dt2;
+                            if (dateTimes.Count > 0 && dateTimes.Count < 2)
+                            {
+                                dt1 = dt2 = dateTimes[0];
+                            } 
+                            else
+                            {
+                                dt1 = dateTimes[0];
+                                dt2 = dateTimes[1];
+                            }
+                            if ( (DateTime.Compare(eh.StartVacationTaken, dt1) == 0 || DateTime.Compare(eh.StartVacationTaken, dt2) == 0) &&
+                                (DateTime.Compare(eh.EndVacationTaken, dt1) == 0 || DateTime.Compare(eh.EndVacationTaken, dt2) == 0))
+                            {
+                                employeeHistoriesChecked.Add(eh);
+                            }
                         }
                     }
                 }
@@ -216,7 +236,15 @@ namespace Contingenciamento.GUI
                 _facade.GetContingencyPastsByEmployeeHistoryList(employeeHistoriesChecked, new ContingencyFund("Férias"));
             //int year = (int)this.cbLowYear.SelectedItem;
             //List<ContingencyPast> cpListByYear = this.yearListCPsPairs[year];
-            IWorkbook workbook = DefaultExporterWorksheet.ExportCtgencyVacationEmployeeList(empHistoryContPast);
+            ContingencyAliquot caInc = new ContingencyAliquot();
+            foreach (ContingencyAliquot ca in taxFunds)
+            {
+                if (ca.ContingencyFund.Name.ToUpper().Equals("INCIDÊNCIA"))
+                {
+                    caInc = ca;
+                }
+            }
+            IWorkbook workbook = DefaultExporterWorksheet.ExportCtgencyVacationEmployeeList(employeeHistoriesChecked, empHistoryContPast, caInc);
             _SaveExcelFile(workbook);
         }
 

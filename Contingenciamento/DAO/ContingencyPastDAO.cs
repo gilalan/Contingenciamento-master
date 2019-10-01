@@ -522,11 +522,11 @@ namespace Contingenciamento.DAO
 
                 if (String.IsNullOrEmpty(cf.Name))
                 {
-                    selectCMD += "(" + empIds + ") ORDER BY emp.name ASC, emp.epoch;";
+                    selectCMD += "(" + empIds + ") ORDER BY emp.name ASC, eh.epoch;";
                 }
                 else
                 {
-                    selectCMD += "(" + empIds + ") AND cf.name LIKE '" + cf.Name + "' ORDER BY emp.name ASC, emp.epoch;";
+                    selectCMD += "(" + empIds + ") AND cf.name LIKE '" + cf.Name + "' ORDER BY emp.name ASC, eh.epoch;";
                 }
 
                 NpgsqlCommand cmd = new NpgsqlCommand(selectCMD);
